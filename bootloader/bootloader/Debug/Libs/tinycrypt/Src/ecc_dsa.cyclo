@@ -1,0 +1,4 @@
+../Libs/tinycrypt/Src/ecc_dsa.c:61:13:bits2int	6
+../Libs/tinycrypt/Src/ecc_dsa.c:94:5:uECC_sign_with_k	9
+../Libs/tinycrypt/Src/ecc_dsa.c:156:5:uECC_sign	6
+../Libs/tinycrypt/Src/ecc_dsa.c:187:5:uECC_verify	9
