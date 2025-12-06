@@ -1,0 +1,13 @@
+19:49:11 **** Incremental Build of configuration Debug for project bootloader ****
+make -j12 all 
+arm-none-eabi-gcc -o "bootloader.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\bootloader\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: bootloader.elf
+ 
+arm-none-eabi-size  bootloader.elf 
+arm-none-eabi-objdump -h -S bootloader.elf  > "bootloader.list"
+   text	   data	    bss	    dec	    hex	filename
+  20000	    104	   8144	  28248	   6e58	bootloader.elf
+Finished building: default.size.stdout
+ 
+Finished building: bootloader.list
+ 

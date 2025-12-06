@@ -62,8 +62,8 @@ all: main-build
 main-build: bootloader.elf secondary-outputs
 
 # Tool invocations
-bootloader.elf bootloader.map: $(OBJS) $(USER_OBJS) C:\Users\Oguzm\OneDrive\ -\ ozyegin.edu.tr\Desktop\Github_Projects\CS350_Project\bootloader\bootloader\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "bootloader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\Oguzm\OneDrive - ozyegin.edu.tr\Desktop\Github_Projects\CS350_Project\bootloader\bootloader\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+bootloader.elf bootloader.map: $(OBJS) $(USER_OBJS) C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\bootloader\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "bootloader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\bootloader\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
