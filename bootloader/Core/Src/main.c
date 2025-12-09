@@ -46,6 +46,7 @@
 #define RAW_CHUNK_SIZE  4096  // Max size after decompression (safe margin)
 #define BL_STATUS_UPDATED  0x01
 #define BL_STATUS_ERROR    0x02
+#define AXIM_Addr_Msk		   0x2000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -82,12 +83,14 @@ int Bootloader_InternalVerify(uint32_t slot_addr, uint32_t slot_size);
 void Bootloader_SetStatus(uint32_t status) {
     HAL_PWR_EnableBkUpAccess();
     HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, status);
+    HAL_PWREx_DisableBkUpReg();
 }
 
 void BL_RequestUpdate(void) {
     HAL_PWR_EnableBkUpAccess();
     HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0xCAFEBABE); // Magic Flag
     NVIC_SystemReset();
+    HAL_PWREx_DisableBkUpReg();
 }
 
 uint32_t BL_GetStatus(void) {
@@ -108,10 +111,14 @@ const Bootloader_API_t API_Table = {
     .VerifySlot = BL_VerifySlot
 };
 
-uint32_t Find_Footer(uint32_t start, uint32_t size) {
+uint32_t Find_Footer(uint32_t start, uint32_t size) { //0x08010000, 0x00070000
     uint32_t end = start + size;
     uint32_t search = end - 4;
+    uint32_t addr = 0; // addr of the where flash is booted
 
+
+    // read the addr from which the flash started, via FLASH_OPTCR1//
+    addr = READ_BIT(FLASH_OPTCR1_BOOT_ADD0,AXIM_Addr_Msk);  //assumed boot0 pin is 0
     /* Fast skip 0xFF */
     while(search > start) {
         if (*(uint32_t*)search != 0xFFFFFFFF) break;

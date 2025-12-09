@@ -7,7 +7,7 @@
 
 #ifndef INC_MEM_LAYOUT_H_
 #define INC_MEM_LAYOUT_H_
-// BURASI DÜZELTİLECEK  YANLIŞ SAYILAR VAR!!!!!!!!!!!!!!!!!!!!!!!!
+
 /* STM32F746G (1MB) Flash Layout Map */
 
 /* 1. Bootloader (64KB) - Sectors 0 & 1 */

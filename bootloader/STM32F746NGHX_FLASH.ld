@@ -46,7 +46,7 @@ MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 320K
   /* !!!!!!!!! change if it is small*/
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 32K
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 64K
 }
 
 /* Sections */
@@ -60,6 +60,8 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
   
+  
+
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
   {
@@ -149,16 +151,6 @@ SECTIONS
 
   } >RAM AT> FLASH
 
-  /* --- SHARED API SECTION --- */
-  /* We place this at the specific address defined in mem_layout.h */
-  .shared_api_section 0x08007000 :
-  {
-    . = ALIGN(4);
-    KEEP(*(.shared_api_section)) /* Force linker to keep it even if unused */
-    . = ALIGN(4);
-  } >FLASH
-  /* ------------------------------- */
-  
   /* Uninitialized data section into "RAM" Ram type memory */
   . = ALIGN(4);
   .bss :
@@ -174,6 +166,16 @@ SECTIONS
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
   } >RAM
+  
+  /* --- SHARED API SECTION --- */
+  /* We place this at the specific address defined in mem_layout.h */
+  .shared_api_section 0x0800F000 :
+  {
+    . = ALIGN(4);
+    KEEP(*(.shared_api_section)) /* Force linker to keep it even if unused */
+    . = ALIGN(4);
+  } >FLASH
+  /* ------------------------------- */
 
   /* User_heap_stack section, used to check that there is enough "RAM" Ram  type memory left */
   ._user_heap_stack :

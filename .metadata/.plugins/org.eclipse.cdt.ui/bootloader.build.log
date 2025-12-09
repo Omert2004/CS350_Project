@@ -1,16 +1,21 @@
-19:49:11 **** Incremental Build of configuration Debug for project bootloader ****
+23:25:04 **** Build of configuration Debug for project bootloader ****
 make -j12 all 
-arm-none-eabi-gcc -o "bootloader.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\bootloader\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F746xx -c -I../Core/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F7xx/Include -I../Drivers/CMSIS/Include -I../Libs/tinycrypt/Inc -I../Libs/lz4/Inc -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'Find_Footer':
+../Core/Src/main.c:117:14: warning: variable 'addr' set but not used [-Wunused-but-set-variable]
+  117 |     uint32_t addr = 0; // addr of the where flash is booted
+      |              ^~~~
+arm-none-eabi-gcc -o "bootloader.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: bootloader.elf
  
 arm-none-eabi-size  bootloader.elf 
 arm-none-eabi-objdump -h -S bootloader.elf  > "bootloader.list"
    text	   data	    bss	    dec	    hex	filename
-  20000	    104	   8144	  28248	   6e58	bootloader.elf
+  20060	    104	   8144	  28308	   6e94	bootloader.elf
 Finished building: default.size.stdout
  
 Finished building: bootloader.list
  
 
-19:49:12 Build Finished. 0 errors, 0 warnings. (took 1s.18ms)
+23:25:08 Build Finished. 0 errors, 1 warnings. (took 3s.816ms)
 

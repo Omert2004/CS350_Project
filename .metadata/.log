@@ -294,3 +294,841 @@ org.osgi.service.prefs.BackingStoreException: Exception occurred while saving pr
 	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
 	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2025-12-09 17:57:11.950 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=tr_TR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-12-09 17:57:24.914
+!MESSAGE Log4j2 initialized with config file C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-12-09 17:57:29.424
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 17:57:31.535
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 17:57:31.535
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 17:57:31.536
+!MESSAGE port: COM10
+!SESSION 2025-12-09 22:08:55.320 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=tr_TR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-12-09 22:09:31.803
+!MESSAGE Log4j2 initialized with config file C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-12-09 22:09:37.895
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 22:09:38.662
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 22:09:38.664
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 22:09:38.664
+!MESSAGE port: COM10
+!SESSION 2025-12-09 23:23:36.471 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=tr_TR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.core.resources 4 567 2025-12-09 23:23:39.504
+!MESSAGE Workspace restored, but some problems occurred.
+!SUBENTRY 1 org.eclipse.core.resources 4 567 2025-12-09 23:23:39.504
+!MESSAGE Could not read metadata for 'bootloader'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader)[567]: java.lang.Exception: The project description file (.project) for 'bootloader' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:970)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:954)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:934)
+	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:790)
+	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1616)
+	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:2618)
+	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:2319)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:591)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:947)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:257)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:184)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:324)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:267)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:565)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:833)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:1)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:825)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.start(BundleContextImpl.java:775)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.startWorker0(EquinoxBundle.java:1057)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.startWorker(EquinoxBundle.java:387)
+	at org.eclipse.osgi.container.Module.doStart(Module.java:639)
+	at org.eclipse.osgi.container.Module.start(Module.java:498)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:528)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:122)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:620)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:348)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:414)
+	at org.eclipse.osgi.internal.loader.sources.SingleSourcePackage.loadClass(SingleSourcePackage.java:41)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass0(BundleLoader.java:516)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:434)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:174)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:153)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:143)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:109)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:439)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:271)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:668)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:605)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1481)
+!SUBENTRY 2 org.eclipse.core.resources 4 567 2025-12-09 23:23:39.509
+!MESSAGE The project description file (.project) for 'bootloader' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+!STACK 0
+java.lang.Exception: The project description file (.project) for 'bootloader' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:970)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:954)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:934)
+	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:790)
+	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1616)
+	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:2618)
+	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:2319)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:591)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:947)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:257)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:184)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:324)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:267)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:565)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:833)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:1)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:825)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.start(BundleContextImpl.java:775)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.startWorker0(EquinoxBundle.java:1057)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.startWorker(EquinoxBundle.java:387)
+	at org.eclipse.osgi.container.Module.doStart(Module.java:639)
+	at org.eclipse.osgi.container.Module.start(Module.java:498)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:528)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:122)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:620)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:348)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:414)
+	at org.eclipse.osgi.internal.loader.sources.SingleSourcePackage.loadClass(SingleSourcePackage.java:41)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass0(BundleLoader.java:516)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:434)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:174)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:153)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:143)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:109)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:439)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:271)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:668)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:605)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1481)
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-12-09 23:23:42.709
+!MESSAGE Log4j2 initialized with config file C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-12-09 23:23:46.039
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:23:49.207
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:23:49.207
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:23:49.208
+!MESSAGE port: COM10
+!SESSION 2025-12-09 23:24:00.890 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=tr_TR
+Framework arguments:  C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\.cproject
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\bootloader\.cproject
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-12-09 23:24:06.521
+!MESSAGE Log4j2 initialized with config file C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-12-09 23:24:09.428
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.core.resources 4 368 2025-12-09 23:24:23.084
+!MESSAGE Resource '/bootloader' does not exist.
+!STACK 0
+java.lang.Exception: Resource '/bootloader' does not exist.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:364)
+	at org.eclipse.core.internal.resources.Project.open(Project.java:1069)
+	at org.eclipse.core.internal.resources.Project.open(Project.java:1192)
+	at com.st.stm32cube.ide.mcu.ide.ui.project.internal.MCUProjectImporter$ProjectOperation.execute(MCUProjectImporter.java:189)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+
+!ENTRY org.eclipse.ui 4 4 2025-12-09 23:24:23.531
+!MESSAGE To avoid deadlock while executing Display.syncExec() with argument: com.st.stm32cube.ide.mcu.ide.ui.project.internal.MCUProjectImporter$3@661c37e4, thread Worker-8: Executing the early startup extensions will interrupt UI thread.
+!SUBENTRY 1 org.eclipse.ui 4 4 2025-12-09 23:24:23.531
+!MESSAGE Worker-8: Executing the early startup extensions thread is an instance of Worker or owns an ILock
+!STACK 0
+java.lang.IllegalStateException: Call stack for thread Worker-8: Executing the early startup extensions
+	at java.management@21.0.8/sun.management.ThreadImpl.dumpThreads0(Native Method)
+	at java.management@21.0.8/sun.management.ThreadImpl.getThreadInfo(ThreadImpl.java:482)
+	at org.eclipse.ui.internal.UILockListener.reportInterruption(UILockListener.java:208)
+	at org.eclipse.ui.internal.UILockListener.interruptUI(UILockListener.java:174)
+	at org.eclipse.ui.internal.PendingSyncExec.waitUntilExecuted(PendingSyncExec.java:92)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:142)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4855)
+	at com.st.stm32cube.ide.mcu.ide.ui.project.internal.MCUProjectImporter.importProjectImpl(MCUProjectImporter.java:376)
+	at com.st.stm32cube.ide.mcu.ide.ui.project.internal.MCUProjectImporterStartup.handleArguments(MCUProjectImporterStartup.java:141)
+	at com.st.stm32cube.ide.mcu.ide.ui.project.internal.MCUProjectImporterStartup.earlyStartup(MCUProjectImporterStartup.java:57)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:79)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:55)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.ui.internal.Workbench$39.run(Workbench.java:2733)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.ui 4 4 2025-12-09 23:24:23.531
+!MESSAGE UI thread waiting on a job or lock.
+!STACK 0
+java.lang.IllegalStateException: Call stack for thread main
+	at java.base@21.0.8/java.lang.Object.wait0(Native Method)
+	at java.base@21.0.8/java.lang.Object.wait(Object.java:366)
+	at org.eclipse.core.internal.jobs.Semaphore.acquire(Semaphore.java:45)
+	at org.eclipse.core.internal.jobs.OrderedLock.doAcquire(OrderedLock.java:191)
+	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:125)
+	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:100)
+	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:87)
+	at org.eclipse.cdt.internal.core.settings.model.xml.XmlProjectDescriptionStorage.getProjectDescription(XmlProjectDescriptionStorage.java:232)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescriptionInternal(CProjectDescriptionManager.java:426)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescription(CProjectDescriptionManager.java:408)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescription(CProjectDescriptionManager.java:402)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescription(CProjectDescriptionManager.java:395)
+	at org.eclipse.cdt.make.ui.MakeContentProvider.getSourceEntries(MakeContentProvider.java:411)
+	at org.eclipse.cdt.make.ui.MakeContentProvider.getChildren(MakeContentProvider.java:106)
+	at org.eclipse.cdt.make.ui.MakeContentProvider.hasChildren(MakeContentProvider.java:174)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.isExpandable(AbstractTreeViewer.java:2269)
+	at org.eclipse.jface.viewers.TreeViewer.isExpandable(TreeViewer.java:553)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.isExpandable(AbstractTreeViewer.java:2299)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.updatePlus(AbstractTreeViewer.java:3113)
+	at org.eclipse.jface.viewers.TreeViewer.updatePlus(TreeViewer.java:796)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.createTreeItem(AbstractTreeViewer.java:895)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.updateChildren(AbstractTreeViewer.java:3029)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.internalRefreshStruct(AbstractTreeViewer.java:2031)
+	at org.eclipse.jface.viewers.TreeViewer.internalRefreshStruct(TreeViewer.java:684)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.internalRefresh(AbstractTreeViewer.java:2004)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.internalRefresh(AbstractTreeViewer.java:1961)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.internalRefresh(AbstractTreeViewer.java:1947)
+	at org.eclipse.jface.viewers.StructuredViewer.lambda$2(StructuredViewer.java:1463)
+	at org.eclipse.jface.viewers.StructuredViewer$$Lambda/0x00000001008ae6c8.run(Unknown Source)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1392)
+	at org.eclipse.jface.viewers.TreeViewer.preservingSelection(TreeViewer.java:367)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1353)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1463)
+	at org.eclipse.jface.viewers.ColumnViewer.refresh(ColumnViewer.java:521)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1417)
+	at org.eclipse.cdt.make.ui.MakeContentProvider.lambda$0(MakeContentProvider.java:242)
+	at org.eclipse.cdt.make.ui.MakeContentProvider$$Lambda/0x0000000100927a00.run(Unknown Source)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:132)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4099)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3715)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.block(ModalContext.java:168)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:370)
+	at org.eclipse.jface.dialogs.ProgressMonitorDialog.run(ProgressMonitorDialog.java:470)
+	at org.eclipse.ui.internal.progress.ProgressMonitorJobsDialog.run(ProgressMonitorJobsDialog.java:230)
+	at org.eclipse.ui.internal.progress.ProgressManager.lambda$26(ProgressManager.java:819)
+	at org.eclipse.ui.internal.progress.ProgressManager$$Lambda/0x0000000100a16fe0.run(Unknown Source)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:67)
+	at org.eclipse.ui.internal.progress.ProgressManager.busyCursorWhile(ProgressManager.java:849)
+	at org.eclipse.ui.internal.progress.ProgressManager.busyCursorWhile(ProgressManager.java:828)
+	at com.st.stm32cube.ide.mcu.ide.ui.project.internal.MCUProjectImporter$3.run(MCUProjectImporter.java:385)
+	at org.eclipse.ui.internal.PendingSyncExec.run(PendingSyncExec.java:68)
+	at org.eclipse.ui.internal.UILockListener.doPendingWork(UILockListener.java:166)
+	at org.eclipse.ui.internal.UISynchronizer$$Lambda/0x0000000100a16790.run(Unknown Source)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:132)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4099)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3715)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1151)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1042)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:153)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:639)
+	at org.eclipse.ui.internal.Workbench$$Lambda/0x000000010032e4c8.run(Unknown Source)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:546)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:173)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:143)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:109)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:439)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:271)
+	at java.base@21.0.8/java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(DirectMethodHandle$Holder)
+	at java.base@21.0.8/java.lang.invoke.LambdaForm$MH/0x00000001000c6800.invoke(LambdaForm$MH)
+	at java.base@21.0.8/java.lang.invoke.LambdaForm$MH/0x00000001000c6c00.invokeExact_MT(LambdaForm$MH)
+	at java.base@21.0.8/jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(DirectMethodHandleAccessor.java:155)
+	at java.base@21.0.8/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base@21.0.8/java.lang.reflect.Method.invoke(Method.java:580)
+	at app//org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:668)
+	at app//org.eclipse.equinox.launcher.Main.basicRun(Main.java:605)
+	at app//org.eclipse.equinox.launcher.Main.run(Main.java:1481)
+
+!ENTRY org.eclipse.core.resources 4 4 2025-12-09 23:24:25.652
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader/.settings/stm32cubeide.project.prefs)[275]: java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:386)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:466)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 275 2025-12-09 23:24:25.654
+!MESSAGE A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+!STACK 0
+java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:386)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:466)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.common.utils 4 0 2025-12-09 23:24:25.655
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 0
+org.osgi.service.prefs.BackingStoreException: Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:765)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:386)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:466)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.resources 4 4 2025-12-09 23:24:25.661
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader/.settings/stm32cubeide.project.prefs)[275]: java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:397)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:522)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 275 2025-12-09 23:24:25.661
+!MESSAGE A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+!STACK 0
+java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:397)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:522)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.common.utils 4 0 2025-12-09 23:24:25.662
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 0
+org.osgi.service.prefs.BackingStoreException: Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:765)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:397)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:522)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.resources 4 4 2025-12-09 23:24:25.664
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader/.settings/stm32cubeide.project.prefs)[275]: java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.updateLinkScriptProjectMetadata(BuildAnalytics.java:403)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.access$7(BuildAnalytics.java:401)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:255)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 275 2025-12-09 23:24:25.664
+!MESSAGE A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+!STACK 0
+java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.updateLinkScriptProjectMetadata(BuildAnalytics.java:403)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.access$7(BuildAnalytics.java:401)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:255)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.common.utils 4 0 2025-12-09 23:24:25.664
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 0
+org.osgi.service.prefs.BackingStoreException: Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:765)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.updateLinkScriptProjectMetadata(BuildAnalytics.java:403)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.access$7(BuildAnalytics.java:401)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:255)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.events.AutoBuildJob$AutoBuildOffJob.run(AutoBuildJob.java:377)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:24:28.061
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:24:28.062
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:24:28.062
+!MESSAGE port: COM10
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-12-09 23:24:28.130
+!MESSAGE Indexed 'bootloader' (30 sources, 134 headers) in 2,4 sec: 12.041 declarations; 46.051 references; 16 unresolved inclusions; 1.009 syntax errors; 1.469 unresolved names (%2,5)
+!SESSION 2025-12-09 23:24:43.856 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=tr_TR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-12-09 23:24:49.451
+!MESSAGE Log4j2 initialized with config file C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-12-09 23:24:53.963
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:24:56.936
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:24:56.936
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-09 23:24:56.937
+!MESSAGE port: COM10
+
+!ENTRY org.eclipse.core.resources 4 4 2025-12-09 23:25:08.958
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader/.settings/stm32cubeide.project.prefs)[275]: java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:386)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:466)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 275 2025-12-09 23:25:08.959
+!MESSAGE A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+!STACK 0
+java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:386)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:466)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.common.utils 4 0 2025-12-09 23:25:08.960
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 0
+org.osgi.service.prefs.BackingStoreException: Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:765)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:386)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:466)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.resources 4 4 2025-12-09 23:25:08.966
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader/.settings/stm32cubeide.project.prefs)[275]: java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:397)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:522)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 275 2025-12-09 23:25:08.966
+!MESSAGE A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+!STACK 0
+java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:397)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:522)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.common.utils 4 0 2025-12-09 23:25:08.968
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 0
+org.osgi.service.prefs.BackingStoreException: Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:765)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.updateLinkScriptProjectMetadata(MxULinkScriptGeneratorAbstract.java:397)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptGeneratorAbstract.isCubeManagedLinkerScript(MxULinkScriptGeneratorAbstract.java:522)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.doAnalyzeLinkerScript(MxULinkScriptAnalyzerAbstract.java:241)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.analyzeLinkScript(MxULinkScriptAnalyzerAbstract.java:182)
+	at com.st.stm32cube.ide.mcu.linker.core.engine.MxULinkScriptAnalyzerAbstract.isCustomLinkerScriptContentUsage(MxULinkScriptAnalyzerAbstract.java:79)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:250)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.resources 4 4 2025-12-09 23:25:08.970
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/bootloader/.settings/stm32cubeide.project.prefs)[275]: java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.updateLinkScriptProjectMetadata(BuildAnalytics.java:403)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.access$7(BuildAnalytics.java:401)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:255)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 275 2025-12-09 23:25:08.970
+!MESSAGE A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+!STACK 0
+java.lang.Exception: A resource exists with a different case: '/bootloader/.settings/stm32cubeide.project.prefs'.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:352)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:330)
+	at org.eclipse.core.internal.resources.File.checkCreatable(File.java:207)
+	at org.eclipse.core.internal.resources.File.create(File.java:176)
+	at org.eclipse.core.internal.resources.ProjectPreferences.lambda$2(ProjectPreferences.java:734)
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:750)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.updateLinkScriptProjectMetadata(BuildAnalytics.java:403)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.access$7(BuildAnalytics.java:401)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:255)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.common.utils 4 0 2025-12-09 23:25:08.970
+!MESSAGE Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+!STACK 0
+org.osgi.service.prefs.BackingStoreException: Exception occurred while saving project preferences: /bootloader/.settings/stm32cubeıde.project.prefs.
+	at org.eclipse.core.internal.resources.ProjectPreferences.save(ProjectPreferences.java:765)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.internalFlush(EclipsePreferences.java:436)
+	at org.eclipse.core.internal.resources.ProjectPreferences.flush(ProjectPreferences.java:459)
+	at com.st.stm32cube.common.utils.metadata.ProjectMetadataUtils.setProjectMetaData(ProjectMetadataUtils.java:59)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.updateLinkScriptProjectMetadata(BuildAnalytics.java:403)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics.access$7(BuildAnalytics.java:401)
+	at com.st.stm32cube.ide.mcu.buildanalyzer.BuildAnalytics$2.resourceChanged(BuildAnalytics.java:255)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:321)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:311)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:174)
+	at org.eclipse.core.internal.resources.Workspace.broadcastBuildEvent(Workspace.java:445)
+	at org.eclipse.core.internal.resources.Workspace.buildInternal(Workspace.java:609)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:491)
+	at org.eclipse.ui.actions.BuildAction$1.runInWorkspace(BuildAction.java:288)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
