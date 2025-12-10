@@ -51,18 +51,27 @@ typedef enum {
     BL_ERR_FLASH_PROGRAM_FAIL = -52,
     BL_ERR_FLASH_ALIGN_ERROR = -53,
 
-
     /* Generic Error */
     BL_ERR_UNKNOWN = -100
 } BL_Status_t;
 
 
-typedef struct {
-    uint8_t  signature[64]; // ECDSA Signature (r + s)
-    uint32_t version;       // Firmware Version
-    uint32_t image_size;    // Size of the CODE only
-    uint32_t magic;         // Fixed marker (0x454E4421)
-} Firmware_Footer_t;
+typedef struct __attribute__((packed)) {  //attr packed -> don t align the size if not meet
+    uint32_t magic;            // 0x454E4421
+    uint32_t footer_version;   // format version
+
+    uint32_t image_version;    // anti-rollback (monotonic counter)
+    uint32_t image_size;       // plaintext firmware size
+
+    uint32_t stream_size;      // encrypted+compressed stream size
+    uint32_t load_address;     // where decrypted app will be written
+    uint32_t entry_point;      // app's reset handler address
+
+    uint32_t flags;            // bits 0–3: compression, bits 4–7: encryption
+
+    uint8_t  hash[32];         // SHA-256 of plaintext firmware
+    uint8_t  signature[64];    // ECDSA P-256 signature over hash
+} fw_footer_t;  // Total size = 4+4+4+4+4+4+4+4 + 32 + 64 = 128 bytes
 
 #endif
 

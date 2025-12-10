@@ -11,6 +11,7 @@
 /* STM32F746G (1MB) Flash Layout Map */
 
 /* 1. Bootloader (64KB) - Sectors 0 & 1 */
+// make #if for BOOT0 and BOOT1
 #define BOOTLOADER_START_ADDR   0x08000000
 #define BOOTLOADER_SIZE         0x00010000
 

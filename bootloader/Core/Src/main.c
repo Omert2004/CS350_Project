@@ -27,6 +27,7 @@
 #include "bootloader_interface.h"
 #include "firmware_footer.h"
 
+
 #include "sha256.h"
 #include "ecc_dsa.h"
 #include "aes.h"
@@ -41,12 +42,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ENC_CHUNK_SIZE  1024  // Size of encrypted chunk on Flash
-#define DEC_CHUNK_SIZE  1024  // Size after decryption (same as enc)
-#define RAW_CHUNK_SIZE  4096  // Max size after decompression (safe margin)
-#define BL_STATUS_UPDATED  0x01
-#define BL_STATUS_ERROR    0x02
-#define AXIM_Addr_Msk		   0x2000
+#define ENC_CHUNK_SIZE  		1024   // Size of encrypted chunk on Flash
+#define DEC_CHUNK_SIZE  		1024   // Size after decryption (same as enc)
+#define RAW_CHUNK_SIZE  		4096   // Max size after decompression (safe margin)
+#define BL_STATUS_UPDATED  		0x01
+#define BL_STATUS_ERROR    		0x02
+#define AXIM_Addr_Msk		    0x2000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -68,6 +69,7 @@ RTC_HandleTypeDef hrtc;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_CRC_Init(void);
 static void MX_RTC_Init(void);
@@ -111,29 +113,31 @@ const Bootloader_API_t API_Table = {
     .VerifySlot = BL_VerifySlot
 };
 
-uint32_t Find_Footer(uint32_t start, uint32_t size) { //0x08010000, 0x00070000
-    uint32_t end = start + size;
-    uint32_t search = end - 4;
-    uint32_t addr = 0; // addr of the where flash is booted
 
 
-    // read the addr from which the flash started, via FLASH_OPTCR1//
-    addr = READ_BIT(FLASH_OPTCR1_BOOT_ADD0,AXIM_Addr_Msk);  //assumed boot0 pin is 0
-    /* Fast skip 0xFF */
-    while(search > start) {
-        if (*(uint32_t*)search != 0xFFFFFFFF) break;
-        search -= 4;
-    }
+BL_Status_t Find_Footer(uint32_t start, uint32_t size)
+{
+    if (size < sizeof(fw_footer_t))
+        return 0;
 
-    if (search <= start) return 0;
+    uint32_t footer_addr = start + size - sizeof(fw_footer_t);
+    fw_footer_t* f = (fw_footer_t*)footer_addr;
 
-    /* Check Magic (FOOTER_MAGIC defined in firmware_footer.h) */
-    uint32_t magic = *(uint32_t*)search;
-    if (magic != 0x454E4421) return 0;
+    if (f->magic != FOOTER_MAGIC)
+        return BL_ERR_FOOTER_MAGIC_MISMATCH;
 
-    /* Return address of struct start */
-    /* Struct: [Sig(64) | Ver(4) | Size(4) | Magic(4)] = 76 bytes */
-    return (search + 4) - 76;
+    if (f->footer_version != FOOTER_VERSION)
+        return BL_ERR_FOOTER_VERSION_UNSUPPORTED;
+
+    // sanity: image size aligned, nonzero
+    if ((f->image_size == 0) || (f->image_size & 0x3))
+        return BL_ERR_FOOTER_SIZE_INVALID;
+
+    // stream must fit before footer
+    if (start + f->stream_size > footer_addr)
+        return BL_ERR_FOOTER_SIZE_INVALID;
+
+    return BL_OK;
 }
 
 int Bootloader_InternalVerify(uint32_t slot_addr, uint32_t slot_size) {
@@ -337,6 +341,9 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -558,6 +565,41 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+ /* MPU Configuration */
+
+void MPU_Config(void)
+{
+  MPU_Region_InitTypeDef MPU_InitStruct = {0};
+
+  /* Disables the MPU */
+  HAL_MPU_Disable();
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+  MPU_InitStruct.BaseAddress = 0x0;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_32KB;
+  MPU_InitStruct.SubRegionDisable = 0x0;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+  MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RW_URO;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+  /* Enables the MPU */
+  HAL_MPU_Enable(MPU_HFNMI_PRIVDEF_NONE);
+
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
