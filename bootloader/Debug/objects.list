@@ -20,6 +20,8 @@
 "./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o"
 "./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rtc.o"
 "./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rtc_ex.o"
+"./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o"
+"./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.o"
 "./Libs/lz4/Src/lz4.o"
 "./Libs/tinycrypt/Src/aes_decrypt.o"
 "./Libs/tinycrypt/Src/aes_encrypt.o"

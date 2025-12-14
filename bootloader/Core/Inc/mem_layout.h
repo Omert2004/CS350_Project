@@ -1,6 +1,14 @@
 /*
  * mem_layout.h
  *
+ * @brief   Memory Map definitions for STM32F746 Secure Bootloader.
+ *
+ * @details This file defines the flash memory partition between the Bootloader
+ * and the Application. The addresses align with the STM32F7 physical
+ * sector boundaries to ensure safe erase operations.
+ *
+ * @note    These definitions must match the Linker Script (.ld) configuration.c
+ *
  *  Created on: Dec 2, 2025
  *      Author: mertk
  */

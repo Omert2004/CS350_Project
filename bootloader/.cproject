@@ -76,9 +76,9 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry excluding="STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c|STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c|STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c|STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Libs"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -153,9 +153,9 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry excluding="STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c|STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c|STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c|STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Libs"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
