@@ -33,6 +33,8 @@
 #include "aes.h"
 #include "lz4.h"
 #include "cbc_mode.h"
+
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,6 +44,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define ENC_CHUNK_SIZE  1024  // Size of encrypted chunk on Flash
+#define DEC_CHUNK_SIZE  1024  // Size after decryption (same as enc)
+#define RAW_CHUNK_SIZE  4096  // Max size after decompression (safe margin)
+#define BL_STATUS_UPDATED   0x01
+#define BL_STATUS_ERROR     0x02
+#define AXIM_Addr_Msk		0x2000
 #define ENC_CHUNK_SIZE  		1024   // Size of encrypted chunk on Flash
 #define DEC_CHUNK_SIZE  		1024   // Size after decryption (same as enc)
 #define RAW_CHUNK_SIZE  		4096   // Max size after decompression (safe margin)
@@ -52,6 +60,9 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define MAJOR 1			//Major Version Number
+#define MINOR 1			//Minor Version Number
+
 extern const uint8_t AES_SECRET_KEY[16];
 extern const uint8_t* Get_Public_Key_X(void);
 extern const uint8_t* Get_Public_Key_Y(void);
@@ -63,7 +74,10 @@ CRC_HandleTypeDef hcrc;
 
 RTC_HandleTypeDef hrtc;
 
+UART_HandleTypeDef huart1;
+
 /* USER CODE BEGIN PV */
+const uint8_t BL_Version[2] = { MAJOR , MINOR};
 
 /* USER CODE END PV */
 
@@ -73,6 +87,7 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_CRC_Init(void);
 static void MX_RTC_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void Bootloader_JumpToApp(void);
 void Bootloader_HandleUpdate(void);
@@ -104,6 +119,12 @@ int BL_VerifySlot(uint32_t slot_id) {
     return Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE);
 }
 
+/**
+ * @brief   The Actual Shared API Table Instance.
+ * @details This structure is populated with the real addresses of the Bootloader
+ * functions. The `__attribute__((section))` forces the Linker to place
+ * this variable at address 0x0800F000 (defined in .ld script).
+ */
 __attribute__((section(".shared_api_section")))
 const Bootloader_API_t API_Table = {
     .magic_code = 0xDEADBEEF,
@@ -365,7 +386,9 @@ int main(void)
   MX_GPIO_Init();
   MX_CRC_Init();
   MX_RTC_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  printf("Starting Bootloader Version-(%d,%d)\r\n",BL_Version[0],BL_Version[1]);
 
   /* USER CODE END 2 */
 
@@ -544,6 +567,41 @@ static void MX_RTC_Init(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -556,6 +614,7 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -564,6 +623,252 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+uint32_t Find_Footer(uint32_t start, uint32_t size) { //0x08010000, 0x00070000
+    uint32_t end = start + size;
+    uint32_t search = end - 4;
+    uint32_t addr = 0; // addr of the where flash is booted
+
+
+    // read the addr from which the flash started, via FLASH_OPTCR1//
+    addr = READ_BIT(FLASH_OPTCR1_BOOT_ADD0,AXIM_Addr_Msk);  //assumed boot0 pin is 0
+    /* Fast skip 0xFF */
+    while(search > start) {
+        if (*(uint32_t*)search != 0xFFFFFFFF) break;
+        search -= 4;
+    }
+
+    if (search <= start) return 0;
+
+    /* Check Magic (FOOTER_MAGIC defined in firmware_footer.h) */
+    uint32_t magic = *(uint32_t*)search;
+    if (magic != 0x454E4421) return 0;
+
+    /* Return address of struct start */
+    /* Struct: [Sig(64) | Ver(4) | Size(4) | Magic(4)] = 76 bytes */
+    return (search + 4) - 76;
+}
+
+int Bootloader_InternalVerify(uint32_t slot_addr, uint32_t slot_size) {
+    /* 1. Find Footer */
+    uint32_t footer_addr = Find_Footer(slot_addr, slot_size);
+    if(footer_addr == 0) return 0;
+
+    /* 2. Read Footer Metadata */
+    uint8_t signature[64];
+    uint32_t img_size;
+
+    memcpy(signature, (void*)footer_addr, 64);
+    memcpy(&img_size, (void*)(footer_addr + 68), 4);
+
+    /* 3. Hash the Binary (SHA-256) */
+    struct tc_sha256_state_struct sha_ctx;
+    uint8_t digest[32];
+    uint8_t buffer[256];
+
+    tc_sha256_init(&sha_ctx);
+
+    uint32_t curr = slot_addr;
+    uint32_t remain = img_size;
+
+    while(remain > 0) {
+        uint32_t chunk = (remain > 256) ? 256 : remain;
+        memcpy(buffer, (void*)curr, chunk);
+        tc_sha256_update(&sha_ctx, buffer, chunk);
+        curr += chunk;
+        remain -= chunk;
+    }
+
+    tc_sha256_final(digest, &sha_ctx);
+
+    /* 4. Verify Signature (ECDSA) */
+    uint8_t pub_key[64];
+    memcpy(pub_key, Get_Public_Key_X(), 32);
+    memcpy(pub_key + 32, Get_Public_Key_Y(), 32);
+
+    return uECC_verify(pub_key, digest, 32, signature, uECC_secp256r1());
+}
+
+/* Returns 1 on Success, 0 on Failure */
+int Install_Update_Stream(uint8_t is_dry_run) {
+    static uint8_t enc_buffer[ENC_CHUNK_SIZE];
+    static uint8_t dec_buffer[DEC_CHUNK_SIZE];
+    static uint8_t raw_buffer[RAW_CHUNK_SIZE];
+
+    uint32_t read_addr = APP_DOWNLOAD_START_ADDR;
+    uint32_t write_addr = APP_ACTIVE_START_ADDR;
+
+    /* 1. Setup AES */
+    struct tc_aes_key_sched_struct sched;
+    uint8_t iv[16];
+    uint8_t next_iv[16];
+
+    /* Read Initial IV */
+    memcpy(iv, (void*)read_addr, 16);
+    read_addr += 16;
+    tc_aes128_set_decrypt_key(&sched, AES_SECRET_KEY);
+
+    /* 2. Process Loop */
+    // Limit loop to Download Size to prevent reading garbage at end of flash
+    uint32_t end_addr = APP_DOWNLOAD_START_ADDR + APP_DOWNLOAD_SIZE;
+
+    while (read_addr < end_addr) {
+
+        // A. Read Encrypted Chunk
+        memcpy(enc_buffer, (void*)read_addr, ENC_CHUNK_SIZE);
+
+        // Check for empty flash (0xFF) to stop early
+        if (*(uint32_t*)enc_buffer == 0xFFFFFFFF) break;
+
+        // B. Save IV for next chunk (CBC Chain)
+        memcpy(next_iv, &enc_buffer[ENC_CHUNK_SIZE - 16], 16);
+
+        // C. Decrypt
+        if (tc_cbc_mode_decrypt(dec_buffer, ENC_CHUNK_SIZE, enc_buffer, ENC_CHUNK_SIZE, iv, &sched) == 0) {
+             return 0; // Decrypt Error
+        }
+        memcpy(iv, next_iv, 16); // Update IV
+
+        // D. Decompress (LZ4)
+        int bytes_out = LZ4_decompress_safe((const char*)dec_buffer,
+                                            (char*)raw_buffer,
+                                            ENC_CHUNK_SIZE,
+                                            RAW_CHUNK_SIZE);
+
+        if (bytes_out < 0) return 0; // CORRUPTION DETECTED!
+
+        // E. Write (ONLY IF NOT DRY RUN)
+        if (!is_dry_run) {
+            for (int i = 0; i < bytes_out; i += 4) {
+                if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, write_addr + i, *(uint32_t*)(raw_buffer + i)) != HAL_OK) {
+                    return 0; // Flash Write Error
+                }
+            }
+        }
+
+        read_addr += ENC_CHUNK_SIZE;
+        write_addr += bytes_out;
+    }
+
+    return 1; // Stream is valid
+}
+
+void Bootloader_HandleUpdate(void) {
+
+    // --- STEP 1: SAFETY CHECK (DRY RUN) ---
+    // We process the whole file but DO NOT erase or write anything.
+    // This checks if the file is corrupt, truncated, or has the wrong key.
+
+    if (Install_Update_Stream(1) == 0) {
+        // DRY RUN FAILED!
+        // The download slot contains garbage.
+        // We abort immediately. The Active Slot is still perfectly valid.
+        Bootloader_SetStatus(BL_STATUS_ERROR);
+
+        // Optional: Erase the bad download slot so we don't try again
+        // Erase_Download_Slot();
+
+        NVIC_SystemReset(); // Reboot back to old App
+        return;
+    }
+
+    // --- STEP 2: PREPARE ACTIVE SLOT ---
+    // If we got here, we know the Download Slot is readable and valid LZ4.
+
+    HAL_FLASH_Unlock();
+
+    FLASH_EraseInitTypeDef EraseInit;
+    uint32_t SectorError;
+    EraseInit.TypeErase = FLASH_TYPEERASE_SECTORS;
+    EraseInit.Sector = FLASH_SECTOR_2;
+    EraseInit.NbSectors = 4; // Sectors 2,3,4,5
+    EraseInit.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+
+    if (HAL_FLASHEx_Erase(&EraseInit, &SectorError) != HAL_OK) {
+        HAL_FLASH_Lock();
+        Error_Handler(); // Hardware failure
+    }
+
+    // --- STEP 3: REAL INSTALLATION ---
+    // This time we pass '0' to enable writing.
+    if (Install_Update_Stream(0) == 1) {
+        HAL_FLASH_Lock();
+
+        // --- STEP 4: FINAL SIGNATURE VERIFY ---
+        // We verified the stream structure (LZ4), but now we verify
+        // the cryptographic signature of the code we just wrote.
+        if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == 1) {
+            Bootloader_SetStatus(BL_STATUS_UPDATED);
+            NVIC_SystemReset();
+        } else {
+            // Signature mismatch (Malicious file?)
+            // We are now bricked (Active Slot is erased/written but invalid).
+            Error_Handler();
+        }
+    } else {
+        // Write failed halfway?
+        HAL_FLASH_Lock();
+        Error_Handler();
+    }
+}
+
+void Bootloader_JumpToApp(void) {
+    uint32_t app_addr = APP_ACTIVE_START_ADDR;
+    uint32_t stk = *(__IO uint32_t*)app_addr;
+    uint32_t rst = *(__IO uint32_t*)(app_addr + 4);
+
+    /* Safety Check */
+    if (stk < 0x20000000 || stk > 0x20050000) return;
+
+    /* Cleanup */
+    HAL_RCC_DeInit();
+    HAL_DeInit();
+    SysTick->CTRL = 0;
+    __disable_irq();
+
+    /* F7 Cache Handling (CRITICAL) */
+    SCB_DisableICache();
+    SCB_DisableDCache();
+    SCB_InvalidateICache();
+    SCB_InvalidateDCache();
+
+    /* Jump */
+    SCB->VTOR = app_addr;
+    __set_MSP(stk);
+    void (*pJump)(void) = (void (*)(void))rst;
+    pJump();
+}
+
+/**
+ * @brief Redirects standard output to USART1 using polling.
+ *
+ * Sends a buffer over USART1 and inserts '\r' before '\n'
+ * for proper terminal formatting.
+ *
+ * @param file File descriptor (unused)
+ * @param ptr  Data buffer to send
+ * @param len  Number of bytes to send
+ * @return Number of bytes written
+ *
+ * @author Omert2004
+ */
+int _write(int file, char *ptr, int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        // Check for new line character to fix terminal formatting
+        if (ptr[i] == '\n')
+        {
+            while (!(USART1->ISR & USART_ISR_TXE));
+            USART1->TDR = '\r'; // Send Carriage Return
+        }
+        // 1. Wait for the Transmit Data Register Empty (TXE) flag
+        while (!(USART1->ISR & USART_ISR_TXE));
+
+        // 2. Write the character to the Transmit Data Register (TDR)
+        USART1->TDR = (uint8_t)ptr[i];
+    }
+    return len;
+}
 /* USER CODE END 4 */
 
  /* MPU Configuration */
