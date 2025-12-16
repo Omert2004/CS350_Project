@@ -44,18 +44,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ENC_CHUNK_SIZE  1024  // Size of encrypted chunk on Flash
-#define DEC_CHUNK_SIZE  1024  // Size after decryption (same as enc)
-#define RAW_CHUNK_SIZE  4096  // Max size after decompression (safe margin)
-#define BL_STATUS_UPDATED   0x01
-#define BL_STATUS_ERROR     0x02
-#define AXIM_Addr_Msk		0x2000
-#define ENC_CHUNK_SIZE  		1024   // Size of encrypted chunk on Flash
-#define DEC_CHUNK_SIZE  		1024   // Size after decryption (same as enc)
-#define RAW_CHUNK_SIZE  		4096   // Max size after decompression (safe margin)
-#define BL_STATUS_UPDATED  		0x01
-#define BL_STATUS_ERROR    		0x02
-#define AXIM_Addr_Msk		    0x2000
+#define ENC_CHUNK_SIZE  		1024  // Size of encrypted chunk on Flash
+#define DEC_CHUNK_SIZE  		1024  // Size after decryption (same as enc)
+#define RAW_CHUNK_SIZE  		4096  // Max size after decompression (safe margin)
+#define BL_STATUS_UPDATED   	0x01
+#define BL_STATUS_ERROR     	0x02
+#define AXIM_Addr_Msk			0x2000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -91,7 +85,7 @@ static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void Bootloader_JumpToApp(void);
 void Bootloader_HandleUpdate(void);
-int Bootloader_InternalVerify(uint32_t slot_addr, uint32_t slot_size);
+BL_Status_t Bootloader_InternalVerify(uint32_t slot_addr, uint32_t slot_size);
 
 /* USER CODE END PFP */
 
@@ -136,71 +130,56 @@ const Bootloader_API_t API_Table = {
 
 
 
-BL_Status_t Find_Footer(uint32_t start, uint32_t size)
+static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size)
 {
-    if (size < sizeof(fw_footer_t))
-        return 0;
+    if (slot_size < sizeof(fw_footer_t)) return 0;
 
-    uint32_t footer_addr = start + size - sizeof(fw_footer_t);
-    fw_footer_t* f = (fw_footer_t*)footer_addr;
+    uint32_t footer_addr = slot_start + slot_size - sizeof(fw_footer_t);
+    if (footer_addr < slot_start) return 0; // overflow/wrap protection
 
-    if (f->magic != FOOTER_MAGIC)
-        return BL_ERR_FOOTER_MAGIC_MISMATCH;
+    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
 
-    /*
-    if (f->footer_version != FOOTER_VERSION)
-        return BL_ERR_FOOTER_VERSION_UNSUPPORTED;
-	*/
+    if (f->magic != FOOTER_MAGIC) return 0;
+    if (f->image_size == 0) return 0;
+    if (f->image_size & 0x3u) return 0; // word aligned
 
-    // sanity: image size aligned, nonzero
-    if ((f->image_size == 0) || (f->image_size & 0x3))
-        return BL_ERR_FOOTER_SIZE_INVALID;
+    uint32_t image_end = slot_start + f->image_size;
+    if (image_end > footer_addr) return 0; // must not overlap footer
 
-    // stream must fit before footer
-    if (start + f->stream_size > footer_addr)
-        return BL_ERR_FOOTER_SIZE_INVALID;
-
-    return BL_OK;
+    return footer_addr;
 }
 
-int Bootloader_InternalVerify(uint32_t slot_addr, uint32_t slot_size) {
-    /* 1. Find Footer */
-    uint32_t footer_addr = Find_Footer(slot_addr, slot_size);
-    if(footer_addr == 0) return 0;
+BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
+{
+    // 1) Find footer (deterministic)
+    uint32_t footer_addr = Find_Footer(slot_start, slot_size);
+    if (footer_addr == 0) return BL_ERR_FOOTER_NOT_FOUND;
 
-    /* 2. Read Footer Metadata */
-    uint8_t signature[64];
-    uint32_t img_size;
+    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
 
-    memcpy(signature, (void*)footer_addr, 64);
-    memcpy(&img_size, (void*)(footer_addr + 68), 4);
+    // 2) Image range checks (again, explicit)
+    uint32_t slot_end = slot_start + slot_size;
+    uint32_t image_end = slot_start + f->image_size;
 
-    /* 3. Hash the Binary (SHA-256) */
-    struct tc_sha256_state_struct sha_ctx;
-    uint8_t digest[32];
-    uint8_t buffer[256];
+    if (slot_end < slot_start) return BL_ERR_IMAGE_RANGE_BAD;    // overflow protection
+    if (image_end > footer_addr) return BL_ERR_IMAGE_RANGE_BAD;
+    if (image_end > slot_end) return BL_ERR_IMAGE_RANGE_BAD;
 
-    tc_sha256_init(&sha_ctx);
 
-    uint32_t curr = slot_addr;
-    uint32_t remain = img_size;
-
-    while(remain > 0) {
-        uint32_t chunk = (remain > 256) ? 256 : remain;
-        memcpy(buffer, (void*)curr, chunk);
-        tc_sha256_update(&sha_ctx, buffer, chunk);
-        curr += chunk;
-        remain -= chunk;
+    // 4) Hash plaintext image bytes [slot_start .. slot_start+image_size)
+    /*
+    uint8_t hash[32];
+    if (!Crypto_SHA256_Flash((const uint8_t *)slot_start, f->image_size, hash)) {
+        return BL_ERR_HASH_FAIL;
     }
 
-    tc_sha256_final(digest, &sha_ctx);
+    // 5) Verify signature over hash
+    if (!Crypto_ECDSA_P256_VerifyHash(g_pubkey_xy, hash, f->signature)) {
+        return BL_ERR_SIG_FAIL;
+    }
+    */
 
-    /* 4. Verify Signature (ECDSA) */
-    uint8_t pub_key[64];
-    memcpy(pub_key, Get_Public_Key_X(), 32);
-    memcpy(pub_key + 32, Get_Public_Key_Y(), 32);
-
-    return uECC_verify(pub_key, digest, 32, signature, uECC_secp256r1());
+    return BL_OK;
 }
 
 /* Returns 1 on Success, 0 on Failure */
@@ -672,25 +651,19 @@ void MPU_Config(void)
   */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER0;
-  MPU_InitStruct.BaseAddress = 0x0;
-  MPU_InitStruct.Size = MPU_REGION_SIZE_32KB;
+  MPU_InitStruct.BaseAddress = 0x08000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_1MB;
   MPU_InitStruct.SubRegionDisable = 0x0;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
   MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RW_URO;
   MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
-  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
   MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
-
-  /** Initializes and configures the Region and the memory to be protected
-  */
-  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
-
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /* Enables the MPU */
-  HAL_MPU_Enable(MPU_HFNMI_PRIVDEF_NONE);
+  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 
 }
 
