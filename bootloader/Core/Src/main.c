@@ -439,22 +439,36 @@ int main(void)
 
   /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    /* 1. Check for Update Request (Magic Flag) */
-    if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == 0xCAFEBABE) {
+
+
+  /* 1. Check for Update Request (Magic Flag) */
+
+    /* if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == 0xCAFEBABE) {
   	  /* Clear flag */
+  /*
   	  HAL_PWR_EnableBkUpAccess();
         HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x00);
 
         /* Perform Update (Decrypt -> Decompress -> Flash) */
-        Bootloader_HandleUpdate();
+   /*     Bootloader_HandleUpdate();
     }
+    */
+  // --- BYPASS MODE: Skip Footer/Crypto Checks ---
+    printf("Bypassing verification... Jumping to App!\r\n");
+
+    // Try to jump to the Active Slot
+    Bootloader_JumpToApp();
+
+    // If the code reaches here, the Jump FAILED (e.g., Flash was empty)
+    printf("Jump Failed! (No valid app found at 0x08010000)\r\n");
 
 
-    if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
+
+/*    if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
           Bootloader_JumpToApp();
       }
     else {
-          /* Verification Failed or Empty Slot */
+           Verification Failed or Empty Slot
           printf("No valid application found. Halting.\r\n");
 
           // We must stay here! Do not exit main.
@@ -463,7 +477,7 @@ int main(void)
           	HAL_GPIO_TogglePin(GPIOI, GPIO_PIN_1);
           	HAL_Delay(500);
           }
-         }
+         }*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
