@@ -55,7 +55,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 #define MAJOR 1			//Major Version Number
-#define MINOR 1			//Minor Version Number
+#define MINOR 2			//Minor Version Number
 
 extern const uint8_t AES_SECRET_KEY[16];
 extern const uint8_t* Get_Public_Key_X(void);
@@ -372,30 +372,32 @@ void Bootloader_HandleUpdate(void) {
 }
 
 void Bootloader_JumpToApp(void) {
-    uint32_t app_addr = APP_ACTIVE_START_ADDR;
-    uint32_t stk = *(__IO uint32_t*)app_addr;
-    uint32_t rst = *(__IO uint32_t*)(app_addr + 4);
+	// 1. Fetch Addresses
+	uint32_t app_addr = APP_ACTIVE_START_ADDR;
+	uint32_t app_stack_addr= *(volatile uint32_t*)app_addr;
+	uint32_t app_reset_handler = *(volatile uint32_t*)(app_addr + 4); // <--- Added this
 
-    /* Safety Check */
-    if (stk < 0x20000000 || stk > 0x20050000) return;
 
-    /* Cleanup */
-    HAL_RCC_DeInit();
-    HAL_DeInit();
-    SysTick->CTRL = 0;
-    __disable_irq();
+	// 2. Safety Cleanup (REQUIRED to prevent Hard Faults)
+	HAL_Delay(100);          // Wait for any printf to finish
+	__disable_irq();         // Turn off interrupts
+	SCB_DisableICache();     // Turn off I-Cache
+	SCB_DisableDCache();     // Turn off D-Cache
+	SysTick->CTRL = 0;       // Turn off SysTick
+	SysTick->LOAD = 0;
+	SysTick->VAL  = 0;
+	//HAL_RCC_DeInitS();        // Turn off Clocks
+	// 3. Update Vector Table (YOU MISSED THIS!)
 
-    /* F7 Cache Handling (CRITICAL) */
-    SCB_DisableICache();
-    SCB_DisableDCache();
-    SCB_InvalidateICache();
-    SCB_InvalidateDCache();
+	 SCB->VTOR = app_addr;    // <--- REQUIRED: Tells CPU to use App's Interrupts
+	// 3. The Jump Logic
+	__set_MSP(app_stack_addr);               // 2. Set the Main Stack Pointer
 
-    /* Jump */
-    SCB->VTOR = app_addr;
-    __set_MSP(stk);
-    void (*pJump)(void) = (void (*)(void))rst;
-    pJump();
+	// 3. Jump to Reset Handler
+	void (*pJump)(void) = (void (*)(void))app_reset_handler;
+	pJump();
+
+
 }
 /* USER CODE END 0 */
 
