@@ -30,12 +30,13 @@ typedef enum {
 
 
 
-typedef struct __attribute__((packed)) {  //attr packed -> don t align the size if not meet
+typedef struct /* __attribute__((packed)) */ {  //attr packed -> don t align the size if not meet
 	uint8_t  signature[64];
 	uint32_t version;
 	uint32_t image_size;
 	uint32_t magic;
 } fw_footer_t;  // 1 x 64 + 4 + 4 + 4  => 76 byte
+
 
 #endif
 

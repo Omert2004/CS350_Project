@@ -72,6 +72,7 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 const uint8_t BL_Version[2] = { MAJOR , MINOR};
+const uint8_t g_pubkey_xy[64] = {0}; // Empty key for testing
 
 /* USER CODE END PV */
 
@@ -132,21 +133,86 @@ const Bootloader_API_t API_Table = {
 
 static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size)
 {
-    if (slot_size < sizeof(fw_footer_t)) return 0;
+//    if (slot_size < sizeof(fw_footer_t)) return 0;
+//
+//    uint32_t footer_addr = slot_start + slot_size - sizeof(fw_footer_t);
+//    if (footer_addr < slot_start) return 0; // overflow/wrap protection
+//
+//    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
+//
+//    if (f->magic != FOOTER_MAGIC) return 0;
+//    if (f->image_size == 0) return 0;
+//    if (f->image_size & 0x3u) return 0; // word aligned
+//
+//    uint32_t image_end = slot_start + f->image_size;
+//    if (image_end > footer_addr) return 0; // must not overlap footer
+//
+//    return footer_addr;
 
-    uint32_t footer_addr = slot_start + slot_size - sizeof(fw_footer_t);
-    if (footer_addr < slot_start) return 0; // overflow/wrap protection
+	// 1. Basic sanity checks on input
+	if (slot_size < sizeof(fw_footer_t)) return 0;
 
-    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
+	uint32_t slot_end = slot_start + slot_size;
 
-    if (f->magic != FOOTER_MAGIC) return 0;
-    if (f->image_size == 0) return 0;
-    if (f->image_size & 0x3u) return 0; // word aligned
+	// 2. Scan backwards for the Magic Number
+	// We step by 4 bytes because flash writes and ARM instructions are typically word-aligned.
+	for (uint32_t addr = slot_end - 4; addr >= slot_start + sizeof(fw_footer_t); addr -= 4)
+	{
+		// --- CHECK 1: Magic Number ---
+		if (*(uint32_t*)addr == FOOTER_MAGIC)
+		{
+			// Calculate where the footer would start if this is the magic number
+			// Struct: [Signature (64)] [Version (4)] [Size (4)] [Magic (4)]
+			// Footer Start = Magic_Address - (Sizeof_Struct - Sizeof_Magic)
+			uint32_t footer_start = addr - (sizeof(fw_footer_t) - 4);
+			const fw_footer_t *f = (const fw_footer_t *)footer_start;
 
-    uint32_t image_end = slot_start + f->image_size;
-    if (image_end > footer_addr) return 0; // must not overlap footer
+			// --- CHECK 2: Version Sanity ---
+			// Version 0 or 0xFFFFFFFF (erased flash) is likely invalid
+			if (f->version == 0 || f->version == 0xFFFFFFFF) continue;
 
-    return footer_addr;
+			// --- CHECK 3: Image Size Alignment ---
+			// ARM Cortex-M vectors and flash programming are word-aligned.
+			// If the size isn't a multiple of 4, it's likely garbage data.
+			if ((f->image_size % 4) != 0) continue;
+
+			// --- CHECK 4: Image Size Bounds ---
+			// The image cannot be size 0, and it cannot be larger than the slot.
+			if (f->image_size == 0 || f->image_size > slot_size) continue;
+
+			// --- CHECK 5: Geometric Consistency ---
+			// This is the most important check.
+			// The footer MUST be located exactly at: [Slot_Start + Image_Size]
+			// If the math doesn't add up, this is just a random "END!" string in the binary code.
+			uint32_t expected_footer_addr = slot_start + f->image_size;
+
+			if (expected_footer_addr == footer_start)
+			{
+				return footer_start; // All checks passed!
+			}
+		}
+	}
+
+	return 0; // No valid footer found
+
+}
+
+// STUB 1: Pretend to hash the flash memory
+// Returns 1 (true) to simulate success
+int Crypto_SHA256_Flash(const uint8_t *addr, uint32_t size, uint8_t *digest)
+{
+    // TODO: Later, implement the loop using tc_sha256_init/update/final
+    // For now, do nothing and return success
+    return 1;
+}
+
+// STUB 2: Pretend to verify the signature
+// Returns 1 (true) to simulate a "valid" signature
+int Crypto_ECDSA_P256_VerifyHash(const uint8_t *pubkey, const uint8_t *hash, const uint8_t *sig)
+{
+    // TODO: Later, implement using tc_ecdsa_verify
+    // For now, return 1 so the bootloader thinks the image is valid
+    return 1;
 }
 
 BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
@@ -167,7 +233,7 @@ BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
 
 
     // 4) Hash plaintext image bytes [slot_start .. slot_start+image_size)
-    /*
+
     uint8_t hash[32];
     if (!Crypto_SHA256_Flash((const uint8_t *)slot_start, f->image_size, hash)) {
         return BL_ERR_HASH_FAIL;
@@ -177,7 +243,7 @@ BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
     if (!Crypto_ECDSA_P256_VerifyHash(g_pubkey_xy, hash, f->signature)) {
         return BL_ERR_SIG_FAIL;
     }
-    */
+
 
     return BL_OK;
 }
@@ -371,30 +437,42 @@ int main(void)
   /* USER CODE BEGIN 2 */
   printf("Starting Bootloader Version-(%d,%d)\r\n",BL_Version[0],BL_Version[1]);
 
+  /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
+    /* 1. Check for Update Request (Magic Flag) */
+    if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == 0xCAFEBABE) {
+  	  /* Clear flag */
+  	  HAL_PWR_EnableBkUpAccess();
+        HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x00);
+
+        /* Perform Update (Decrypt -> Decompress -> Flash) */
+        Bootloader_HandleUpdate();
+    }
+
+
+    if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
+          Bootloader_JumpToApp();
+      }
+    else {
+          /* Verification Failed or Empty Slot */
+          printf("No valid application found. Halting.\r\n");
+
+          // We must stay here! Do not exit main.
+          while (1)
+          {
+          	HAL_GPIO_TogglePin(GPIOI, GPIO_PIN_1);
+          	HAL_Delay(500);
+          }
+         }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  /* 1. Check for Update Request (Magic Flag) */
-  if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == 0xCAFEBABE) {
-	  /* Clear flag */
-	  HAL_PWR_EnableBkUpAccess();
-      HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x00);
-
-      /* Perform Update (Decrypt -> Decompress -> Flash) */
-      Bootloader_HandleUpdate();
-  }
-  if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == 1) {
-      Bootloader_JumpToApp();
-  } else {
-        /* Verification Failed! Halt. */
   while (1)
   {
-	// BLINK SOME LED
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
   }
   /* USER CODE END 3 */
 }
@@ -589,6 +667,7 @@ static void MX_USART1_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE BEGIN MX_GPIO_Init_1 */
 
   /* USER CODE END MX_GPIO_Init_1 */
@@ -596,6 +675,17 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOI_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : USER_LED_Pin */
+  GPIO_InitStruct.Pin = USER_LED_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(USER_LED_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -635,6 +725,31 @@ int _write(int file, char *ptr, int len)
         USART1->TDR = (uint8_t)ptr[i];
     }
     return len;
+}
+
+
+void print_hardfault_reason(void) {
+    volatile uint32_t cfsr  = SCB->CFSR;
+    volatile uint32_t hfsr  = SCB->HFSR;
+    volatile uint32_t mmfar = SCB->MMFAR;
+    volatile uint32_t bfar  = SCB->BFAR;
+
+    printf("\r\n--- Hard Fault Detected ---\r\n");
+    printf("CFSR:  0x%08lX\r\n", cfsr);
+    printf("HFSR:  0x%08lX\r\n", hfsr);
+    printf("MMFAR: 0x%08lX\r\n", mmfar);
+    printf("BFAR:  0x%08lX\r\n", bfar);
+
+    if (cfsr & (1 << 24)) printf(" -> Unaligned Access UsageFault\r\n");
+    if (cfsr & (1 << 25)) printf(" -> Divide by Zero UsageFault\r\n");
+    if (cfsr & (1 << 18)) printf(" -> Integrity Check Error\r\n");
+    if (cfsr & (1 << 17)) printf(" -> Invalid PC Load\r\n");
+    if (cfsr & (1 << 16)) printf(" -> Invalid State\r\n");
+    if (cfsr & (1 << 0))  printf(" -> Instruction Access Violation (MPU)\r\n");
+    if (cfsr & (1 << 1))  printf(" -> Data Access Violation (MPU)\r\n");
+    if (cfsr & (1 << 8))  printf(" -> Instruction Bus Error\r\n");
+    if (cfsr & (1 << 9))  printf(" -> Precise Data Bus Error\r\n");
+    if (cfsr & (1 << 15)) printf(" -> BFAR Address Valid: 0x%08lX\r\n", bfar);
 }
 /* USER CODE END 4 */
 
