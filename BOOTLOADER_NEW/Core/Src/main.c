@@ -23,7 +23,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "mem_layout.h"
-#include <stdio.h>
+#include "tiny_printf.h"
 #include "jump_to_app.h"
 
 #include "BL_Update_Part.h"      // For BL_RequestUpdate, BL_GetStatus, Bootloader_HandleUpdate

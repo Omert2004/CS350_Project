@@ -1,0 +1,4 @@
+../Libs/tinycrypt/Src/sha256.c:181:13:compress	152	static
+../Libs/tinycrypt/Src/sha256.c:39:5:tc_sha256_init	8	static
+../Libs/tinycrypt/Src/sha256.c:65:5:tc_sha256_update	24	static
+../Libs/tinycrypt/Src/sha256.c:87:5:tc_sha256_final	24	static

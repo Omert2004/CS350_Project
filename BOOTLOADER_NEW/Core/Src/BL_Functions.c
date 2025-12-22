@@ -22,39 +22,6 @@ extern const uint8_t public_key_y[32];
 #ifndef SRC_BL_FUNCTIONS_C_
 #define SRC_BL_FUNCTIONS_C_
 
-BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
-{
-    // 1) Find footer (deterministic)
-    uint32_t footer_addr = Find_Footer(slot_start, slot_size);
-    if (footer_addr == 0) return BL_ERR_FOOTER_NOT_FOUND;
-
-    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
-
-    // 2) Image range checks (again, explicit)
-    uint32_t slot_end = slot_start + slot_size;
-    uint32_t image_end = slot_start + f->image_size;
-
-    if (slot_end < slot_start) return BL_ERR_IMAGE_RANGE_BAD;    // overflow protection
-    if (image_end > footer_addr) return BL_ERR_IMAGE_RANGE_BAD;
-    if (image_end > slot_end) return BL_ERR_IMAGE_RANGE_BAD;
-
-
-    // 4) Hash plaintext image bytes [slot_start .. image_end)
-	// Note: We hash ONLY the image, not the footer!
-	uint8_t hash[32];
-	if (!Crypto_SHA256_Flash((const uint8_t *)slot_start, f->image_size, hash)) {
-		return BL_ERR_HASH_FAIL;
-	}
-
-	// 5) Verify signature over hash
-	// We pass NULL for pubkey here because the function now looks up extern public_key_x/y internally
-	if (!Crypto_ECDSA_P256_VerifyHash(NULL, hash, f->signature)) {
-		return BL_ERR_SIG_FAIL;
-	}
-
-    return BL_OK;
-}
-
 static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size)
 {
 
@@ -105,6 +72,41 @@ static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size)
 	return 0; // No valid footer found
 
 }
+
+BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
+{
+    // 1) Find footer (deterministic)
+    uint32_t footer_addr = Find_Footer(slot_start, slot_size);
+    if (footer_addr == 0) return BL_ERR_FOOTER_NOT_FOUND;
+
+    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
+
+    // 2) Image range checks (again, explicit)
+    uint32_t slot_end = slot_start + slot_size;
+    uint32_t image_end = slot_start + f->image_size;
+
+    if (slot_end < slot_start) return BL_ERR_IMAGE_RANGE_BAD;    // overflow protection
+    if (image_end > footer_addr) return BL_ERR_IMAGE_RANGE_BAD;
+    if (image_end > slot_end) return BL_ERR_IMAGE_RANGE_BAD;
+
+
+    // 4) Hash plaintext image bytes [slot_start .. image_end)
+	// Note: We hash ONLY the image, not the footer!
+	uint8_t hash[32];
+	if (!Crypto_SHA256_Flash((const uint8_t *)slot_start, f->image_size, hash)) {
+		return BL_ERR_HASH_FAIL;
+	}
+
+	// 5) Verify signature over hash
+	// We pass NULL for pubkey here because the function now looks up extern public_key_x/y internally
+	if (!Crypto_ECDSA_P256_VerifyHash(NULL, hash, f->signature)) {
+		return BL_ERR_SIG_FAIL;
+	}
+
+    return BL_OK;
+}
+
+
 
 // --- REAL IMPLEMENTATIONS ---
 

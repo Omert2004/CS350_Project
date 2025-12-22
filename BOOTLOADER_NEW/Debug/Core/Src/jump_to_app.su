@@ -1,1 +1,1 @@
-../Core/Src/jump_to_app.c:13:6:Bootloader_JumpToApp	32	static,ignoring_inline_asm
+../Core/Src/jump_to_app.c:13:6:Bootloader_JumpToApp	16	static,ignoring_inline_asm

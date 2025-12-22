@@ -29,10 +29,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rtc_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- ../Core/Inc/mem_layout.h ../Core/Inc/jump_to_app.h \
- ../Core/Inc/BL_Update_Part.h ../Core/Inc/BL_Functions.h \
- ../Core/Inc/firmware_footer.h ../Core/Inc/bootloader_interface.h \
- ../Core/Inc/firmware_footer.h \
+ ../Core/Inc/mem_layout.h ../Core/Inc/tiny_printf.h \
+ ../Core/Inc/jump_to_app.h ../Core/Inc/BL_Update_Part.h \
+ ../Core/Inc/BL_Functions.h ../Core/Inc/firmware_footer.h \
+ ../Core/Inc/bootloader_interface.h ../Core/Inc/firmware_footer.h \
  C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER_NEW/Libs/tinycrypt/Inc/sha256.h \
  C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER_NEW/Libs/tinycrypt/Inc/ecc_dsa.h \
  C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER_NEW/Libs/tinycrypt/Inc/ecc.h \
@@ -72,6 +72,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
 ../Core/Inc/mem_layout.h:
+../Core/Inc/tiny_printf.h:
 ../Core/Inc/jump_to_app.h:
 ../Core/Inc/BL_Update_Part.h:
 ../Core/Inc/BL_Functions.h:
