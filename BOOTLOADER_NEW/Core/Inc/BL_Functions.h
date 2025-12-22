@@ -8,6 +8,9 @@
 #ifndef INC_BL_FUNCTIONS_H_
 #define INC_BL_FUNCTIONS_H_
 
+#include "firmware_footer.h"
+#include <stdint.h>
+
 BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size);
 static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size);
 int Crypto_SHA256_Flash(const uint8_t *addr, uint32_t size, uint8_t *digest);

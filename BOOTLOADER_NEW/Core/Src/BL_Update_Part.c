@@ -7,6 +7,29 @@
 
 #include "main.h"
 #include "BL_Update_Part.h"
+#include <string.h>          // [Fix: Needed for memcpy]
+#include "mem_layout.h"      // [Fix: Needed for APP_..._ADDR defines]
+#include "BL_Functions.h"    // [Fix: Needed for Bootloader_InternalVerify]
+#include "firmware_footer.h" // [Fix: Needed for BL_Status_t]
+
+// Libs Includes
+#include "aes.h"
+#include "cbc_mode.h"
+#include "lz4.h"
+
+// [Fix: Define Constants that were missing]
+#define ENC_CHUNK_SIZE 1024
+#define DEC_CHUNK_SIZE 1024
+#define RAW_CHUNK_SIZE 4096  // LZ4 output might be larger than input
+
+// [Fix: Define Backup Register Status Flags]
+#define BL_STATUS_ERROR    0xDEADDEAD
+#define BL_STATUS_UPDATED  0xAAAAAAAA
+
+// --- EXTERNAL VARIABLES (Fixes 'undeclared' errors) ---
+// These tell the compiler: "Trust me, these exist in main.c and keys.c"
+extern RTC_HandleTypeDef hrtc;           // Defined in main.c
+extern const uint8_t AES_SECRET_KEY[16]; // Defined in keys.c
 
 void Bootloader_SetStatus(uint32_t status) {
     HAL_PWR_EnableBkUpAccess();
@@ -60,18 +83,29 @@ int Install_Update_Stream(uint8_t is_dry_run) {
         memcpy(next_iv, &enc_buffer[ENC_CHUNK_SIZE - 16], 16);
 
         // C. Decrypt
-        if (tc_cbc_mode_decrypt(dec_buffer, ENC_CHUNK_SIZE, enc_buffer, ENC_CHUNK_SIZE, iv, &sched) == 0) {
-             return 0; // Decrypt Error
-        }
-        memcpy(iv, next_iv, 16); // Update IV
+		if (tc_cbc_mode_decrypt(dec_buffer, ENC_CHUNK_SIZE, enc_buffer, ENC_CHUNK_SIZE, iv, &sched) == 0) {
+			 return 0; // Decrypt Error
+		}
+		memcpy(iv, next_iv, 16); // Update IV
 
-        // D. Decompress (LZ4)
-        int bytes_out = LZ4_decompress_safe((const char*)dec_buffer,
-                                            (char*)raw_buffer,
-                                            ENC_CHUNK_SIZE,
-                                            RAW_CHUNK_SIZE);
+		// --- NEW PROTOCOL HANDLING ---
+		// 1. Read the compressed size from the first 2 bytes
+		uint16_t compressed_len = *(uint16_t*)dec_buffer;
 
-        if (bytes_out < 0) return 0; // CORRUPTION DETECTED!
+		// 2. Sanity check (Size must be reasonable)
+		if (compressed_len > (ENC_CHUNK_SIZE - 2) || compressed_len == 0) {
+			return 0; // Corruption or attack
+		}
+
+		// D. Decompress (LZ4)
+		// Note: Input is &dec_buffer[2] (skipping the size header)
+		//       Input Size is compressed_len (exact size)
+		int bytes_out = LZ4_decompress_safe((const char*)&dec_buffer[2],
+											(char*)raw_buffer,
+											compressed_len,
+											RAW_CHUNK_SIZE);
+
+		if (bytes_out < 0) return 0; // CORRUPTION DETECTED!
 
         // E. Write (ONLY IF NOT DRY RUN)
         if (!is_dry_run) {

@@ -1,0 +1,4 @@
+../Core/Src/BL_Functions.c:25:13:Bootloader_InternalVerify	64	static
+../Core/Src/BL_Functions.c:58:17:Find_Footer	40	static
+../Core/Src/BL_Functions.c:114:5:Crypto_SHA256_Flash	152	static
+../Core/Src/BL_Functions.c:137:5:Crypto_ECDSA_P256_VerifyHash	112	static

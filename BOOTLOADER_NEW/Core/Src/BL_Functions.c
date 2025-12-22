@@ -9,6 +9,16 @@
 #include "BL_Functions.h"
 #include "firmware_footer.h"
 
+#include "sha256.h"
+#include "ecc_dsa.h"
+#include "constants.h"
+#include <string.h> // for memcmp
+
+// --- EXTERNAL KEYS ---
+// These usually come from keys.c
+extern const uint8_t public_key_x[32];
+extern const uint8_t public_key_y[32];
+
 #ifndef SRC_BL_FUNCTIONS_C_
 #define SRC_BL_FUNCTIONS_C_
 
@@ -29,39 +39,24 @@ BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
     if (image_end > slot_end) return BL_ERR_IMAGE_RANGE_BAD;
 
 
-    // 4) Hash plaintext image bytes [slot_start .. slot_start+image_size)
+    // 4) Hash plaintext image bytes [slot_start .. image_end)
+	// Note: We hash ONLY the image, not the footer!
+	uint8_t hash[32];
+	if (!Crypto_SHA256_Flash((const uint8_t *)slot_start, f->image_size, hash)) {
+		return BL_ERR_HASH_FAIL;
+	}
 
-    /*uint8_t hash[32];
-    if (!Crypto_SHA256_Flash((const uint8_t *)slot_start, f->image_size, hash)) {
-        return BL_ERR_HASH_FAIL;
-    }
-
-    // 5) Verify signature over hash
-    if (!Crypto_ECDSA_P256_VerifyHash(g_pubkey_xy, hash, f->signature)) {
-        return BL_ERR_SIG_FAIL;
-    }
-*/
+	// 5) Verify signature over hash
+	// We pass NULL for pubkey here because the function now looks up extern public_key_x/y internally
+	if (!Crypto_ECDSA_P256_VerifyHash(NULL, hash, f->signature)) {
+		return BL_ERR_SIG_FAIL;
+	}
 
     return BL_OK;
 }
 
 static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size)
 {
-//    if (slot_size < sizeof(fw_footer_t)) return 0;
-//
-//    uint32_t footer_addr = slot_start + slot_size - sizeof(fw_footer_t);
-//    if (footer_addr < slot_start) return 0; // overflow/wrap protection
-//
-//    const fw_footer_t *f = (const fw_footer_t *)footer_addr;
-//
-//    if (f->magic != FOOTER_MAGIC) return 0;
-//    if (f->image_size == 0) return 0;
-//    if (f->image_size & 0x3u) return 0; // word aligned
-//
-//    uint32_t image_end = slot_start + f->image_size;
-//    if (image_end > footer_addr) return 0; // must not overlap footer
-//
-//    return footer_addr;
 
 	// 1. Basic sanity checks on input
 	if (slot_size < sizeof(fw_footer_t)) return 0;
@@ -111,24 +106,55 @@ static uint32_t Find_Footer(uint32_t slot_start, uint32_t slot_size)
 
 }
 
-// STUB 1: Pretend to hash the flash memory
-// Returns 1 (true) to simulate success
+// --- REAL IMPLEMENTATIONS ---
+
+/* * Calculates SHA-256 of the Flash Memory area
+ * Returns 1 on Success, 0 on Failure
+ */
 int Crypto_SHA256_Flash(const uint8_t *addr, uint32_t size, uint8_t *digest)
 {
-    // TODO: Later, implement the loop using tc_sha256_init/update/final
-    // For now, do nothing and return success
+    struct tc_sha256_state_struct s;
+    (void)tc_sha256_init(&s);
+
+    // Process in chunks to avoid blocking CPU for too long (optional but good practice)
+    uint32_t remaining = size;
+    const uint8_t *ptr = addr;
+
+    while (remaining > 0) {
+        uint32_t chunk = (remaining > 4096) ? 4096 : remaining;
+        (void)tc_sha256_update(&s, ptr, chunk);
+        ptr += chunk;
+        remaining -= chunk;
+    }
+
+    (void)tc_sha256_final(digest, &s);
     return 1;
 }
 
-// STUB 2: Pretend to verify the signature
-// Returns 1 (true) to simulate a "valid" signature
+/* * Verifies the ECDSA P-256 Signature
+ * Returns 1 if Valid, 0 if Invalid
+ */
 int Crypto_ECDSA_P256_VerifyHash(const uint8_t *pubkey, const uint8_t *hash, const uint8_t *sig)
 {
-    // TODO: Later, implement using tc_ecdsa_verify
-    // For now, return 1 so the bootloader thinks the image is valid
-    return 1;
-}
+    // TinyCrypt expects the public key as 64 raw bytes (X + Y)
+    // If your keys.c has them separate, we combine them here:
+    uint8_t pub_key_combined[64];
+    memcpy(pub_key_combined, public_key_x, 32);
+    memcpy(&pub_key_combined[32], public_key_y, 32);
 
+    // The signature in the footer is 64 bytes (R + S)
+    // TinyCrypt verify function:
+    // int uECC_verify(const uint8_t *public_key, const uint8_t *message_hash,
+    //                 unsigned hash_size, const uint8_t *signature, uECC_Curve curve);
+
+    int result = uECC_verify(pub_key_combined,
+                             hash,
+                             32, // SHA256 Hash size
+                             sig,
+                             uECC_secp256r1());
+
+    return result; // uECC returns 1 on success
+}
 
 
 #endif /* SRC_BL_FUNCTIONS_C_ */

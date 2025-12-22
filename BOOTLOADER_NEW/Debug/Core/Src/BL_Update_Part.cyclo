@@ -1,0 +1,6 @@
+../Drivers/CMSIS/Include/core_cm7.h:2147:34:__NVIC_SystemReset	1
+../Core/Src/BL_Update_Part.c:34:6:Bootloader_SetStatus	1
+../Core/Src/BL_Update_Part.c:40:6:BL_RequestUpdate	0
+../Core/Src/BL_Update_Part.c:47:10:BL_GetStatus	1
+../Core/Src/BL_Update_Part.c:52:5:Install_Update_Stream	10
+../Core/Src/BL_Update_Part.c:126:6:Bootloader_HandleUpdate	3

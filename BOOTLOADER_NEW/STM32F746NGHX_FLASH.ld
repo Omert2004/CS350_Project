@@ -59,6 +59,14 @@ SECTIONS
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
   } >FLASH
+  
+  /* FIXED LOCATION API TABLE (Added for Shared Bootloader Interface) */
+  .shared_api_section 0x0800F000 :
+  {
+    . = ALIGN(4);
+    KEEP(*(.shared_api_section))
+    . = ALIGN(4);
+  } >FLASH
 
   /* The program code and other data into "FLASH" Rom type memory */
   .text :

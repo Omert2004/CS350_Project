@@ -26,6 +26,10 @@
 #include <stdio.h>
 #include "jump_to_app.h"
 
+#include "BL_Update_Part.h"      // For BL_RequestUpdate, BL_GetStatus, Bootloader_HandleUpdate
+#include "BL_Functions.h"        // For Bootloader_InternalVerify
+#include "bootloader_interface.h" // For Bootloader_API_t
+#include "firmware_footer.h"     // For BL_Status_t, BL_OK
 
 //Libs Include
 #include "sha256.h"
@@ -51,9 +55,13 @@
 #define MAJOR 1			//Major Version Number
 #define MINOR 2			//Minor Version Number
 
+#define BKP_FLAG_UPDATE_REQ 0xCAFEBABE
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+
+RTC_HandleTypeDef hrtc;
 
 UART_HandleTypeDef huart1;
 
@@ -66,12 +74,40 @@ void SystemClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+// [Fix: Add the Wrapper Function BEFORE the API Table]
+// The API table expects a function pointer with signature: int (*VerifySlot)(uint32_t slot_id)
+// But our internal function is: BL_Status_t Bootloader_InternalVerify(uint32_t slot_start, uint32_t slot_size)
+// So we need this wrapper to bridge them.
+int BL_VerifySlot_Wrapper(uint32_t slot_id) {
+    // Note: We ignore slot_id for now and verify the active slot constants.
+    // In a multi-slot system, you would switch address based on slot_id.
+    if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
+        return 1; // Valid
+    }
+    return 0; // Invalid
+}
+
+
+/**
+ * @brief   The Actual Shared API Table Instance.
+ * @details Linker places this at 0x0800F000
+ */
+__attribute__((section(".shared_api_section")))
+const Bootloader_API_t API_Table = {
+    .magic_code = 0xDEADBEEF,
+    .version = 0x0100,
+    .RequestUpdate = BL_RequestUpdate,
+    .GetBootStatus = BL_GetStatus,
+    .VerifySlot = BL_VerifySlot_Wrapper
+};
+
 
 /* USER CODE END 0 */
 
@@ -108,11 +144,54 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  printf("Starting Bootloader Version-(%d,%d)\r\n",MAJOR,MINOR);
+  printf("\r\n========================================\r\n");
+printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, MINOR);
+printf("API Table Location: %p\r\n", &API_Table); // Debug print
+printf("========================================\r\n");
 
-  Bootloader_JumpToApp();
+// --- 1. Check for Update Request (Magic Flag) ---
+HAL_PWR_EnableBkUpAccess();
+if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == BKP_FLAG_UPDATE_REQ) {
 
+	printf("[BL] Update Request Detected. Clearing Flag...\r\n");
+
+	/* Clear flag */
+	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x00000000);
+	HAL_PWREx_DisableBkUpReg();
+
+	/* Perform Update (Decrypt -> Decompress -> Flash) */
+	// This function will reboot on success. If it returns, update failed.
+	Bootloader_HandleUpdate();
+}
+HAL_PWREx_DisableBkUpReg();
+
+// --- 2. Verify Application (Secure Boot) ---
+// Your friend's flow adds this check, which is CRITICAL for security.
+printf("[BL] Verifying Application integrity...\r\n");
+
+if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
+
+	printf("[BL] Verification Success! Jumping to App.\r\n");
+
+	// Cleanup before jump
+	HAL_MPU_Disable();
+
+	Bootloader_JumpToApp();
+}
+else {
+	// --- 3. Verification Failed or Empty Slot ---
+	printf("[BL] CRITICAL: No valid application found or Verification Failed!\r\n");
+	printf("[BL] Halting system.\r\n");
+
+	// Infinite Error Loop
+	while (1)
+	{
+		HAL_GPIO_TogglePin(GPIOI, USER_LED_Pin);
+		HAL_Delay(200); // Fast blink for error
+	}
+   }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -145,9 +224,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -167,6 +247,41 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
+
 }
 
 /**

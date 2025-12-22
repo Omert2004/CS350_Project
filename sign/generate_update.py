@@ -3,15 +3,19 @@ import struct
 import hashlib
 import os
 from ecdsa import SigningKey, NIST256p
-import lz4.frame
+import lz4.block  # Changed from lz4.frame to lz4.block
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 
-# Configuration (Must match C code!)
-AES_KEY = b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F' # 16 bytes
-FOOTER_MAGIC = 0x454E4421  # "END!" in hex
-FIRMWARE_VERSION = 0x0100  # Version 1.0
+# Configuration
+FOOTER_MAGIC = 0x454E4421
+FIRMWARE_VERSION = 0x0100
+
+# Constants for the "Chunking" Protocol
+# We read 512 bytes of firmware -> Compress it -> Encrypt it into a 1024 byte chunk
+RAW_CHUNK_IN_SIZE = 512  
+ENC_CHUNK_OUT_SIZE = 1024
 
 def main():
     if len(sys.argv) != 4:
@@ -22,6 +26,14 @@ def main():
     output_path = sys.argv[2]
     key_path = sys.argv[3]
 
+    # 1. Load Keys
+    if not os.path.exists("secret.key"):
+        print("Error: secret.key not found! Run keygen.py first.")
+        sys.exit(1)
+        
+    with open("secret.key", "rb") as f:
+        aes_key = f.read()
+
     print(f"[1] Reading Firmware: {input_path}")
     with open(input_path, "rb") as f:
         firmware_bin = f.read()
@@ -29,56 +41,68 @@ def main():
     firmware_len = len(firmware_bin)
     print(f"    Original Size: {firmware_len} bytes")
 
-    # --- STEP 1: SIGNING (ECDSA) ---
-    # We sign the RAW firmware before compression/encryption
+    # 2. Sign the Raw Firmware
     print("[2] Calculating Signature...")
     sha256 = hashlib.sha256(firmware_bin).digest()
     
     with open(key_path) as f:
         sk = SigningKey.from_pem(f.read())
     
-    # Deterministic signature (matches TinyCrypt expectations)
+    # Deterministic signature
     signature = sk.sign_digest_deterministic(sha256, sigencode=lambda r, s, order: r.to_bytes(32, 'big') + s.to_bytes(32, 'big'))
     
-    # Create the Footer Struct
-    # Struct format: 64s (Sig) + I (Version) + I (Size) + I (Magic)
-    footer = struct.pack('<64sIII', 
-                         signature, 
-                         FIRMWARE_VERSION, 
-                         firmware_len, 
-                         FOOTER_MAGIC)
-    
+    # Create Footer
+    footer = struct.pack('<64sIII', signature, FIRMWARE_VERSION, firmware_len, FOOTER_MAGIC)
     combined_data = firmware_bin + footer
-    print(f"    Footer appended. New Size: {len(combined_data)} bytes")
+    total_len = len(combined_data)
 
-    # --- STEP 2: COMPRESSION (LZ4) ---
-    print("[3] Compressing (LZ4)...")
-    # We use block compression to be compatible with standard LZ4
-    compressed_data = lz4.frame.compress(combined_data, compression_level=9)
-    print(f"    Compressed Size: {len(compressed_data)} bytes")
-
-    # --- STEP 3: ENCRYPTION (AES-128-CBC) ---
-    print("[4] Encrypting (AES-128-CBC)...")
+    # 3. Process in Chunks (Compress -> Pad -> Encrypt)
+    print("[3] Processing Chunks (Compress -> Pad -> Encrypt)...")
     
-    # Generate a random IV (16 bytes)
+    # Generate random IV for the first block
     iv = os.urandom(16)
+    current_iv = iv
     
-    # Pad data to 16-byte block size (PKCS7)
-    padder = padding.PKCS7(128).padder()
-    padded_data = padder.update(compressed_data) + padder.finalize()
+    final_payload = bytearray()
+    final_payload += iv # Header IV
     
-    cipher = Cipher(algorithms.AES(AES_KEY), modes.CBC(iv), backend=default_backend())
-    encryptor = cipher.encryptor()
-    encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+    # Iterate through firmware in 512-byte chunks
+    for i in range(0, total_len, RAW_CHUNK_IN_SIZE):
+        chunk = combined_data[i : i + RAW_CHUNK_IN_SIZE]
+        
+        # A. Compress (Block Mode)
+        # return_bytearray=True ensures we get raw bytes without extra headers
+        compressed_chunk = lz4.block.compress(chunk, store_size=False)
+        
+        comp_len = len(compressed_chunk)
+        if comp_len >= (ENC_CHUNK_OUT_SIZE - 2):
+            print("Error: Compressed data is larger than encryption container!")
+            sys.exit(1)
+            
+        # B. Construct Payload: [Len (2 bytes)] [Compressed Data] [Padding (0s)]
+        # This fits exactly into ENC_CHUNK_OUT_SIZE (1024)
+        payload = struct.pack('<H', comp_len) + compressed_chunk
+        padding_len = ENC_CHUNK_OUT_SIZE - len(payload)
+        payload += b'\x00' * padding_len
+        
+        # C. Encrypt (AES-CBC)
+        # We encrypt the 1024-byte payload. 
+        # Note: No PKCS7 needed because we manually padded to 1024 (which is multiple of 16)
+        cipher = Cipher(algorithms.AES(aes_key), modes.CBC(current_iv), backend=default_backend())
+        encryptor = cipher.encryptor()
+        encrypted_chunk = encryptor.update(payload) + encryptor.finalize()
+        
+        final_payload += encrypted_chunk
+        
+        # Update IV for next chunk (Chain)
+        # The last 16 bytes of ciphertext become the IV for the next block
+        current_iv = encrypted_chunk[-16:]
 
-    # Prepend IV to the file (so Bootloader can read it)
-    final_payload = iv + encrypted_data
-    
-    print(f"[5] Writing Output: {output_path}")
+    print(f"[4] Writing Output: {output_path}")
     with open(output_path, "wb") as f:
         f.write(final_payload)
     
-    print("Done! Ready to flash.")
+    print(f"Done! Encrypted Update Size: {len(final_payload)} bytes")
 
 if __name__ == "__main__":
     main()
