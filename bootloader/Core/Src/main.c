@@ -372,33 +372,45 @@ void Bootloader_HandleUpdate(void) {
 }
 
 void Bootloader_JumpToApp(void) {
-	// 1. Fetch Addresses
-	uint32_t app_addr = APP_ACTIVE_START_ADDR;
-	uint32_t app_stack_addr= *(volatile uint32_t*)app_addr;
-	uint32_t app_reset_handler = *(volatile uint32_t*)(app_addr + 4); // <--- Added this
+    uint32_t app_addr = APP_ACTIVE_START_ADDR;
+    uint32_t app_stack_addr = *(volatile uint32_t*)app_addr;
+    uint32_t app_reset_handler = *(volatile uint32_t*)(app_addr + 4);
 
+    if ((app_stack_addr & 0x20000000) != 0x20000000) {
+        return;
+    }
 
-	// 2. Safety Cleanup (REQUIRED to prevent Hard Faults)
-	HAL_Delay(100);          // Wait for any printf to finish
-	__disable_irq();         // Turn off interrupts
-	SCB_DisableICache();     // Turn off I-Cache
-	SCB_DisableDCache();     // Turn off D-Cache
-	SysTick->CTRL = 0;       // Turn off SysTick
-	SysTick->LOAD = 0;
-	SysTick->VAL  = 0;
-	//HAL_RCC_DeInitS();        // Turn off Clocks
-	// 3. Update Vector Table (YOU MISSED THIS!)
+    // 1. CLEAR BUFFERS
+    // Wait for UART to finish sending (Important for IMPRECISERR)
+    HAL_UART_Transmit(&huart1, (uint8_t*)"Jump\r\n", 6, 100);
 
-	 SCB->VTOR = app_addr;    // <--- REQUIRED: Tells CPU to use App's Interrupts
-	// 3. The Jump Logic
-	__set_MSP(app_stack_addr);               // 2. Set the Main Stack Pointer
+    // 2. DISABLE MPU & CACHE
+    HAL_MPU_Disable();
 
-	// 3. Jump to Reset Handler
-	void (*pJump)(void) = (void (*)(void))app_reset_handler;
-	pJump();
+    // 3. DISABLE SYSTICK (Crucial!)
+    SysTick->CTRL = 0;
 
+    // 5. DE-INIT
+    HAL_DeInit();
 
+    // 6. DISABLE INTERRUPTS
+    __disable_irq();
+
+    // 7. CLEAR PENDING INTERRUPTS
+    for (int i = 0; i < 8; i++) {
+        NVIC->ICER[i] = 0xFFFFFFFF;
+        NVIC->ICPR[i] = 0xFFFFFFFF;
+    }
+
+    // 8. RELOCATE VECTOR TABLE
+    SCB->VTOR = app_addr;
+
+    // 9. JUMP
+    __set_MSP(app_stack_addr);
+    void (*pJump)(void) = (void (*)(void))app_reset_handler;
+    pJump();
 }
+
 /* USER CODE END 0 */
 
 /**
@@ -413,7 +425,7 @@ int main(void)
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
-  MPU_Config();
+  //MPU_Config();
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -481,7 +493,6 @@ int main(void)
           }
          }*/
   /* USER CODE END 2 */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -505,7 +516,7 @@ void SystemClock_Config(void)
   /** Configure the main internal regulator output voltage
   */
   __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -514,20 +525,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 216;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Activate the Over-Drive mode
-  */
-  if (HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
     Error_Handler();
   }
@@ -536,12 +535,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
