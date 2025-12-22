@@ -66,7 +66,7 @@ main-build: BOOTLOADER_NEW.elf secondary-outputs
 
 # Tool invocations
 BOOTLOADER_NEW.elf BOOTLOADER_NEW.map: $(OBJS) $(USER_OBJS) C:\Users\Oguzm\OneDrive\ -\ ozyegin.edu.tr\Desktop\Github_Projects\CS350_Project1\CS350_Project1\BOOTLOADER_NEW\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "BOOTLOADER_NEW.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\Oguzm\OneDrive - ozyegin.edu.tr\Desktop\Github_Projects\CS350_Project1\CS350_Project1\BOOTLOADER_NEW\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="BOOTLOADER_NEW.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "BOOTLOADER_NEW.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\Oguzm\OneDrive - ozyegin.edu.tr\Desktop\Github_Projects\CS350_Project1\CS350_Project1\BOOTLOADER_NEW\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="BOOTLOADER_NEW.map" -Wl,--gc-sections -static -flto --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

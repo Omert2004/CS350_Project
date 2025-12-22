@@ -24,8 +24,8 @@
 
 #include "mem_layout.h"
 #include "tiny_printf.h"
-#include "jump_to_app.h"
 
+#include "jump_to_app.h"
 #include "BL_Update_Part.h"      // For BL_RequestUpdate, BL_GetStatus, Bootloader_HandleUpdate
 #include "BL_Functions.h"        // For Bootloader_InternalVerify
 #include "bootloader_interface.h" // For Bootloader_API_t
@@ -146,52 +146,54 @@ int main(void)
   MX_USART1_UART_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
+  tfp_init(&huart1);
+
   printf("\r\n========================================\r\n");
-printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, MINOR);
-printf("API Table Location: %p\r\n", &API_Table); // Debug print
-printf("========================================\r\n");
+	printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, MINOR);
+	printf("API Table Location: %p\r\n", &API_Table); // Debug print
+	printf("========================================\r\n");
 
-// --- 1. Check for Update Request (Magic Flag) ---
-HAL_PWR_EnableBkUpAccess();
-if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == BKP_FLAG_UPDATE_REQ) {
+	// --- 1. Check for Update Request (Magic Flag) ---
+	HAL_PWR_EnableBkUpAccess();
+	if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) == BKP_FLAG_UPDATE_REQ) {
 
-	printf("[BL] Update Request Detected. Clearing Flag...\r\n");
+		printf("[BL] Update Request Detected. Clearing Flag...\r\n");
 
-	/* Clear flag */
-	HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x00000000);
+		/* Clear flag */
+		HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x00000000);
+		HAL_PWREx_DisableBkUpReg();
+
+		/* Perform Update (Decrypt -> Decompress -> Flash) */
+		// This function will reboot on success. If it returns, update failed.
+		Bootloader_HandleUpdate();
+	}
 	HAL_PWREx_DisableBkUpReg();
 
-	/* Perform Update (Decrypt -> Decompress -> Flash) */
-	// This function will reboot on success. If it returns, update failed.
-	Bootloader_HandleUpdate();
-}
-HAL_PWREx_DisableBkUpReg();
+	// --- 2. Verify Application (Secure Boot) ---
+	// Your friend's flow adds this check, which is CRITICAL for security.
+	printf("[BL] Verifying Application integrity...\r\n");
 
-// --- 2. Verify Application (Secure Boot) ---
-// Your friend's flow adds this check, which is CRITICAL for security.
-printf("[BL] Verifying Application integrity...\r\n");
+	if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
 
-if (Bootloader_InternalVerify(APP_ACTIVE_START_ADDR, APP_ACTIVE_SIZE) == BL_OK) {
+		printf("[BL] Verification Success! Jumping to App.\r\n");
 
-	printf("[BL] Verification Success! Jumping to App.\r\n");
+		// Cleanup before jump
+		HAL_MPU_Disable();
 
-	// Cleanup before jump
-	HAL_MPU_Disable();
-
-	Bootloader_JumpToApp();
-}
-else {
-	// --- 3. Verification Failed or Empty Slot ---
-	printf("[BL] CRITICAL: No valid application found or Verification Failed!\r\n");
-	printf("[BL] Halting system.\r\n");
-
-	// Infinite Error Loop
-	while (1)
-	{
-		HAL_GPIO_TogglePin(GPIOI, USER_LED_Pin);
-		HAL_Delay(200); // Fast blink for error
+		Bootloader_JumpToApp();
 	}
-   }
+	else {
+		// --- 3. Verification Failed or Empty Slot ---
+		printf("[BL] CRITICAL: No valid application found or Verification Failed!\r\n");
+		printf("[BL] Halting system.\r\n");
+
+		// Infinite Error Loop
+		while (1)
+		{
+			HAL_GPIO_TogglePin(GPIOI, USER_LED_Pin);
+			HAL_Delay(200); // Fast blink for error
+		}
+	   }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -352,37 +354,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-/**
- * @brief Redirects standard output to USART1 using polling.
- *
- * Sends a buffer over USART1 and inserts '\r' before '\n'
- * for proper terminal formatting.
- *
- * @param file File descriptor (unused)
- * @param ptr  Data buffer to send
- * @param len  Number of bytes to send
- * @return Number of bytes written
- *
- * @author Omert2004
- */
-int _write(int file, char *ptr, int len)
-{
-    for (int i = 0; i < len; i++)
-    {
-        // Check for new line character to fix terminal formatting
-        if (ptr[i] == '\n')
-        {
-            while (!(USART1->ISR & USART_ISR_TXE));
-            USART1->TDR = '\r'; // Send Carriage Return
-        }
-        // 1. Wait for the Transmit Data Register Empty (TXE) flag
-        while (!(USART1->ISR & USART_ISR_TXE));
-
-        // 2. Write the character to the Transmit Data Register (TDR)
-        USART1->TDR = (uint8_t)ptr[i];
-    }
-    return len;
-}
 
 
 void print_hardfault_reason(void) {

@@ -45,7 +45,7 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 320K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 64K
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 120K
 }
 
 /* Sections */
@@ -61,7 +61,7 @@ SECTIONS
   } >FLASH
   
   /* FIXED LOCATION API TABLE (Added for Shared Bootloader Interface) */
-  .shared_api_section 0x0800F000 :
+  .shared_api_section 0x08017000 :
   {
     . = ALIGN(4);
     KEEP(*(.shared_api_section))
