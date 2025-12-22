@@ -182,26 +182,45 @@ int main(void)
 
 		Bootloader_JumpToApp();
 	}
-	else {
-		// --- 3. Verification Failed or Empty Slot ---
-		printf("[BL] CRITICAL: No valid application found or Verification Failed!\r\n");
-		printf("[BL] Halting system.\r\n");
-
+	else
+	{
+		// --- 3. Verification Failed (Rescue Mode) ---
+		printf("[BL] CRITICAL: Verification Failed! Entering Rescue Mode.\r\n");
+		printf("[BL] Status Code: 0x%08lX\r\n", BL_GetStatus());
+		printf("[BL] HOLD USER BUTTON to force retry update from Download Slot.\r\n");
 		// Infinite Error Loop
+
 		while (1)
 		{
+			// 1. LED Blink (Hızlı Hata Modu - SOS)
 			HAL_GPIO_TogglePin(GPIOI, USER_LED_Pin);
-			HAL_Delay(200); // Fast blink for error
+			HAL_Delay(100);
+
+			// 2. Buton Kontrolü (User Button - Genelde PI11 veya PA0, şemaya bakın)
+			// Eğer buton GPIO'su tanımlı değilse, sadece MX_GPIO_Init'e eklemeniz gerekir.
+			// Örnek: Eğer Buton GPIOI Pin 11 ise:
+			/*
+			if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
+				printf("[BL] User Button Detected! Forcing Update Retry...\r\n");
+
+				// Magic Flag'i tekrar set et
+				HAL_PWR_EnableBkUpAccess();
+				HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0xCAFEBABE);
+				HAL_PWREx_DisableBkUpReg();
+
+				// Reset at (Bootloader tekrar açılacak ve güncellemeyi deneyecek)
+				NVIC_SystemReset();
+			}
+			*/
 		}
-	   }
+	}
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_TogglePin(GPIOI, USER_LED_Pin);
-	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
