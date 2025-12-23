@@ -76,7 +76,7 @@ int main(void)
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
-  MPU_Config();
+  //MPU_Config();
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -91,8 +91,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  /* RE-ENABLE INTERRUPTS HERE */
-    __enable_irq();
+  __enable_irq();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */

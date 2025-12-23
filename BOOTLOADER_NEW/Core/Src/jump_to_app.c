@@ -9,7 +9,6 @@
 #include "main.h"
 #include "jump_to_app.h"
 #include "mem_layout.h"
-
 void Bootloader_JumpToApp(void) {
     uint32_t app_addr = APP_ACTIVE_START_ADDR;
     uint32_t app_stack_addr = *(volatile uint32_t*)app_addr;

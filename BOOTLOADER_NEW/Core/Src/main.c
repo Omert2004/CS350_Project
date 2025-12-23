@@ -149,7 +149,7 @@ int main(void)
   tfp_init(&huart1);
 
   printf("\r\n========================================\r\n");
-	printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, 3);
+	printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, 4);
 	printf("API Table Location: %p\r\n", &API_Table); // Debug print
 	printf("========================================\r\n");
 
