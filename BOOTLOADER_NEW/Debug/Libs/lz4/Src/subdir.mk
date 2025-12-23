@@ -7,6 +7,9 @@
 C_SRCS += \
 ../Libs/lz4/Src/lz4.c 
 
+O_SRCS += \
+../Libs/lz4/Src/lz4.o 
+
 OBJS += \
 ./Libs/lz4/Src/lz4.o 
 
@@ -16,7 +19,7 @@ C_DEPS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 Libs/lz4/Src/%.o Libs/lz4/Src/%.su Libs/lz4/Src/%.cyclo: ../Libs/lz4/Src/%.c Libs/lz4/Src/subdir.mk
-	arm-none-eabi-gcc "$<" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F746xx -c -I../Core/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F7xx/Include -I../Drivers/CMSIS/Include -I"C:/Users/Oguzm/OneDrive - ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER_NEW/Libs/lz4/Inc" -I"C:/Users/Oguzm/OneDrive - ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER_NEW/Libs/tinycrypt/Inc" -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F746xx -c -I../Core/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F7xx/Include -I../Drivers/CMSIS/Include -I"C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/BOOTLOADER_NEW/Libs/lz4/Inc" -I"C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/BOOTLOADER_NEW/Libs/tinycrypt/Inc" -Os -ffunction-sections -fdata-sections -Wall -fstack-usage  -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
 clean: clean-Libs-2f-lz4-2f-Src
 

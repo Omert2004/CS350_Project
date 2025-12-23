@@ -31,12 +31,12 @@
 ../Libs/tinycrypt/Src/ecc.c:622:13:EccPoint_isZero	0	static
 ../Libs/tinycrypt/Src/ecc.c:627:6:apply_z	56	static
 ../Libs/tinycrypt/Src/ecc.c:661:6:XYcZ_add	72	static
-../Libs/tinycrypt/Src/ecc.c:729:6:EccPoint_mult	224	static
-../Libs/tinycrypt/Src/ecc.c:774:13:regularize_k	32	static
+../Libs/tinycrypt/Src/ecc.c:729:6:EccPoint_mult	232	static
+../Libs/tinycrypt/Src/ecc.c:774:13:regularize_k	24	static
 ../Libs/tinycrypt/Src/ecc.c:791:13:EccPoint_compute_public_key	96	static
 ../Libs/tinycrypt/Src/ecc.c:814:6:uECC_vli_nativeToBytes	20	static
 ../Libs/tinycrypt/Src/ecc.c:825:6:uECC_vli_bytesToNative	24	static
 ../Libs/tinycrypt/Src/ecc.c:837:5:uECC_generate_random_int	40	static
 ../Libs/tinycrypt/Src/ecc.c:863:5:uECC_valid_point	88	static
 ../Libs/tinycrypt/Src/ecc.c:890:5:uECC_valid_public_key	88	static
-../Libs/tinycrypt/Src/ecc.c:908:5:uECC_compute_public_key	112	static
+../Libs/tinycrypt/Src/ecc.c:908:5:uECC_compute_public_key	120	static

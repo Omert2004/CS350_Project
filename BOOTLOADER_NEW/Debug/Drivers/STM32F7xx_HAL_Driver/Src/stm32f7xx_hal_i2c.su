@@ -2,7 +2,7 @@
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7383:13:I2C_TransferConfig	12	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7412:13:I2C_Enable_IRQ	16	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7503:13:I2C_Disable_IRQ	0	static
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7242:26:I2C_IsErrorOccurred	24	static
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7242:26:I2C_IsErrorOccurred	32	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7086:26:I2C_WaitOnTXISFlagUntilTimeout	16	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7046:26:I2C_WaitOnFlagUntilTimeout	24	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:7127:26:I2C_WaitOnSTOPFlagUntilTimeout	16	static
@@ -63,7 +63,7 @@
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:6618:13:I2C_ITError	16	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:6208:13:I2C_ITMasterCplt	24	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:4968:26:I2C_Master_ISR_IT	24	static
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:5574:26:I2C_Mem_ISR_DMA	16	static
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:5574:26:I2C_Mem_ISR_DMA	24	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:5426:26:I2C_Master_ISR_DMA	24	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:6976:13:I2C_DMAError	16	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c:6808:13:I2C_DMAMasterTransmitCplt	8	static

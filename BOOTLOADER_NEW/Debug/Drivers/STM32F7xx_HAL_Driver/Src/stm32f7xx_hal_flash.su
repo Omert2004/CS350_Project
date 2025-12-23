@@ -1,7 +1,7 @@
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:657:13:FLASH_Program_DoubleWord	8	static,ignoring_inline_asm
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:694:13:FLASH_Program_Word	0	static,ignoring_inline_asm
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:723:13:FLASH_Program_HalfWord	0	static,ignoring_inline_asm
-../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:753:13:FLASH_Program_Byte	0	static,ignoring_inline_asm
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:657:13:FLASH_Program_DoubleWord	8	static
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:694:13:FLASH_Program_Word	0	static
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:723:13:FLASH_Program_HalfWord	0	static
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:753:13:FLASH_Program_Byte	0	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:774:13:FLASH_SetErrorCode	0	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:237:19:HAL_FLASH_Program_IT	16	static
 ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c:434:13:HAL_FLASH_EndOfOperationCallback	0	static

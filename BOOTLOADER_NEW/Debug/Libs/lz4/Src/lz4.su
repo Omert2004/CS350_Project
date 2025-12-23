@@ -23,11 +23,11 @@
 ../Libs/lz4/Src/lz4.c:1651:5:LZ4_loadDict	0	static
 ../Libs/lz4/Src/lz4.c:1656:5:LZ4_loadDictSlow	0	static
 ../Libs/lz4/Src/lz4.c:1661:6:LZ4_attach_dictionary	0	static
-../Libs/lz4/Src/lz4.c:1710:5:LZ4_compress_fast_continue	112	static
-../Libs/lz4/Src/lz4.c:1790:5:LZ4_compress_forceExtDict	96	static
+../Libs/lz4/Src/lz4.c:1710:5:LZ4_compress_fast_continue	104	static
+../Libs/lz4/Src/lz4.c:1790:5:LZ4_compress_forceExtDict	88	static
 ../Libs/lz4/Src/lz4.c:1817:5:LZ4_saveDict	16	static
 ../Libs/lz4/Src/lz4.c:2454:5:LZ4_decompress_safe	48	static
-../Libs/lz4/Src/lz4.c:2462:5:LZ4_decompress_safe_partial	56	static
+../Libs/lz4/Src/lz4.c:2462:5:LZ4_decompress_safe_partial	64	static
 ../Libs/lz4/Src/lz4.c:2471:5:LZ4_decompress_fast	48	static
 ../Libs/lz4/Src/lz4.c:2482:5:LZ4_decompress_safe_withPrefix64k	48	static
 ../Libs/lz4/Src/lz4.c:2499:5:LZ4_decompress_fast_withPrefix64k	48	static

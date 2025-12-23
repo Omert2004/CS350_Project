@@ -1,3 +1,0 @@
-../Core/Src/BL_Functions.c:116:5:Crypto_SHA256_Flash	2
-../Core/Src/BL_Functions.c:139:5:Crypto_ECDSA_P256_VerifyHash	3
-../Core/Src/BL_Functions.c:76:13:Bootloader_InternalVerify	12

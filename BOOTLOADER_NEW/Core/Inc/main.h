@@ -51,6 +51,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+void print_hardfault_reason(void);
 
 /* USER CODE BEGIN EFP */
 
