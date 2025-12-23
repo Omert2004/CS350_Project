@@ -53,12 +53,14 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void print_hardfault_reason();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
 #define USER_LED_Pin GPIO_PIN_1
 #define USER_LED_GPIO_Port GPIOI
+#define B_USER_Pin GPIO_PIN_11
+#define B_USER_GPIO_Port GPIOI
 
 /* USER CODE BEGIN Private defines */
 

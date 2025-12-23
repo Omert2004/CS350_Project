@@ -19,30 +19,31 @@ void Bootloader_JumpToApp(void) {
         return;
     }
 
-    // 2. DISABLE MPU & CACHE
+    // 1. DISABLE MPU (The ONLY new thing you need)
     HAL_MPU_Disable();
 
-
-    // 3. DISABLE SYSTICK (Crucial!)
+    // 2. DISABLE SYSTICK
     SysTick->CTRL = 0;
     SysTick->LOAD = 0;
     SysTick->VAL  = 0;
-    // 5. DE-INIT
+
+    // 3. DE-INIT PERIPHERALS
+    // This will not crash now because we removed the printf in main
     HAL_DeInit();
 
-    // 6. DISABLE INTERRUPTS
+    // 4. DISABLE INTERRUPTS
     __disable_irq();
 
-    // 7. CLEAR PENDING INTERRUPTS
+    // 5. CLEAR PENDING INTERRUPTS
     for (int i = 0; i < 8; i++) {
         NVIC->ICER[i] = 0xFFFFFFFF;
         NVIC->ICPR[i] = 0xFFFFFFFF;
     }
 
-    // 8. RELOCATE VECTOR TABLE
+    // 6. RELOCATE VECTOR TABLE
     SCB->VTOR = app_addr;
 
-    // 9. JUMP
+    // 7. JUMP
     __set_MSP(app_stack_addr);
     void (*pJump)(void) = (void (*)(void))app_reset_handler;
     pJump();

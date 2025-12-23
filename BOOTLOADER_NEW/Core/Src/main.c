@@ -149,9 +149,12 @@ int main(void)
   tfp_init(&huart1);
 
   printf("\r\n========================================\r\n");
-	printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, MINOR);
+	printf("Starting Bootloader Version-(%d,%d)\r\n", MAJOR, 3);
 	printf("API Table Location: %p\r\n", &API_Table); // Debug print
 	printf("========================================\r\n");
+
+	printf("Jumping");
+	Bootloader_JumpToApp();
 
 	// --- 1. Check for Update Request (Magic Flag) ---
 	HAL_PWR_EnableBkUpAccess();
@@ -199,7 +202,7 @@ int main(void)
 			// 2. Buton Kontrolü (User Button - Genelde PI11 veya PA0, şemaya bakın)
 			// Eğer buton GPIO'su tanımlı değilse, sadece MX_GPIO_Init'e eklemeniz gerekir.
 			// Örnek: Eğer Buton GPIOI Pin 11 ise:
-			/*
+
 			if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
 				printf("[BL] User Button Detected! Forcing Update Retry...\r\n");
 
@@ -211,7 +214,7 @@ int main(void)
 				// Reset at (Bootloader tekrar açılacak ve güncellemeyi deneyecek)
 				NVIC_SystemReset();
 			}
-			*/
+
 		}
 	}
 
@@ -366,6 +369,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(USER_LED_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : B_USER_Pin */
+  GPIO_InitStruct.Pin = B_USER_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B_USER_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
