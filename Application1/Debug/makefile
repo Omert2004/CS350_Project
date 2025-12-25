@@ -55,6 +55,9 @@ Application1.list \
 OBJCOPY_BIN += \
 Application1.bin \
 
+OBJCOPY_SREC += \
+Application1.srec \
+
 
 # All Target
 all:
@@ -84,16 +87,21 @@ Application1.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+Application1.srec: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O srec $(EXECUTABLES) "Application1.srec"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) Application1.bin Application1.elf Application1.list Application1.map default.size.stdout
+	-$(RM) Application1.bin Application1.elf Application1.list Application1.map Application1.srec default.size.stdout
 	-@echo ' '
 
 post-build:
 	arm-none-eabi-objcopy -O binary "Application1.elf" "Application1.bin"
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN) $(OBJCOPY_SREC)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

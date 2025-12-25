@@ -14,6 +14,8 @@ void Bootloader_JumpToApp(void) {
     uint32_t app_stack_addr = *(volatile uint32_t*)app_addr;
     uint32_t app_reset_handler = *(volatile uint32_t*)(app_addr + 4);
 
+    //volatile uint32_t ctrl = __get_CONTROL();
+
     if ((app_stack_addr & 0x20000000) != 0x20000000) {
         return;
     }
@@ -28,10 +30,13 @@ void Bootloader_JumpToApp(void) {
 
     // 3. DE-INIT PERIPHERALS
     // This will not crash now because we removed the printf in main
-    HAL_DeInit();
+    //HAL_DeInit();
 
     // 4. DISABLE INTERRUPTS
     __disable_irq();
+
+
+    //HAL_DeInit();
 
     // 5. CLEAR PENDING INTERRUPTS
     for (int i = 0; i < 8; i++) {
