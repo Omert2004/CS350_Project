@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "mem_layout.h"
 #include "tiny_printf.h"
+#include "jump_to_app.h"
 
 #include "bootloader_interface.h" // For Bootloader_API_t
 
@@ -118,6 +119,7 @@ int main(void)
 	printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 5);
 	printf("API Table Location: %p\r\n", &API_Table); // Debug print
 	printf("========================================\r\n");
+
 
 
 	Bootloader_JumpToApp();
@@ -248,7 +250,83 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief   Tests MPU protection of the Bootloader region.
+ *
+ * @details Attempts to write to the Bootloader flash start address
+ *          (0x08000000), which is configured as Read-Only.
+ *          A correct MPU configuration must trigger a MemManage Fault.
+ *
+ * @warning This test is expected to crash the system.
+ *
+ * @retval  None
+ */
+void Test_MPU_Violation(void)
+{
+    printf("\r\n[TEST] 1. Testing Bootloader Protection (Expect Crash)...\r\n");
+    HAL_Delay(100); // Wait for UART to finish sending
 
+    // Point to the start of Bootloader (Region 0 - Read Only)
+    volatile uint32_t *pFlash = (uint32_t *)0x08000000;
+
+    // TRY TO WRITE (This should trigger MemManage Fault)
+    *pFlash = 0xDEADBEEF;
+
+    // If code reaches here, MPU FAILED!
+    printf("[FAIL] MPU did NOT block the write!\r\n");
+}
+
+/**
+ * @brief   Tests write access to the configuration flash sector.
+ *
+ * @details Erases and writes a test word to the configuration sector
+ *          at 0x08010000 (Sector 2), which is configured as Read-Write.
+ *          Successful execution confirms correct MPU permissions.
+ *
+ * @retval  None
+ *
+ Created on: 22 Ara 2025
+ *      Author: Oguzm
+ */
+void Test_Config_Write(void)
+{
+    printf("\r\n[TEST] 2. Testing Config Sector Write (Expect Success)...\r\n");
+
+    // 1. Unlock Flash
+    HAL_FLASH_Unlock();
+
+    // 2. Try to write to 0x08010000 (Region 1)
+    // Note: We use HAL function. If MPU was RO, this would fail.
+    // Since MPU is RW, this should work.
+    uint32_t test_addr = 0x08010000;
+    uint32_t test_data = 0x12345678;
+
+    // Erase sector first (Standard Flash procedure)
+    FLASH_EraseInitTypeDef EraseInitStruct;
+    uint32_t SectorError;
+    EraseInitStruct.TypeErase = FLASH_TYPEERASE_SECTORS;
+    EraseInitStruct.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+    EraseInitStruct.Sector = FLASH_SECTOR_2; // Sector 2 is 0x08010000
+    EraseInitStruct.NbSectors = 1;
+
+    if(HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) == HAL_OK)
+    {
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, test_addr, test_data) == HAL_OK)
+        {
+             printf("[PASS] Successfully wrote to Config Sector.\r\n");
+        }
+        else
+        {
+             printf("[FAIL] HAL Flash Program failed (Not MPU related).\r\n");
+        }
+    }
+    else
+    {
+        printf("[FAIL] Flash Erase failed.\r\n");
+    }
+
+    HAL_FLASH_Lock();
+}
 
 /* USER CODE END 4 */
 
@@ -265,15 +343,26 @@ void MPU_Config(void)
   */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER0;
-  MPU_InitStruct.BaseAddress = 0x0;
-  MPU_InitStruct.Size = MPU_REGION_SIZE_4GB;
-  MPU_InitStruct.SubRegionDisable = 0x87;
+  MPU_InitStruct.BaseAddress = 0x08000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_64KB;
+  MPU_InitStruct.SubRegionDisable = 0x0;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
-  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
-  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
-  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
-  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RO_URO;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
   MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+  MPU_InitStruct.BaseAddress = 0x08010000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_32KB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /* Enables the MPU */
