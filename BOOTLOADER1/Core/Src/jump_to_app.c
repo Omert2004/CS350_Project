@@ -36,7 +36,7 @@ void Bootloader_JumpToApp(void) {
     __disable_irq();
 
 
-
+    HAL_DeInit();
 
     // 5. CLEAR PENDING INTERRUPTS
     for (int i = 0; i < 8; i++) {
