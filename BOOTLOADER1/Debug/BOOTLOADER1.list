@@ -37,17 +37,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_rnglists 00000567  00000000  00000000  00010ec8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  0002448a  00000000  00000000  0001142f  2**0
+ 17 .debug_macro  00024496  00000000  00000000  0001142f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00009f0d  00000000  00000000  000358b9  2**0
+ 18 .debug_line   00009f0d  00000000  00000000  000358c5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000e23e8  00000000  00000000  0003f7c6  2**0
+ 19 .debug_str    000e2427  00000000  00000000  0003f7d2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  00121bae  2**0
+ 20 .comment      00000043  00000000  00000000  00121bf9  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  00001b90  00000000  00000000  00121bf4  2**2
+ 21 .debug_frame  00001b90  00000000  00000000  00121c3c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 00000099  00000000  00000000  00123784  2**0
+ 22 .debug_line_str 00000099  00000000  00000000  001237cc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -498,7 +498,7 @@ __STATIC_FORCEINLINE void __set_MSP(uint32_t topOfMainStack)
  800060e:	46bd      	mov	sp, r7
  8000610:	bd80      	pop	{r7, pc}
  8000612:	bf00      	nop
- 8000614:	08010000 	.word	0x08010000
+ 8000614:	08018000 	.word	0x08018000
  8000618:	e000e010 	.word	0xe000e010
  800061c:	e000e100 	.word	0xe000e100
  8000620:	e000ed00 	.word	0xe000ed00
