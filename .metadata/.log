@@ -3047,3 +3047,73 @@ org.osgi.service.prefs.BackingStoreException: Exception occurred while saving pr
 
 !ENTRY org.eclipse.cdt.core 1 0 2025-12-28 13:13:29.693
 !MESSAGE Indexed 'F4_Application' (19 sources, 115 headers) in 1,37 sec: 10.257 declarations; 36.521 references; 1 unresolved inclusions; 92 syntax errors; 240 unresolved names (%0,51)
+!SESSION 2025-12-28 15:08:44.817 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=tr_TR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-12-28 15:08:48.600
+!MESSAGE Log4j2 initialized with config file C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-12-28 15:08:53.355
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:08:55.204
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:08:55.204
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:08:55.205
+!MESSAGE port: COM10
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:09:39.380
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM11
+COM10
+COM7
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:09:39.382
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:09:39.382
+!MESSAGE port: COM10
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:09:39.383
+!MESSAGE port: COM7
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-12-28 15:21:45.166
+!MESSAGE Indexed 'F4_Application_2' (22 sources, 119 headers) in 1,92 sec: 11.057 declarations; 42.927 references; 1 unresolved inclusions; 92 syntax errors; 240 unresolved names (%0,44)
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-12-28 15:23:21.746
+!MESSAGE Indexed 'Bootloader_F4' (25 sources, 90 headers) in 0,904 sec: 4.885 declarations; 23.163 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (%0,0071)
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:36:07.864
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM7
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 15:36:07.865
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 17:05:24.102
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM7
+COM11
+COM10
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 17:05:24.102
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 17:05:24.103
+!MESSAGE port: COM11
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2025-12-28 17:05:24.103
+!MESSAGE port: COM10
