@@ -5,6 +5,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/BL_Functions.c \
 ../Core/Src/jump_to_app.c \
 ../Core/Src/main.c \
 ../Core/Src/stm32f7xx_hal_msp.c \
@@ -15,6 +16,7 @@ C_SRCS += \
 ../Core/Src/tiny_printf.c 
 
 OBJS += \
+./Core/Src/BL_Functions.o \
 ./Core/Src/jump_to_app.o \
 ./Core/Src/main.o \
 ./Core/Src/stm32f7xx_hal_msp.o \
@@ -25,6 +27,7 @@ OBJS += \
 ./Core/Src/tiny_printf.o 
 
 C_DEPS += \
+./Core/Src/BL_Functions.d \
 ./Core/Src/jump_to_app.d \
 ./Core/Src/main.d \
 ./Core/Src/stm32f7xx_hal_msp.d \
@@ -42,7 +45,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/jump_to_app.cyclo ./Core/Src/jump_to_app.d ./Core/Src/jump_to_app.o ./Core/Src/jump_to_app.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32f7xx_hal_msp.cyclo ./Core/Src/stm32f7xx_hal_msp.d ./Core/Src/stm32f7xx_hal_msp.o ./Core/Src/stm32f7xx_hal_msp.su ./Core/Src/stm32f7xx_it.cyclo ./Core/Src/stm32f7xx_it.d ./Core/Src/stm32f7xx_it.o ./Core/Src/stm32f7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f7xx.cyclo ./Core/Src/system_stm32f7xx.d ./Core/Src/system_stm32f7xx.o ./Core/Src/system_stm32f7xx.su ./Core/Src/tiny_printf.cyclo ./Core/Src/tiny_printf.d ./Core/Src/tiny_printf.o ./Core/Src/tiny_printf.su
+	-$(RM) ./Core/Src/BL_Functions.cyclo ./Core/Src/BL_Functions.d ./Core/Src/BL_Functions.o ./Core/Src/BL_Functions.su ./Core/Src/jump_to_app.cyclo ./Core/Src/jump_to_app.d ./Core/Src/jump_to_app.o ./Core/Src/jump_to_app.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32f7xx_hal_msp.cyclo ./Core/Src/stm32f7xx_hal_msp.d ./Core/Src/stm32f7xx_hal_msp.o ./Core/Src/stm32f7xx_hal_msp.su ./Core/Src/stm32f7xx_it.cyclo ./Core/Src/stm32f7xx_it.d ./Core/Src/stm32f7xx_it.o ./Core/Src/stm32f7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f7xx.cyclo ./Core/Src/system_stm32f7xx.d ./Core/Src/system_stm32f7xx.o ./Core/Src/system_stm32f7xx.su ./Core/Src/tiny_printf.cyclo ./Core/Src/tiny_printf.d ./Core/Src/tiny_printf.o ./Core/Src/tiny_printf.su
 
 .PHONY: clean-Core-2f-Src
 

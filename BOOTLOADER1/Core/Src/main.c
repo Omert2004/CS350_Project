@@ -24,6 +24,7 @@
 #include "mem_layout.h"
 #include "tiny_printf.h"
 #include "jump_to_app.h"
+#include "BL_Functions.h"
 
 #include "bootloader_interface.h" // For Bootloader_API_t
 
@@ -50,7 +51,7 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+Bootloader_API_t bt_api;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,19 +65,6 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-/**
- * @brief   The Actual Shared API Table Instance.
- * @details Linker places this at 0x0800F000
- */
-__attribute__((section(".shared_api_section")))
-const Bootloader_API_t API_Table = {
-    .magic_code = 0xDEADBEEF,
-    .version = 0x0100,
-    .RequestUpdate =1,
-    .GetBootStatus = 1,
-    .VerifySlot = 1
-};
-
 
 /* USER CODE END 0 */
 
@@ -120,8 +108,66 @@ int main(void)
 	printf("API Table Location: %p\r\n", &API_Table); // Debug print
 	printf("========================================\r\n");
 
+	// 1. Read Config (This loads defaults into RAM if Flash is empty)
+	if (BL_ReadConfig(&bt_api)) {
+	      // Config was empty/invalid.
+	      // We modified RAM defaults inside the function.
+	      // COMMIT: Save defaults to Flash immediately.
+	      BL_WriteConfig(&bt_api);
+	  }
 
+	config.system_status = STATE_UPDATE_REQ;
+	config.boot_failure_count = 0;
 
+	// COMMIT: Save to Flash before we Reset
+	BL_WriteConfig(&bt_api);
+
+	if (config.system_status == STATE_NORMAL) {
+	    printf("[TEST] Current State is NORMAL. Forcing Update Request...\r\n");
+
+	    config.system_status = STATE_UPDATE_REQ;
+	    config.boot_failure_count = 0;
+
+	    // Write the Request to Flash
+	    BL_WriteConfig(&bt_api);
+
+	    // RESET immediately to process the request cleanly
+	    NVIC_SystemReset();
+	}
+
+	// 2. Logic Check
+	if (config.system_status == STATE_UPDATE_REQ) {
+		printf("[BL] Update Request Detected. Swapping...\r\n");
+		// Perform Verification & Copy/Swap (Slot 2 -> Slot 1)
+		BL_Swap_NoBuffer();
+
+		// Mark as TESTING so next boot we watch for crashes
+		config.system_status = STATE_TESTING;
+		config.boot_failure_count = 0;
+		BL_WriteConfig(&bt_api);
+		printf("[BL] Swap Done. Resetting to Test New App...\r\n");
+		NVIC_SystemReset(); // Reboot into new app
+	}
+	else if (config.system_status == STATE_TESTING) {
+		printf("[BL] Verifying New Update (Attempt %lu)...\r\n", config.boot_failure_count);
+		if (config.boot_failure_count >= 3) {
+			printf("[BL] CRASH LIMIT REACHED! Rolling Back...\r\n");
+			BL_Swap_NoBuffer();
+
+			config.system_status = STATE_NORMAL;
+			config.boot_failure_count = 0;
+			BL_WriteConfig(&bt_api);
+			printf("New Application could not ne \r\n");
+		} else {
+			// Still testing. Increment crash counter.
+			config.boot_failure_count++;
+			BL_WriteConfig(&bt_api);
+
+			// Enable Watchdog here to catch the crash
+			// MX_IWDG_Init();
+		}
+	}
+	printf("[BL] Jumping to Application...\r\n");
 	Bootloader_JumpToApp();
   /* USER CODE END 2 */
 

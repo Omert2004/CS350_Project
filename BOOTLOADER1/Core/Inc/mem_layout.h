@@ -7,18 +7,7 @@
 #ifndef INC_MEM_LAYOUT_H_
 #define INC_MEM_LAYOUT_H_
 
-/*
- * STM32F746G (1MB) Flash Layout Map (CORRECTED)
- *
- * S0  (32KB)  : 0x08000000 - 0x08007FFF  -> Bootloader Code Part 1
- * S1  (32KB)  : 0x08008000 - 0x0800FFFF  -> Bootloader Code Part 2
- * S2  (32KB)  : 0x08010000 - 0x08017FFF  -> CONFIGURATION (State Flags)
- * S3  (32KB)  : 0x08018000 - 0x0801FFFF  -> App Start (ISR Vector)
- * S4  (128KB) : 0x08020000 - 0x0803FFFF  -> App Code
- * S5  (256KB) : 0x08040000 - 0x0807FFFF  -> App Code
- * S6  (256KB) : 0x08080000 ...           -> Download Slot
- * S7  (256KB) : ...                      -> Download Slot
- */
+#include <stdint.h>
 
 /* 1. Bootloader (64 KB) - Uses Sectors 0 & 1 */
 #define BOOTLOADER_START_ADDR    0x08000000
@@ -32,13 +21,57 @@
 #define CONFIG_SECTOR_ADDR       0x08010000
 #define CONFIG_SECTOR_NUM        FLASH_SECTOR_2
 
-/* 3. Active App (416 KB) - Uses Sectors 3, 4, 5 */
-/* START MOVED TO SECTOR 3 */
-#define APP_ACTIVE_START_ADDR    0x08018000
-#define APP_ACTIVE_SIZE          0x00068000  // 32K(S3) + 128K(S4) + 256K(S5) = 416KB
 
-/* 4. Download / Backup Slot (512 KB) - Sectors 6, 7 */
-#define APP_DOWNLOAD_START_ADDR  0x08080000
-#define APP_DOWNLOAD_SIZE        0x00080000  // 512 KB
+#define APP_ACTIVE_START_ADDR   0x08040000  // Sector 5 (Active)
+#define SLOT_A_SECTOR        	FLASH_SECTOR_5
 
+#define APP_DOWNLOAD_START_ADDR 0x08080000  // Sector 6 (Download)
+#define SLOT_B_SECTOR        	FLASH_SECTOR_6
+
+#define SCRATCH_ADDR         	0x080C0000  // Sector 7 (Buffer)
+#define SCRATCH_SECTOR       	FLASH_SECTOR_7
+
+#define SLOT_SIZE            0x00040000  // 256 KB
+
+
+
+/*
+ * bootloader_interface.h
+ *
+ *@brief   Public API definition for the Secure Bootloader.
+ *
+ * @details This header is shared between the Bootloader and the User Application.
+ * It defines the structure used to expose internal Bootloader functions
+ * (like update requests and verification) to the running Application
+ * via a fixed memory address.
+ *
+ *  Created on: Dec 2, 2025
+ *      Author: mertk
+ */
+
+
+// --- system_status Definitions ---
+typedef enum{
+	STATE_NORMAL = 1,		// Normal operation
+	STATE_UPDATE_REQ,		// App requested an update
+	STATE_TESTING,			// New update is being tested (Rollback active)
+	STATE_ROLLED_BACK		// (Pseudocode) Just for logging
+}BL_Status_t;
+
+// --- Config Structure  ---
+typedef struct {
+/**
+	 * @brief Magic Code (0xDEADBEEF)
+	 * @details Used by the Application to verify that the Bootloader is present
+	 * and the API table is valid before calling any functions.
+*/
+    uint32_t magic_number;      // 0xDEADBEEF
+    uint32_t system_status;     // NORMAL, UPDATE_REQ, TESTING
+    uint32_t boot_failure_count;// How many times did it crash?
+    /* Function Pointers */
+	void (*RequestUpdate)(void);
+	uint32_t (*GetBootStatus)(void);
+    uint32_t current_version;   // Version of the running app
+    uint8_t  padding[12];       // Align to 32 bytes
+} Bootloader_API_t;
 #endif /* INC_MEM_LAYOUT_H_ */

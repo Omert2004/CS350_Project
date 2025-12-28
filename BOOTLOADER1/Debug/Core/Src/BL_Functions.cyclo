@@ -1,0 +1,4 @@
+../Core/Src/BL_Functions.c:25:9:BL_ReadConfig	2
+../Core/Src/BL_Functions.c:59:9:BL_WriteConfig	4
+../Core/Src/BL_Functions.c:97:16:BL_Direct_Copy	6
+../Core/Src/BL_Functions.c:132:6:BL_Swap_NoBuffer	4
