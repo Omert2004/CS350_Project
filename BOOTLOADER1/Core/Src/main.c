@@ -51,7 +51,7 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-Bootloader_API_t bt_api;
+BootConfig_t config;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,23 +104,29 @@ int main(void)
   /* USER CODE BEGIN 2 */
   	tfp_init(&huart1);
 	printf("\r\n========================================\r\n");
-	printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 5);
-	printf("API Table Location: %p\r\n", &API_Table); // Debug print
+	printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 6);
 	printf("========================================\r\n");
 
+	/*config.magic_number = 0xDEADBEEF;
+		config.system_status = STATE_UPDATE_REQ;
+		config.boot_failure_count = 0;
+
+		// COMMIT: Save to Flash before we Reset
+		BL_WriteConfig(&config);
+*/
 	// 1. Read Config (This loads defaults into RAM if Flash is empty)
-	if (BL_ReadConfig(&bt_api)) {
+	if (BL_ReadConfig(&config)) {
 	      // Config was empty/invalid.
 	      // We modified RAM defaults inside the function.
 	      // COMMIT: Save defaults to Flash immediately.
-	      BL_WriteConfig(&bt_api);
+	      BL_WriteConfig(&config);
 	  }
 
 	config.system_status = STATE_UPDATE_REQ;
 	config.boot_failure_count = 0;
 
 	// COMMIT: Save to Flash before we Reset
-	BL_WriteConfig(&bt_api);
+	BL_WriteConfig(&config);
 
 	if (config.system_status == STATE_NORMAL) {
 	    printf("[TEST] Current State is NORMAL. Forcing Update Request...\r\n");
@@ -129,10 +135,10 @@ int main(void)
 	    config.boot_failure_count = 0;
 
 	    // Write the Request to Flash
-	    BL_WriteConfig(&bt_api);
+	    BL_WriteConfig(&config);
 
 	    // RESET immediately to process the request cleanly
-	    NVIC_SystemReset();
+	    //NVIC_SystemReset();
 	}
 
 	// 2. Logic Check
@@ -144,9 +150,9 @@ int main(void)
 		// Mark as TESTING so next boot we watch for crashes
 		config.system_status = STATE_TESTING;
 		config.boot_failure_count = 0;
-		BL_WriteConfig(&bt_api);
+		BL_WriteConfig(&config);
 		printf("[BL] Swap Done. Resetting to Test New App...\r\n");
-		NVIC_SystemReset(); // Reboot into new app
+		//NVIC_SystemReset(); // Reboot into new app
 	}
 	else if (config.system_status == STATE_TESTING) {
 		printf("[BL] Verifying New Update (Attempt %lu)...\r\n", config.boot_failure_count);
@@ -156,12 +162,12 @@ int main(void)
 
 			config.system_status = STATE_NORMAL;
 			config.boot_failure_count = 0;
-			BL_WriteConfig(&bt_api);
+			BL_WriteConfig(&config);
 			printf("New Application could not ne \r\n");
 		} else {
 			// Still testing. Increment crash counter.
 			config.boot_failure_count++;
-			BL_WriteConfig(&bt_api);
+			BL_WriteConfig(&config);
 
 			// Enable Watchdog here to catch the crash
 			// MX_IWDG_Init();
@@ -409,6 +415,8 @@ void MPU_Config(void)
   MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
   MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+    MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1; // TEX=1, C=0, B=0 -> Normal, Non-Cacheable
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /* Enables the MPU */

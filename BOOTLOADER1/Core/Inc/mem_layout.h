@@ -51,12 +51,12 @@
 
 
 // --- system_status Definitions ---
-typedef enum{
-	STATE_NORMAL = 1,		// Normal operation
-	STATE_UPDATE_REQ,		// App requested an update
-	STATE_TESTING,			// New update is being tested (Rollback active)
-	STATE_ROLLED_BACK		// (Pseudocode) Just for logging
-}BL_Status_t;
+typedef enum {
+    STATE_NORMAL      = 1,      // Normal operation
+    STATE_UPDATE_REQ  = 2,      // App requested an update
+    STATE_TESTING     = 3,      // New update is being tested (Rollback active)
+    STATE_ROLLED_BACK = 4       // Update failed, reverted to old version
+} BL_Status_t;
 
 // --- Config Structure  ---
 typedef struct {
@@ -66,12 +66,12 @@ typedef struct {
 	 * and the API table is valid before calling any functions.
 */
     uint32_t magic_number;      // 0xDEADBEEF
-    uint32_t system_status;     // NORMAL, UPDATE_REQ, TESTING
+    uint32_t system_status;     // BL_Status_t
     uint32_t boot_failure_count;// How many times did it crash?
-    /* Function Pointers */
-	void (*RequestUpdate)(void);
-	uint32_t (*GetBootStatus)(void);
+    uint32_t active_slot;       // 1 or 2 (Logical swap)
     uint32_t current_version;   // Version of the running app
     uint8_t  padding[12];       // Align to 32 bytes
-} Bootloader_API_t;
+} __attribute__((aligned(8))) BootConfig_t;
+
+
 #endif /* INC_MEM_LAYOUT_H_ */

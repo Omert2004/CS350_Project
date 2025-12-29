@@ -1,4 +1,4 @@
-../Core/Src/BL_Functions.c:25:9:BL_ReadConfig	24	static
-../Core/Src/BL_Functions.c:59:9:BL_WriteConfig	56	static
-../Core/Src/BL_Functions.c:97:16:BL_Direct_Copy	56	static
-../Core/Src/BL_Functions.c:132:6:BL_Swap_NoBuffer	8	static
+../Core/Src/BL_Functions.c:26:9:BL_ReadConfig	24	static
+../Core/Src/BL_Functions.c:60:9:BL_WriteConfig	56	static,ignoring_inline_asm
+../Core/Src/BL_Functions.c:106:16:BL_Direct_Copy	56	static,ignoring_inline_asm
+../Core/Src/BL_Functions.c:151:6:BL_Swap_NoBuffer	8	static

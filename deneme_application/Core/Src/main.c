@@ -92,7 +92,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   //uint32_t current_sp = __get_MSP();
-    printf("Application2'den selam\r\n");
+    printf("Application1'den selam\r\n");
     //printf("Current Stack Pointer (MSP): 0x%08lX\r\n", current_sp);
 
     HAL_GPIO_WritePin(GPIOI, GPIO_PIN_1, GPIO_PIN_SET);
