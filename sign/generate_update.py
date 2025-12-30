@@ -1,82 +1,99 @@
+import sys
 import struct
-import hashlib
 import os
-from ecdsa import SigningKey
 from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from ecdsa import SigningKey, NIST256p
+import hashlib
 
 # --- Configuration ---
-INPUT_BIN = "Application1.bin"       # Put your bin file here
-OUTPUT_BIN = "update_encrypted.bin"  # File to flash to Slot 6 (0x08080000)
-PRIVATE_KEY = "private.pem"
-AES_KEY = "secret.key"
+INPUT_FIRMWARE = sys.argv[1] if len(sys.argv) > 1 else "deneme_application.bin"
+OUTPUT_UPDATE  = "update_encrypted.bin"
+KEY_FILE       = "secret.key"
+PRIV_KEY_FILE  = "private.pem"
 
-FOOTER_MAGIC = 0x454E4421  # "END!" in hex
-VERSION = 0x00000002       # Version 2 (or increment as needed)
+# Footer Constants (Must match C code firmware_footer.h)
+HEADER_MAGIC     = 0xDEADBEEF 
+FOOTER_MAGIC     = 0x454E4421 # "END!"
+FIRMWARE_VERSION = 2  
 
-def pad_data(data):
-    # Pad with 0xFF to multiple of 16 bytes (AES Block Size)
-    length = len(data)
-    remainder = length % 16
-    if remainder != 0:
-        padding = b'\xFF' * (16 - remainder)
-        return data + padding
-    return data
+def generate_update():
+    print(f"--- Generating Secure Update for {INPUT_FIRMWARE} ---")
 
-def main():
-    print(f"--- Generating Update for {INPUT_BIN} ---")
-
-    # 1. Load Keys
-    try:
-        with open(PRIVATE_KEY, "rb") as f:
-            sk = SigningKey.from_pem(f.read())
-        with open(AES_KEY, "rb") as f:
-            aes_key = f.read()
-    except FileNotFoundError:
-        print("ERROR: Keys not found! Run 'keygen.py' first.")
+    if not os.path.exists(INPUT_FIRMWARE):
+        print(f"Error: {INPUT_FIRMWARE} not found.")
         return
 
-    # 2. Read Firmware (Plaintext)
-    try:
-        with open(INPUT_BIN, "rb") as f:
-            firmware = f.read()
-    except FileNotFoundError:
-        print(f"ERROR: Could not find '{INPUT_BIN}' in this folder.")
+    with open(INPUT_FIRMWARE, "rb") as f:
+        fw_data = f.read()
+    
+    # 1. Pad Code to 16 bytes (AES requirement)
+    fw_data_padded = pad(fw_data, 16)
+    
+    # 2. Sign the Code
+    if not os.path.exists(PRIV_KEY_FILE):
+        print("Error: private.pem not found.")
         return
 
-    # 3. Sign the Plaintext
-    # We hash the RAW firmware before encryption
-    sha = hashlib.sha256()
-    sha.update(firmware)
-    digest = sha.digest()
-    signature = sk.sign(digest, hashfunc=hashlib.sha256)
+    with open(PRIV_KEY_FILE, "rb") as f:
+        sk = SigningKey.from_pem(f.read())
+
+    # Calculate Hash of the padded code
+    fw_hash = hashlib.sha256(fw_data_padded).digest()
+    signature = sk.sign_digest(fw_hash)
+
+    # 3. Create Footer [Signature(64) | Version(4) | Size(4) | Magic(4)]
+    # This structure MUST match your C code's Firmware_Footer_t
+    footer = struct.pack('<64sIII', 
+                         signature, 
+                         FIRMWARE_VERSION, 
+                         len(fw_data_padded), # Size of code verified
+                         FOOTER_MAGIC)
     
-    print(f"[OK] Firmware Size: {len(firmware)} bytes")
-    print(f"[OK] SHA-256 Digest: {digest.hex()[:10]}...")
-    print(f"[OK] Signature generated.")
-
-    # 4. Append Footer
-    # Struct: [Version(4)] [Size(4)] [Signature(64)] [Magic(4)]
-    # Size is the plaintext size (excluding footer)
-    footer = struct.pack("<II64sI", VERSION, len(firmware), signature, FOOTER_MAGIC)
-    plaintext_image = firmware + footer
-
-    # 5. Encrypt (AES-128)
-    # We pad the (Firmware + Footer) to 16-byte boundary
-    plaintext_padded = pad_data(plaintext_image)
+    # 4. Create Signed Binary (Code + Footer)
+    signed_binary = fw_data_padded + footer
+    final_verify_size = len(signed_binary)
     
-    cipher = AES.new(aes_key, AES.MODE_ECB)
-    encrypted_image = cipher.encrypt(plaintext_padded)
+    print(f"[OK] Signed Binary Size: {final_verify_size} bytes")
+    print(f"     (Code: {len(fw_data_padded)} + Footer: {len(footer)})")
 
-    # 6. Save
-    with open(OUTPUT_BIN, "wb") as f:
-        f.write(encrypted_image)
+    # 5. Encrypt the Signed Binary
+    # We must pad again because the footer (76 bytes) might misalign the total size
+    signed_binary_padded = pad(signed_binary, 16)
+    
+    if not os.path.exists(KEY_FILE):
+        print("Error: secret.key not found.")
+        return
 
-    print(f"[OK] Encrypted update saved to: {OUTPUT_BIN}")
-    print(f"     Total Size: {len(encrypted_image)} bytes")
-    print("-" * 40)
-    print("NEXT STEPS:")
-    print(f"1. Flash '{OUTPUT_BIN}' to address 0x08080000 (Slot 6)")
-    print("2. Reset the board.")
+    with open(KEY_FILE, "rb") as f:
+        aes_key = f.read(16) 
+
+    iv = os.urandom(16) 
+    cipher = AES.new(aes_key, AES.MODE_CBC, iv)
+    
+    encrypted_data = cipher.encrypt(signed_binary_padded)
+    
+    # 6. Create Update Header
+    # fw_size = Size of (Code + Footer). Verification uses this to find the footer.
+    header = struct.pack('<IIII16s32x', 
+                         HEADER_MAGIC, 
+                         FIRMWARE_VERSION, 
+                         final_verify_size,   # fw_size
+                         len(encrypted_data), # padded_size (for decryption loop)
+                         iv)
+
+    # 7. Save File (Header + Encrypted Data)
+    # Note: We added 64 bytes of dummy padding to skip the "Signature" area 
+    # if your C code expects offset 128 for data.
+    dummy_gap = b'\x00' * 64 
+    final_package = header + dummy_gap + encrypted_data
+
+    with open(OUTPUT_UPDATE, "wb") as f:
+        f.write(final_package)
+
+    print(f"[OK] Update saved to: {OUTPUT_UPDATE}")
+    print("----------------------------------------")
+    print("NEXT STEP: Flash this file to Slot 6 (0x08080000)")
 
 if __name__ == "__main__":
-    main()
+    generate_update()

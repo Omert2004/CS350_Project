@@ -1,9 +1,9 @@
 ../Core/Src/main.c:83:5:main	8	static
-../Core/Src/main.c:201:6:SystemClock_Config	88	static
-../Core/Src/main.c:248:13:MX_USART1_UART_Init	8	static
-../Core/Src/main.c:283:13:MX_GPIO_Init	40	static
-../Core/Src/main.c:322:6:Test_MPU_Violation	16	static
-../Core/Src/main.c:349:6:Test_Config_Write	48	static
-../Core/Src/main.c:395:6:BL_Test_Crypto	376	static
-../Core/Src/main.c:468:6:MPU_Config	24	static
-../Core/Src/main.c:512:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:199:6:SystemClock_Config	88	static
+../Core/Src/main.c:246:13:MX_USART1_UART_Init	8	static
+../Core/Src/main.c:281:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:320:6:Test_MPU_Violation	16	static
+../Core/Src/main.c:347:6:Test_Config_Write	48	static
+../Core/Src/main.c:393:6:BL_Test_Crypto	376	static
+../Core/Src/main.c:466:6:MPU_Config	24	static
+../Core/Src/main.c:510:6:Error_Handler	4	static,ignoring_inline_asm

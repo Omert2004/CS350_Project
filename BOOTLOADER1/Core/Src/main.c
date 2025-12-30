@@ -118,15 +118,6 @@ int main(void)
 
 
 
-
-
-	/*config.magic_number = 0xDEADBEEF;
-		config.system_status = STATE_UPDATE_REQ;
-		config.boot_failure_count = 0;
-
-		// COMMIT: Save to Flash before we Reset
-		BL_WriteConfig(&config);
-*/
 	// 1. Read Config (This loads defaults into RAM if Flash is empty)
 	if (BL_ReadConfig(&config)) {
 	      // Config was empty/invalid.
@@ -135,6 +126,13 @@ int main(void)
 		printf("[BL] Config Invalid/Empty. Initialized to Defaults.\r\n");
 	    BL_WriteConfig(&config);
 	  }
+
+	config.magic_number = 0xDEADBEEF;
+	config.system_status = STATE_UPDATE_REQ;
+	config.boot_failure_count = 0;
+
+	// COMMIT: Save to Flash before we Reset
+	BL_WriteConfig(&config);
 
 	switch(config.system_status){
 		case STATE_UPDATE_REQ:
