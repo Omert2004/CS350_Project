@@ -26,7 +26,7 @@ typedef enum {
     BL_ERR_VECTOR_BAD,
     BL_ERR_HASH_FAIL,
     BL_ERR_SIG_FAIL,
-} BL_Status_t;
+} FW_Status_t;
 
 
 

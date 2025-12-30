@@ -6,9 +6,13 @@
  */
 
 #include "BL_Functions.h"
+#include "aes.h"
+#include "keys.c"
 #include "mem_layout.h"
 #include "tiny_printf.h"
 #include "stm32f7xx_hal.h"
+
+extern const uint8_t AES_SECRET_KEY[];
 
 /**
  * @brief  Reads bootloader configuration from flash memory.
@@ -147,25 +151,83 @@ static uint8_t BL_Direct_Copy(uint32_t src_addr, uint32_t dest_addr) {
     return 1; // Success
 }
 
+static uint8_t BL_Encrypted_Copy(uint32_t src_addr, uint32_t dest_addr) {
+    struct tc_aes_key_sched_struct s;
+    uint8_t buffer_enc[16]; // Read buffer (Ciphertext)
+    uint8_t buffer_dec[16]; // Write buffer (Plaintext)
+
+    // 1. Initialize AES with your secret key
+    if (tc_aes128_set_decrypt_key(&s, AES_SECRET_KEY) == 0) {
+        return 0; // Key init failed
+    }
+
+    // 2. Erase Destination Sector
+    FLASH_EraseInitTypeDef erase;
+    uint32_t error;
+    // ... (Your existing erase logic here) ...
+    // Define sector based on dest_addr (same as your old code)
+    if (dest_addr == APP_ACTIVE_START_ADDR) erase.Sector = FLASH_SECTOR_5;
+    else if (dest_addr == APP_DOWNLOAD_START_ADDR) erase.Sector = FLASH_SECTOR_6;
+    else erase.Sector = FLASH_SECTOR_7;
+
+    erase.TypeErase = FLASH_TYPEERASE_SECTORS;
+    erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+    erase.NbSectors = 1;
+
+    HAL_FLASH_Unlock();
+    if (HAL_FLASHEx_Erase(&erase, &error) != HAL_OK) {
+        HAL_FLASH_Lock();
+        return 0;
+    }
+
+    // 3. Copy Loop (Process 16 bytes at a time)
+    for (uint32_t offset = 0; offset < SLOT_SIZE; offset += 16) {
+
+        // A. Read 16 bytes from Source (Flash) to RAM
+        memcpy(buffer_enc, (void*)(src_addr + offset), 16);
+
+        // B. Decrypt (AES-128 ECB for simplicity, or CBC if you track IV)
+        // If simply encrypting blocks:
+        if (tc_aes_decrypt(buffer_dec, buffer_enc, &s) == 0) {
+             HAL_FLASH_Lock(); return 0; // Decrypt failed
+        }
+
+        // C. Write 16 decrypted bytes to Destination (Flash)
+        // Flash programming is usually done word-by-word (4 bytes)
+        for (int i = 0; i < 4; i++) {
+            uint32_t data_word;
+            memcpy(&data_word, &buffer_dec[i*4], 4);
+
+            if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, dest_addr + offset + (i*4), data_word) != HAL_OK) {
+                HAL_FLASH_Lock();
+                return 0; // Write Error
+            }
+        }
+    }
+
+    HAL_FLASH_Lock();
+    return 1; // Success
+}
+
 // --- Main Swap Function ---
 void BL_Swap_NoBuffer(void) {
     HAL_FLASH_Unlock();
     printf("Starting Direct Swap (Zero-RAM Mode)...\r\n");
 
     // 1. Copy New App (S6) -> Scratchpad (S7)
-    if (!BL_Direct_Copy(APP_DOWNLOAD_START_ADDR, SCRATCH_ADDR)) {
+    if (!BL_Encrypted_Copy(APP_DOWNLOAD_START_ADDR, SCRATCH_ADDR)) {
         printf("Fail: Copy S6->S7\r\n");
         HAL_FLASH_Lock(); return;
     }
 
     // 2. Copy Old App (S5) -> Backup (S6)
-    if (!BL_Direct_Copy(APP_ACTIVE_START_ADDR, APP_DOWNLOAD_START_ADDR)) {
+    if (!BL_Encrypted_Copy(APP_ACTIVE_START_ADDR, APP_DOWNLOAD_START_ADDR)) {
         printf("Fail: Copy S5->S6\r\n");
         HAL_FLASH_Lock(); return;
     }
 
     // 3. Copy New App (S7) -> Active (S5)
-    if (!BL_Direct_Copy(SCRATCH_ADDR, APP_ACTIVE_START_ADDR)) {
+    if (!BL_Encrypted_Copy(SCRATCH_ADDR, APP_ACTIVE_START_ADDR)) {
         printf("Fail: Copy S7->S5\r\n");
         // CRITICAL: S5 is corrupted. Recovery needed on reboot.
         HAL_FLASH_Lock(); return;

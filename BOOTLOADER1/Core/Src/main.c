@@ -26,6 +26,9 @@
 #include "jump_to_app.h"
 #include "BL_Functions.h"
 
+#include "Cryptology_Control.h"
+#include "firmware_footer.h" // For struct definition
+
 
 //#include <stdio.h>
 /* USER CODE END Includes */
@@ -51,6 +54,7 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 BootConfig_t config;
+FW_Status_t bl_status;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -129,14 +133,21 @@ int main(void)
 	BL_WriteConfig(&config);
 
 	if (config.system_status == STATE_NORMAL) {
+		/*
 	    printf("[TEST] Current State is NORMAL. Forcing Update Request...\r\n");
-
 	    config.system_status = STATE_UPDATE_REQ;
 	    config.boot_failure_count = 0;
-
 	    // Write the Request to Flash
 	    BL_WriteConfig(&config);
-
+*/
+		if (Firmware_Is_Valid(APP_ACTIVE_START_ADDR, SLOT_SIZE)){
+			printf("[BL] Jumping to Active Application\r\n");
+			Bootloader_JumpToApp();
+		}
+		else{
+			printf("[BL] The active application couldn't pass the cryptology test\r\n");
+			printf("[BL] You may try the other application or you can renew the active application\r\n");
+		}
 	    // RESET immediately to process the request cleanly
 	    //NVIC_SystemReset();
 	}
@@ -151,30 +162,29 @@ int main(void)
 		config.system_status = STATE_TESTING;
 		config.boot_failure_count = 0;
 		BL_WriteConfig(&config);
-		printf("[BL] Swap Done. Resetting to Test New App...\r\n");
+		printf("[BL] Swap Done. Now time to test New App...\r\n");
 		//NVIC_SystemReset(); // Reboot into new app
 	}
 	else if (config.system_status == STATE_TESTING) {
 		printf("[BL] Verifying New Update (Attempt %lu)...\r\n", config.boot_failure_count);
-		if (config.boot_failure_count >= 3) {
-			printf("[BL] CRASH LIMIT REACHED! Rolling Back...\r\n");
-			BL_Swap_NoBuffer();
-
+		// Assume we found a footer at the end of the slot
+		if (Firmware_Is_Valid(APP_ACTIVE_START_ADDR,SLOT_SIZE)) {
 			config.system_status = STATE_NORMAL;
 			config.boot_failure_count = 0;
 			BL_WriteConfig(&config);
-			printf("New Application could not ne \r\n");
+			printf("[BL] Jumping to Application...\r\n");
+			Bootloader_JumpToApp();
+
 		} else {
 			// Still testing. Increment crash counter.
-			config.boot_failure_count++;
+			printf("[BL] CRASH LIMIT REACHED! Rolling Back...\r\n");
+			BL_Swap_NoBuffer();
+			config.system_status = STATE_NORMAL;
 			BL_WriteConfig(&config);
-
-			// Enable Watchdog here to catch the crash
-			// MX_IWDG_Init();
+			NVIC_SystemReset();
 		}
 	}
-	printf("[BL] Jumping to Application...\r\n");
-	Bootloader_JumpToApp();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
