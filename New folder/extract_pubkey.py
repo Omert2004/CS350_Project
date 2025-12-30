@@ -7,14 +7,12 @@ with open("public.pem", "rb") as f:
 
 # Get public numbers (X and Y)
 numbers = public_key.public_numbers()
-
-# Convert both X and Y to 32 bytes each (Big Endian)
-x_bytes = numbers.x.to_bytes(32, byteorder='big')
-y_bytes = numbers.y.to_bytes(32, byteorder='big')
-
-# Concatenate: [32 bytes X] + [32 bytes Y]
-pub_key_bytes = x_bytes + y_bytes
+x = numbers.x.to_bytes(32, byteorder='big')
+y = numbers.y.to_bytes(32, byteorder='big')
 
 # Print as C array
-print("const uint8_t public_key[64] = {")
-print(', '.join(f'0x{b:02X}' for b in pub_key_bytes) + " };")
+print("const uint8_t public_key_x[32] = {")
+print(', '.join(f'0x{b:02X}' for b in x) + " };")
+
+print("\nconst uint8_t public_key_y[32] = {")
+print(', '.join(f'0x{b:02X}' for b in y) + " };")

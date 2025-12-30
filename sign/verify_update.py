@@ -1,123 +1,92 @@
 import sys
 import struct
-import hashlib
 import os
-import lz4.block
-from ecdsa import VerifyingKey, NIST256p, BadSignatureError
+import hashlib
+
+# --- Library Imports ---
+# Uses 'ecdsa' for signing (matches your keygen)
+# Uses 'cryptography' for AES (modern, standard library)
+from ecdsa import SigningKey, NIST256p
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.backends import default_backend
 
-# Configuration must match generate_update.py
-FOOTER_MAGIC = 0x454E4421
-ENC_CHUNK_SIZE = 1024
+def generate_update(input_file, output_file, key_file, secret_key_file):
+    print(f"Processing: {input_file} -> {output_file}")
 
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: python verify_update.py <encrypted_update.bin> <public_key.pem>")
-        sys.exit(1)
+    # 1. Load the Private Key (for Signing)
+    with open(key_file, "rb") as f:
+        sk = SigningKey.from_pem(f.read())
 
-    input_path = sys.argv[1]
-    key_path = sys.argv[2]
-
-    # 1. Load AES Key
-    if not os.path.exists("secret.key"):
-        print("Error: secret.key not found!")
-        sys.exit(1)
-        
-    with open("secret.key", "rb") as f:
+    # 2. Load the AES Secret Key (for Encryption)
+    with open(secret_key_file, "rb") as f:
         aes_key = f.read()
+        # Ensure key is 16, 24, or 32 bytes
+        if len(aes_key) not in [16, 24, 32]:
+            print(f"Error: AES key must be 16, 24, or 32 bytes. Found {len(aes_key)}")
+            return
 
-    print(f"[1] Reading Encrypted Update: {input_path}")
-    with open(input_path, "rb") as f:
-        encrypted_data = f.read()
+    # 3. Read the Input Firmware
+    with open(input_file, "rb") as f:
+        firmware_data = f.read()
 
-    # 2. Setup Decryption
-    # First 16 bytes are the Initial IV
-    iv = encrypted_data[:16]
-    ciphertext_body = encrypted_data[16:]
-    
-    print(f"    Total Size: {len(encrypted_data)} bytes")
-    print(f"    IV: {iv.hex()}")
+    # 4. Apply Padding (REQUIRED for AES-CBC)
+    # The bootloader typically decrypts in 16-byte blocks.
+    # PKCS7 is the standard padding method.
+    padder = padding.PKCS7(128).padder() # 128-bit block size for AES
+    padded_data = padder.update(firmware_data) + padder.finalize()
 
-    decrypted_firmware = bytearray()
-    
-    # 3. Decrypt Loop (Mimics Bootloader C Code)
-    # We process in 1024-byte chunks
-    current_iv = iv
-    
-    for i in range(0, len(ciphertext_body), ENC_CHUNK_SIZE):
-        chunk = ciphertext_body[i : i + ENC_CHUNK_SIZE]
+    # 5. Encrypt using AES-CBC
+    iv = os.urandom(16) # Generate random 16-byte Initialization Vector
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv), backend=default_backend())
+    encryptor = cipher.encryptor()
+    encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+
+    # 6. Construct the Payload
+    # The payload is what the bootloader actually writes to flash (excluding the header)
+    # Structure: [IV (16 bytes)] + [Encrypted Firmware]
+    payload = iv + encrypted_data
+    payload_size = len(payload)
+
+    # 7. Sign the Payload
+    # We sign the HASH of the payload.
+    # The C code must calculate the hash of (IV + Encrypted) and verify this signature.
+    signature = sk.sign(payload, hashfunc=hashlib.sha256)
+
+    # 8. Write the Update File (Binary Format)
+    # Header Format:
+    # - Size (4 bytes, Little Endian) -> Size of (IV + Encrypted Data)
+    # - Signature (64 bytes, Raw R+S)
+    # - Payload (IV + Encrypted Data)
+    with open(output_file, "wb") as f:
+        # Write Size
+        f.write(struct.pack('<I', payload_size))
         
-        # A. Decrypt
-        cipher = Cipher(algorithms.AES(aes_key), modes.CBC(current_iv), backend=default_backend())
-        decryptor = cipher.decryptor()
-        decrypted_chunk = decryptor.update(chunk) + decryptor.finalize()
+        # Write Signature
+        f.write(signature)
         
-        # Update IV for next chunk (Chain Rule: IV is previous Ciphertext)
-        current_iv = chunk[-16:]
-        
-        # B. Parse Header [Len (2 bytes)]
-        payload_len = struct.unpack('<H', decrypted_chunk[:2])[0]
-        
-        # C. Decompress
-        compressed_payload = decrypted_chunk[2 : 2 + payload_len]
-        
-        try:
-            raw_data = lz4.block.decompress(compressed_payload)
-            decrypted_firmware += raw_data
-        except Exception as e:
-            print(f"ERROR: Decompression failed at chunk {i // ENC_CHUNK_SIZE}!")
-            print(e)
-            sys.exit(1)
+        # Write IV and Encrypted Data
+        f.write(payload)
 
-    print(f"[2] Decryption & Decompression Successful.")
-    print(f"    Reconstructed Size: {len(decrypted_firmware)} bytes")
-
-    # 4. Extract Footer and Verify
-    # Footer is the last 76 bytes (64 Sig + 4 Ver + 4 Len + 4 Magic)
-    footer_fmt = '<64sIII'
-    footer_size = struct.calcsize(footer_fmt)
-    
-    firmware_content = decrypted_firmware[:-footer_size]
-    footer_data = decrypted_firmware[-footer_size:]
-    
-    signature, version, fw_len, magic = struct.unpack(footer_fmt, footer_data)
-    
-    print(f"[3] Analyzing Footer:")
-    print(f"    Magic: 0x{magic:08X} (Expected: 0x{FOOTER_MAGIC:08X})")
-    print(f"    Version: 0x{version:04X}")
-    print(f"    Size in Footer: {fw_len} (Actual: {len(firmware_content)})")
-
-    if magic != FOOTER_MAGIC:
-        print("ERROR: Invalid Magic Code!")
-        sys.exit(1)
-
-    if fw_len != len(firmware_content):
-        print("ERROR: Size mismatch!")
-        sys.exit(1)
-
-    # 5. Verify Signature
-    print("[4] Verifying Signature...")
-    
-    # Recalculate SHA256 of the raw firmware data
-    sha256_hash = hashlib.sha256(firmware_content).digest()
-    
-    with open(key_path) as f:
-        vk = VerifyingKey.from_pem(f.read())
-        
-    try:
-        # Verify using the raw signature bytes
-        if vk.verify_digest(signature, sha256_hash, sigdecode=lambda sig, order: (int.from_bytes(sig[:32], 'big'), int.from_bytes(sig[32:], 'big'))):
-            print("SUCCESS: Signature Verified! The firmware is authentic.")
-            
-            # Save the result to check manually
-            with open("restored_firmware.bin", "wb") as f:
-                f.write(firmware_content)
-            print("    Saved 'restored_firmware.bin' for inspection.")
-            
-    except BadSignatureError:
-        print("ERROR: Signature Verification FAILED! File may be tampered.")
-        sys.exit(1)
+    # --- Debug Info ---
+    print("\n--- Summary ---")
+    print(f"Original Size:  {len(firmware_data)} bytes")
+    print(f"Padded Size:    {len(padded_data)} bytes (Multiple of 16)")
+    print(f"Payload Size:   {payload_size} bytes (Size written to header)")
+    print(f"Signature Len:  {len(signature)} bytes")
+    print(f"IV:             {iv.hex()}")
+    print("----------------\nFile generated successfully.")
 
 if __name__ == "__main__":
-    main()
+    # --- Configuration ---
+    # Change these filenames if necessary
+    INPUT_BIN = "Application1.bin"       # Your compiled application binary
+    OUTPUT_BIN = "update_encrypted.bin"  # The file to flash to Sector 6
+    PRIV_KEY = "private.pem"             # From keygen.py
+    AES_KEY = "secret.key"               # Raw binary key file
+
+    # Run generation
+    if not os.path.exists(INPUT_BIN):
+        print(f"Error: {INPUT_BIN} not found. Please compile Application1 first.")
+    else:
+        generate_update(INPUT_BIN, OUTPUT_BIN, PRIV_KEY, AES_KEY)

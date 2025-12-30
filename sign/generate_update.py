@@ -4,6 +4,7 @@ import os
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from ecdsa import SigningKey, NIST256p
+from cryptography.hazmat.primitives.ciphers import modes
 import hashlib
 
 # --- Configuration ---

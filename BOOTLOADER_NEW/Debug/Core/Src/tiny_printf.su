@@ -1,4 +1,0 @@
-../Core/Src/tiny_printf.c:18:13:_tfp_putc	16	static
-../Core/Src/tiny_printf.c:28:13:_tfp_print_unsigned	80	static
-../Core/Src/tiny_printf.c:14:6:tfp_init	0	static
-../Core/Src/tiny_printf.c:51:6:tfp_printf	24	static

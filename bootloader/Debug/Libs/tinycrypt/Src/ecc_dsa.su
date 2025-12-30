@@ -1,4 +1,0 @@
-../Libs/tinycrypt/Src/ecc_dsa.c:61:13:bits2int	32	static
-../Libs/tinycrypt/Src/ecc_dsa.c:94:5:uECC_sign_with_k	200	static
-../Libs/tinycrypt/Src/ecc_dsa.c:156:5:uECC_sign	144	static
-../Libs/tinycrypt/Src/ecc_dsa.c:187:5:uECC_verify	536	static
