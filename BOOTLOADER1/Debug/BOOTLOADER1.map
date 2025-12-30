@@ -125,6 +125,115 @@ Discarded input sections
  .text          0x00000000        0x0 ./Core/Src/BL_Functions.o
  .data          0x00000000        0x0 ./Core/Src/BL_Functions.o
  .bss           0x00000000        0x0 ./Core/Src/BL_Functions.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .group         0x00000000        0xc ./Core/Src/Cyptology_Control.o
+ .text          0x00000000        0x0 ./Core/Src/Cyptology_Control.o
+ .data          0x00000000        0x0 ./Core/Src/Cyptology_Control.o
+ .bss           0x00000000        0x0 ./Core/Src/Cyptology_Control.o
+ .rodata.curve_secp256r1
+                0x00000000       0xb0 ./Core/Src/Cyptology_Control.o
+ .debug_info    0x00000000      0x234 ./Core/Src/Cyptology_Control.o
+ .debug_abbrev  0x00000000       0xdb ./Core/Src/Cyptology_Control.o
+ .debug_aranges
+                0x00000000       0x18 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x20c ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x28d ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x3b ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0xd9 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000     0x12cd ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x11f ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x19 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000    0x19222 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x6d ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000     0x375e ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x190 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x63 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000     0x18ad ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x6c4 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x185 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x115 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x1fd ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0xa5 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x24f ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x41 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x58 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x236 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x14e ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x25a ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x12 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x22c ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x61 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0xa5 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x12e ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x108 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x35 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x56d ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x44 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x14d ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x56 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/Cyptology_Control.o
+ .debug_line    0x00000000      0x7e5 ./Core/Src/Cyptology_Control.o
+ .debug_str     0x00000000    0xe0243 ./Core/Src/Cyptology_Control.o
+ .comment       0x00000000       0x44 ./Core/Src/Cyptology_Control.o
+ .ARM.attributes
+                0x00000000       0x34 ./Core/Src/Cyptology_Control.o
  .group         0x00000000        0xc ./Core/Src/jump_to_app.o
  .group         0x00000000        0xc ./Core/Src/jump_to_app.o
  .group         0x00000000        0xc ./Core/Src/jump_to_app.o
@@ -216,6 +325,47 @@ Discarded input sections
  .debug_macro   0x00000000      0x56d ./Core/Src/jump_to_app.o
  .debug_macro   0x00000000       0x44 ./Core/Src/jump_to_app.o
  .debug_macro   0x00000000      0x14d ./Core/Src/jump_to_app.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/jump_to_app.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .group         0x00000000        0xc ./Core/Src/keys.o
+ .text          0x00000000        0x0 ./Core/Src/keys.o
+ .data          0x00000000        0x0 ./Core/Src/keys.o
+ .bss           0x00000000        0x0 ./Core/Src/keys.o
+ .rodata.AES_SECRET_KEY
+                0x00000000       0x10 ./Core/Src/keys.o
+ .rodata.ECDSA_PUBLIC_KEY_X
+                0x00000000       0x20 ./Core/Src/keys.o
+ .rodata.ECDSA_PUBLIC_KEY_Y
+                0x00000000       0x20 ./Core/Src/keys.o
+ .text.Get_Public_Key_X
+                0x00000000       0x14 ./Core/Src/keys.o
+ .text.Get_Public_Key_Y
+                0x00000000       0x14 ./Core/Src/keys.o
+ .debug_info    0x00000000      0x116 ./Core/Src/keys.o
+ .debug_abbrev  0x00000000       0x8f ./Core/Src/keys.o
+ .debug_aranges
+                0x00000000       0x28 ./Core/Src/keys.o
+ .debug_rnglists
+                0x00000000       0x19 ./Core/Src/keys.o
+ .debug_macro   0x00000000       0x63 ./Core/Src/keys.o
+ .debug_macro   0x00000000      0xad8 ./Core/Src/keys.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/keys.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/keys.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/keys.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/keys.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/keys.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/keys.o
+ .debug_line    0x00000000      0x428 ./Core/Src/keys.o
+ .debug_str     0x00000000     0x3e2d ./Core/Src/keys.o
+ .comment       0x00000000       0x44 ./Core/Src/keys.o
+ .debug_frame   0x00000000       0x50 ./Core/Src/keys.o
+ .ARM.attributes
+                0x00000000       0x34 ./Core/Src/keys.o
  .group         0x00000000        0xc ./Core/Src/main.o
  .group         0x00000000        0xc ./Core/Src/main.o
  .group         0x00000000        0xc ./Core/Src/main.o
@@ -3279,7 +3429,9 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o
 LOAD ./Core/Src/BL_Functions.o
+LOAD ./Core/Src/Cyptology_Control.o
 LOAD ./Core/Src/jump_to_app.o
+LOAD ./Core/Src/keys.o
 LOAD ./Core/Src/main.o
 LOAD ./Core/Src/stm32f7xx_hal_msp.o
 LOAD ./Core/Src/stm32f7xx_it.o
@@ -3988,7 +4140,7 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_rnglists
                 0x000004b3      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
 
-.debug_macro    0x00000000    0x25475
+.debug_macro    0x00000000    0x25455
  .debug_macro   0x00000000      0x2d8 ./Core/Src/BL_Functions.o
  .debug_macro   0x000002d8      0xad8 ./Core/Src/BL_Functions.o
  .debug_macro   0x00000db0       0x22 ./Core/Src/BL_Functions.o
@@ -4052,72 +4204,71 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x00023844       0x20 ./Core/Src/BL_Functions.o
  .debug_macro   0x00023864       0x58 ./Core/Src/BL_Functions.o
  .debug_macro   0x000238bc      0x1f0 ./Core/Src/jump_to_app.o
- .debug_macro   0x00023aac       0x16 ./Core/Src/jump_to_app.o
- .debug_macro   0x00023ac2       0x52 ./Core/Src/jump_to_app.o
- .debug_macro   0x00023b14      0x2f5 ./Core/Src/main.o
- .debug_macro   0x00023e09      0x1dd ./Core/Src/stm32f7xx_hal_msp.o
- .debug_macro   0x00023fe6      0x1e7 ./Core/Src/stm32f7xx_it.o
- .debug_macro   0x000241cd      0x1ce ./Core/Src/system_stm32f7xx.o
- .debug_macro   0x0002439b      0x1e7 ./Core/Src/tiny_printf.o
- .debug_macro   0x00024582      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_macro   0x00024774      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_macro   0x00024942      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_macro   0x00024b1c      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_macro   0x00024cf6      0x1d4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_macro   0x00024eca      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_macro   0x000250bc      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_macro   0x0002528a      0x1eb ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_macro   0x00023aac       0x52 ./Core/Src/jump_to_app.o
+ .debug_macro   0x00023afe      0x2eb ./Core/Src/main.o
+ .debug_macro   0x00023de9      0x1dd ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_macro   0x00023fc6      0x1e7 ./Core/Src/stm32f7xx_it.o
+ .debug_macro   0x000241ad      0x1ce ./Core/Src/system_stm32f7xx.o
+ .debug_macro   0x0002437b      0x1e7 ./Core/Src/tiny_printf.o
+ .debug_macro   0x00024562      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_macro   0x00024754      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_macro   0x00024922      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_macro   0x00024afc      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_macro   0x00024cd6      0x1d4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_macro   0x00024eaa      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_macro   0x0002509c      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_macro   0x0002526a      0x1eb ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
 
-.debug_line     0x00000000     0xc2cb
+.debug_line     0x00000000     0xc2b1
  .debug_line    0x00000000      0xa9d ./Core/Src/BL_Functions.o
  .debug_line    0x00000a9d      0x7df ./Core/Src/jump_to_app.o
- .debug_line    0x0000127c      0xb21 ./Core/Src/main.o
- .debug_line    0x00001d9d      0x7bd ./Core/Src/stm32f7xx_hal_msp.o
- .debug_line    0x0000255a      0x80f ./Core/Src/stm32f7xx_it.o
- .debug_line    0x00002d69      0x7bc ./Core/Src/system_stm32f7xx.o
- .debug_line    0x00003525      0x8a6 ./Core/Src/tiny_printf.o
- .debug_line    0x00003dcb       0x7a ./Core/Startup/startup_stm32f746nghx.o
- .debug_line    0x00003e45      0xa6f ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_line    0x000048b4      0xcef ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_line    0x000055a3      0xb46 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_line    0x000060e9      0xb6d ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_line    0x00006c56      0xbc9 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_line    0x0000781f      0xf62 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_line    0x00008781      0xea0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_line    0x00009621     0x2caa ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_line    0x0000127c      0xb07 ./Core/Src/main.o
+ .debug_line    0x00001d83      0x7bd ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_line    0x00002540      0x80f ./Core/Src/stm32f7xx_it.o
+ .debug_line    0x00002d4f      0x7bc ./Core/Src/system_stm32f7xx.o
+ .debug_line    0x0000350b      0x8a6 ./Core/Src/tiny_printf.o
+ .debug_line    0x00003db1       0x7a ./Core/Startup/startup_stm32f746nghx.o
+ .debug_line    0x00003e2b      0xa6f ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_line    0x0000489a      0xcef ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_line    0x00005589      0xb46 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_line    0x000060cf      0xb6d ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_line    0x00006c3c      0xbc9 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_line    0x00007805      0xf62 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_line    0x00008767      0xea0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_line    0x00009607     0x2caa ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
 
-.debug_str      0x00000000    0xe5d91
- .debug_str     0x00000000    0xe5d91 ./Core/Src/BL_Functions.o
+.debug_str      0x00000000    0xe5d74
+ .debug_str     0x00000000    0xe5d74 ./Core/Src/BL_Functions.o
                               0xe35d4 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Src/jump_to_app.o
+ .debug_str     0x000e5d74        0x0 ./Core/Src/jump_to_app.o
                               0xe02d1 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Src/main.o
-                              0xe44e4 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_str     0x000e5d74        0x0 ./Core/Src/main.o
+                              0xe44c7 (size before relaxing)
+ .debug_str     0x000e5d74        0x0 ./Core/Src/stm32f7xx_hal_msp.o
                               0xe082a (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Src/stm32f7xx_it.o
+ .debug_str     0x000e5d74        0x0 ./Core/Src/stm32f7xx_it.o
                               0xdffb2 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Src/system_stm32f7xx.o
+ .debug_str     0x000e5d74        0x0 ./Core/Src/system_stm32f7xx.o
                               0xe012c (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Src/tiny_printf.o
+ .debug_str     0x000e5d74        0x0 ./Core/Src/tiny_printf.o
                               0xe0567 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Core/Startup/startup_stm32f746nghx.o
+ .debug_str     0x000e5d74        0x0 ./Core/Startup/startup_stm32f746nghx.o
                                  0xb5 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
                               0xe0a95 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
                               0xe0ab2 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
                               0xe024f (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
                               0xe02ec (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
                               0xe01ea (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
                               0xe048e (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
                               0xe03c6 (size before relaxing)
- .debug_str     0x000e5d91        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_str     0x000e5d74        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
                               0xe0ddb (size before relaxing)
 
 .comment        0x00000000       0x43

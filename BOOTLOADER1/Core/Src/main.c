@@ -26,7 +26,6 @@
 #include "jump_to_app.h"
 #include "BL_Functions.h"
 
-#include "bootloader_interface.h" // For Bootloader_API_t
 
 //#include <stdio.h>
 /* USER CODE END Includes */
@@ -93,6 +92,7 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
+
 
   /* USER CODE BEGIN SysInit */
 

@@ -1,5 +1,7 @@
 "./Core/Src/BL_Functions.o"
+"./Core/Src/Cyptology_Control.o"
 "./Core/Src/jump_to_app.o"
+"./Core/Src/keys.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f7xx_hal_msp.o"
 "./Core/Src/stm32f7xx_it.o"
