@@ -28,11 +28,6 @@ Core/Src/BL_Functions.o: ../Core/Src/BL_Functions.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h \
- ../Core/Src/keys.c \
- C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/sha256.h \
- C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc_dsa.h \
- C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc.h \
  ../Core/Inc/mem_layout.h ../Core/Inc/tiny_printf.h
 ../Core/Inc/BL_Functions.h:
 ../Core/Inc/mem_layout.h:
@@ -64,10 +59,5 @@ Core/Src/BL_Functions.o: ../Core/Src/BL_Functions.c \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h:
-../Core/Src/keys.c:
-C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/sha256.h:
-C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc_dsa.h:
-C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc.h:
 ../Core/Inc/mem_layout.h:
 ../Core/Inc/tiny_printf.h:

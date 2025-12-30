@@ -1,1 +1,2 @@
-../Core/Src/keys.c:39:16:Get_Public_Key_64	4	static
+../Core/Src/keys.c:35:16:Get_Public_Key_X	4	static
+../Core/Src/keys.c:36:16:Get_Public_Key_Y	4	static
