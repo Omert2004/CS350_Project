@@ -1,0 +1,3 @@
+../Core/Src/Cyptology_Control.c:18:10:Find_Footer_Address	4
+../Core/Src/Cyptology_Control.c:45:5:Firmware_Is_Valid	2
+../Core/Src/Cyptology_Control.c:81:5:Verify_Signature	1

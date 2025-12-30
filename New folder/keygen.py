@@ -1,22 +1,39 @@
-from ecdsa import SigningKey, NIST256p
 import os
+from ecdsa import SigningKey, NIST256p
 
-# 1. Generate Private Key (ECDSA P-256)
-sk = SigningKey.generate(curve=NIST256p)
-with open("private.pem", "wb") as f:
-    f.write(sk.to_pem())
-print("Generated private.pem")
+# Output filenames
+PRIVATE_KEY_FILE = "private.pem"
+PUBLIC_KEY_FILE = "public.pem"
+AES_KEY_FILE = "secret.key"
 
-# 2. Generate Public Key
-vk = sk.verifying_key
-with open("public.pem", "wb") as f:
-    f.write(vk.to_pem())
-print("Generated public.pem")
+def generate_keys():
+    print("--- Generating New Security Keys ---")
 
-# 3. Generate AES Secret Key (Random 16 bytes)
-aes_key = os.urandom(16)
-with open("secret.key", "wb") as f:
-    f.write(aes_key)
+    # 1. Generate ECDSA P-256 Key Pair (for Signing)
+    print(f"Generating ECDSA (NIST256p) key pair...")
+    sk = SigningKey.generate(curve=NIST256p)
+    vk = sk.verifying_key
 
-print("Generated secret.key")
-print(f"AES Key (Hex): {aes_key.hex().upper()}")
+    # Save Private Key
+    with open(PRIVATE_KEY_FILE, "wb") as f:
+        f.write(sk.to_pem())
+    print(f"  [+] Saved {PRIVATE_KEY_FILE}")
+
+    # Save Public Key
+    with open(PUBLIC_KEY_FILE, "wb") as f:
+        f.write(vk.to_pem())
+    print(f"  [+] Saved {PUBLIC_KEY_FILE}")
+
+    # 2. Generate AES-128 Key (for Encryption)
+    # Generates 16 bytes (128 bits) of random data
+    print(f"Generating AES-128 secret key...")
+    aes_key = os.urandom(16) 
+
+    with open(AES_KEY_FILE, "wb") as f:
+        f.write(aes_key)
+    print(f"  [+] Saved {AES_KEY_FILE} (16 bytes)")
+
+    print("\nKeys generated successfully!")
+
+if __name__ == "__main__":
+    generate_keys()

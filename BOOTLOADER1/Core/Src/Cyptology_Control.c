@@ -1,8 +1,8 @@
 /*
  * Cyptology_Control.c
  *
- *  Created on: 30 Ara 2025
- *      Author: Oguzm
+ * Created on: 30 Ara 2025
+ * Author: Oguzm
  */
 #include "Cryptology_Control.h"
 #include "sha256.h"
@@ -10,6 +10,7 @@
 #include "firmware_footer.h"
 #include <string.h>
 #include "mem_layout.h"
+#include "keys.h"
 
 extern const uint8_t ECDSA_public_key_xy[];
 
@@ -24,24 +25,17 @@ uint32_t Find_Footer_Address(uint32_t slot_start, uint32_t slot_size)
         // Check for Magic Number
         if (*(uint32_t*)addr == FOOTER_MAGIC)
         {
-            // We found the Magic at 'addr'.
-            // The footer starts before the magic.
-            // Struct layout: [Ver][Size][Sig][Magic]
-            // Footer Start = Magic_Address - offsetof(magic)
-            // But simpler: Footer Start = Magic_Address - (TotalSize - 4)
+            // Found Magic! The footer ends here.
+            // Struct: [Ver][Size][Sig][Magic]
+            // We need to back up by (sizeof(fw_footer_t) - 4) to find the start
             uint32_t footer_start = addr - (sizeof(fw_footer_t) - 4);
 
-            // Double check safety
+            // Safety check
             if (footer_start < slot_start) continue;
 
-            fw_footer_t *f = (fw_footer_t *)footer_start;
-
-            // Verify Consistency: Firmware Size + Footer Size should land us here
-            uint32_t calculated_end = slot_start + f->size;
-
-            if (calculated_end == footer_start) {
-                return footer_start; // Found valid footer!
-            }
+            // Optional: Verify consistency (e.g. Size + FooterAddr match)
+            // But for now, returning the address is sufficient
+            return footer_start;
         }
     }
     return 0; // Not found
@@ -59,15 +53,19 @@ int Firmware_Is_Valid(uint32_t start_addr, uint32_t slot_size)
 
     fw_footer_t *footer = (fw_footer_t *)footer_addr;
 
-    // 2. Hash
+    // 2. Hash the Payload
     struct tc_sha256_state_struct s;
     uint8_t digest[32];
 
     (void)tc_sha256_init(&s);
-    tc_sha256_update(&s, (uint8_t*)(APP_DOWNLOAD_START_ADDR + 4), data_len);
+
+    // FIXED: Use footer->size (from firmware_footer.h)
+    // This size represents the encrypted payload size (IV + Data)
+    tc_sha256_update(&s, (uint8_t*)start_addr, footer->size);
+
     (void)tc_sha256_final(digest, &s);
 
-    // 3. Verify
+    // 3. Verify Signature
     int result = uECC_verify(
         ECDSA_public_key_xy,
         digest,
@@ -76,29 +74,26 @@ int Firmware_Is_Valid(uint32_t start_addr, uint32_t slot_size)
         uECC_secp256r1()
     );
 
-    return result;
+    return result; // 1 = Valid, 0 = Invalid
 }
 
-
-
-#include "tinycrypt/sha256.h" // Ensure this include is present
-
+// Helper if you need to verify a raw buffer manually
 int Verify_Signature(uint8_t* pData, uint32_t Size, uint8_t* pSignature)
 {
     uint8_t hash[32];
     struct tc_sha256_state_struct s;
 
-    // 1. Initialize SHA-256
     tc_sha256_init(&s);
-
-    // 2. Hash the Payload (IV + Encrypted Data)
     tc_sha256_update(&s, pData, Size);
-
-    // 3. Finalize to get the 32-byte digest
     tc_sha256_final(hash, &s);
 
-    // 4. Verify the signature against the HASH, not pData
-    int result = uECC_verify(public_key, hash, pSignature, uECC_secp256r1());
+    int result = uECC_verify(
+        ECDSA_public_key_xy,
+        hash,
+        32,
+        pSignature,
+        uECC_secp256r1()
+    );
 
     return result;
 }

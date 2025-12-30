@@ -1,84 +1,76 @@
 import sys
 import struct
-import hashlib
 import os
-from ecdsa import SigningKey, NIST256p
-import lz4.frame
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import padding
+import hashlib
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from ecdsa import SigningKey
 
-# Configuration (Must match C code!)
-AES_KEY = b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F' # 16 bytes
-FOOTER_MAGIC = 0x454E4421  # "END!" in hex
-FIRMWARE_VERSION = 0x0100  # Version 1.0
+# --- Configuration ---
+FOOTER_MAGIC = 0x454E4421  # "END!"
+FIRMWARE_VERSION = 0x0100  # 1.0.0
 
-def main():
-    if len(sys.argv) != 4:
-        print("Usage: python generate_update.py <input_bin> <output_enc> <private_key.pem>")
-        sys.exit(1)
+KEY_FILE = "private.pem"
+AES_KEY_FILE = "secret.key"
+OUTPUT_FILE = "update_encrypted.bin"
 
-    input_path = sys.argv[1]
-    output_path = sys.argv[2]
-    key_path = sys.argv[3]
+def generate_update(input_file):
+    if not os.path.exists(input_file):
+        print(f"Error: Input file '{input_file}' not found.")
+        return
 
-    print(f"[1] Reading Firmware: {input_path}")
-    with open(input_path, "rb") as f:
-        firmware_bin = f.read()
-    
-    firmware_len = len(firmware_bin)
-    print(f"    Original Size: {firmware_len} bytes")
-
-    # --- STEP 1: SIGNING (ECDSA) ---
-    # We sign the RAW firmware before compression/encryption
-    print("[2] Calculating Signature...")
-    sha256 = hashlib.sha256(firmware_bin).digest()
-    
-    with open(key_path) as f:
+    # 1. Load Keys
+    print(f"Loading keys...")
+    with open(KEY_FILE, "rb") as f:
         sk = SigningKey.from_pem(f.read())
     
-    # Deterministic signature (matches TinyCrypt expectations)
-    signature = sk.sign_digest_deterministic(sha256, sigencode=lambda r, s, order: r.to_bytes(32, 'big') + s.to_bytes(32, 'big'))
-    
-    # Create the Footer Struct
-    # Struct format: 64s (Sig) + I (Version) + I (Size) + I (Magic)
-    footer = struct.pack('<64sIII', 
-                         signature, 
-                         FIRMWARE_VERSION, 
-                         firmware_len, 
-                         FOOTER_MAGIC)
-    
-    combined_data = firmware_bin + footer
-    print(f"    Footer appended. New Size: {len(combined_data)} bytes")
+    with open(AES_KEY_FILE, "rb") as f:
+        aes_key = f.read()
+        if len(aes_key) != 16:
+            print(f"Error: AES key must be 16 bytes (currently {len(aes_key)}).")
+            return
 
-    # --- STEP 2: COMPRESSION (LZ4) ---
-    print("[3] Compressing (LZ4)...")
-    # We use block compression to be compatible with standard LZ4
-    compressed_data = lz4.frame.compress(combined_data, compression_level=9)
-    print(f"    Compressed Size: {len(compressed_data)} bytes")
-
-    # --- STEP 3: ENCRYPTION (AES-128-CBC) ---
-    print("[4] Encrypting (AES-128-CBC)...")
+    # 2. Read Firmware
+    print(f"Reading firmware: {input_file}")
+    with open(input_file, "rb") as f:
+        fw_data = f.read()
     
-    # Generate a random IV (16 bytes)
+    # 3. Encrypt Firmware (AES-CBC)
+    print("Encrypting firmware...")
     iv = os.urandom(16)
+    cipher = AES.new(aes_key, AES.MODE_CBC, iv)
+    padded_data = pad(fw_data, AES.block_size)
+    encrypted_data = cipher.encrypt(padded_data)
     
-    # Pad data to 16-byte block size (PKCS7)
-    padder = padding.PKCS7(128).padder()
-    padded_data = padder.update(compressed_data) + padder.finalize()
-    
-    cipher = Cipher(algorithms.AES(AES_KEY), modes.CBC(iv), backend=default_backend())
-    encryptor = cipher.encryptor()
-    encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+    # Payload = IV + Encrypted Data
+    payload = iv + encrypted_data
+    payload_size = len(payload)
+    print(f"  Encrypted Payload Size: {payload_size} bytes")
 
-    # Prepend IV to the file (so Bootloader can read it)
-    final_payload = iv + encrypted_data
+    # 4. Sign the Payload
+    print("Signing payload...")
+    h = hashlib.sha256(payload).digest()
+    signature = sk.sign_digest(h)
+
+    # 5. Create Footer (MATCHING C STRUCT)
+    # C Struct:
+    #   uint32_t version;
+    #   uint32_t size;
+    #   uint8_t  signature[64];
+    #   uint32_t magic;
     
-    print(f"[5] Writing Output: {output_path}")
-    with open(output_path, "wb") as f:
-        f.write(final_payload)
-    
-    print("Done! Ready to flash.")
+    footer = struct.pack('<II', FIRMWARE_VERSION, payload_size) + signature + struct.pack('<I', FOOTER_MAGIC)
+
+    # 6. Write Output
+    final_data = payload + footer
+    with open(OUTPUT_FILE, "wb") as f:
+        f.write(final_data)
+
+    print(f"\n[SUCCESS] Update package created: {OUTPUT_FILE}")
+    print(f"Total File Size: {len(final_data)} bytes")
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) < 2:
+        print("Usage: python generate_update.py <application.bin>")
+    else:
+        generate_update(sys.argv[1])

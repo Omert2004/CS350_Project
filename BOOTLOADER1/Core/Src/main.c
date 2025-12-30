@@ -102,7 +102,6 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
@@ -119,65 +118,61 @@ int main(void)
 
 
 	// 1. Read Config (This loads defaults into RAM if Flash is empty)
-	if (BL_ReadConfig(&config)) {
-	      // Config was empty/invalid.
-	      // We modified RAM defaults inside the function.
-	      // COMMIT: Save defaults to Flash immediately.
-		printf("[BL] Config Invalid/Empty. Initialized to Defaults.\r\n");
-	    BL_WriteConfig(&config);
-	  }
+	  BL_ReadConfig(&config);
 
-	config.magic_number = 0xDEADBEEF;
+	  // 2. CHECK USER BUTTON (PI11 on F746 Discovery)
+	  // If Button is Pressed (High), Force Update Mode
+	  if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
+	      printf("[BL] Button Pressed! Forcing Update Mode...\r\n");
+	      config.system_status = STATE_UPDATE_REQ;
+	      // We don't save this to Flash to avoid permanent loops,
+	      // just set it in RAM for this session.
+	  }
+	/*config.magic_number = 0xDEADBEEF;
 	config.system_status = STATE_UPDATE_REQ;
 	config.boot_failure_count = 0;
 
 	// COMMIT: Save to Flash before we Reset
-	BL_WriteConfig(&config);
+	BL_WriteConfig(&config);*/
 
 	switch(config.system_status){
-		case STATE_UPDATE_REQ:
-			printf("[BL] State: UPDATE REQUESTED.\r\n");
-			// This function handles Decryption -> Verification -> Installation -> Reset
-			// It DOES NOT return if successful.
-			BL_Swap_NoBuffer();
+      case STATE_UPDATE_REQ:
+          printf("[BL] State: UPDATE REQUESTED.\r\n");
+          BL_Swap_NoBuffer();
 
-			// If we are here, Swap Failed/Aborted without Reset.
-			// Revert state to avoid infinite loop.
-			printf("[BL] Update Failed. Reverting state.\r\n");
-			config.system_status = STATE_NORMAL;
-			BL_WriteConfig(&config);
-			break;
+          // If Swap returns, it failed. Revert to Normal to avoid loop.
+          printf("[BL] Update Failed. Reverting state.\r\n");
+          config.system_status = STATE_NORMAL;
+          BL_WriteConfig(&config);
+          // Fall through to try booting whatever is in S5
 
-		case STATE_TESTING:
-			printf("[BL] State: TESTING/VERIFYING.\r\n");
+      case STATE_NORMAL:
+      default:
+    	  printf("[BL] Checking S5...\r\n");
 
-		case STATE_NORMAL:
-		default:
-		  printf("[BL] State: NORMAL. Checking Active Application...\r\n");
+			// Read the Initial Stack Pointer (First word of Vector Table)
+			uint32_t msp = *(uint32_t*)APP_ACTIVE_START_ADDR;
 
-		  // 4. Integrity & Authenticity Check
-		  // Verifies SHA-256 + ECDSA of the code sitting in Sector 5
-		  if (Firmware_Is_Valid(APP_ACTIVE_START_ADDR, SLOT_SIZE)) {
-			  printf("[BL] Signature Valid. Integrity Verified.\r\n");
-			  printf("[BL] Jumping to Application at 0x%X...\r\n", APP_ACTIVE_START_ADDR);
+			// Read Reset Vector (Second word)
+			uint32_t reset_vector = *(uint32_t*)(APP_ACTIVE_START_ADDR + 4);
 
-			  // Lock critical settings before jump
-			  // Usually, Bootloader disables its specific MPU settings before jump.
-			  Bootloader_JumpToApp();
-		  }
-		  else {
-			  printf("[ERROR] Active Application Verification FAILED!\r\n");
-			  printf("[ERROR] System Halted. Please flash a valid update.\r\n");
-
-			  // Optional: If you had a backup in S6, you could auto-rollback here.
-			  // For now, blink LED to indicate failure.
-			  while(1) {
-				  HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
-				  HAL_Delay(200);
-			  }
-		  }
-		  break;
-	  }
+			// Check if MSP is in RAM (approx 0x20000000 to 0x20050000)
+			// AND Reset Vector is in Flash S5 (0x0804xxxx)
+			if ((msp & 0x2FF00000) == 0x20000000 &&
+				(reset_vector >= APP_ACTIVE_START_ADDR && reset_vector < 0x08080000))
+			{
+				printf("[BL] Valid App found! Jumping...\r\n");
+				Bootloader_JumpToApp();
+			}
+			else
+			{
+				printf("[ERROR] S5 Invalid.\r\n");
+				printf("  MSP: 0x%08X (Expected ~0x2000xxxx)\r\n", (unsigned int)msp);
+				printf("  PC:  0x%08X (Expected ~0x0804xxxx)\r\n", (unsigned int)reset_vector);
+				// ... Error loop ...
+			}
+break;
+  }
 
   /* USER CODE END 2 */
 
@@ -290,15 +285,21 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOI_CLK_ENABLE();
 
-  /*Configure GPIO pin : USER_LED_Pin */
-  GPIO_InitStruct.Pin = USER_LED_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(USER_LED_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_1, GPIO_PIN_RESET);
 
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+  /*Configure GPIO pin : PI1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PI11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -494,8 +495,6 @@ void MPU_Config(void)
   MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
   MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
-  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
-    MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1; // TEX=1, C=0, B=0 -> Normal, Non-Cacheable
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /* Enables the MPU */
