@@ -132,67 +132,54 @@ int main(void)
 	      // Config was empty/invalid.
 	      // We modified RAM defaults inside the function.
 	      // COMMIT: Save defaults to Flash immediately.
-	      BL_WriteConfig(&config);
+		printf("[BL] Config Invalid/Empty. Initialized to Defaults.\r\n");
+	    BL_WriteConfig(&config);
 	  }
 
-	config.system_status = STATE_UPDATE_REQ;
-	config.boot_failure_count = 0;
-
-	// COMMIT: Save to Flash before we Reset
-	BL_WriteConfig(&config);
-
-	if (config.system_status == STATE_NORMAL) {
-		/*
-	    printf("[TEST] Current State is NORMAL. Forcing Update Request...\r\n");
-	    config.system_status = STATE_UPDATE_REQ;
-	    config.boot_failure_count = 0;
-	    // Write the Request to Flash
-	    BL_WriteConfig(&config);
-*/
-		if (Firmware_Is_Valid(APP_ACTIVE_START_ADDR, SLOT_SIZE)){
-			printf("[BL] Jumping to Active Application\r\n");
-			Bootloader_JumpToApp();
-		}
-		else{
-			printf("[BL] The active application couldn't pass the cryptology test\r\n");
-			printf("[BL] You may try the other application or you can renew the active application\r\n");
-		}
-	    // RESET immediately to process the request cleanly
-	    //NVIC_SystemReset();
-	}
-
-	// 2. Logic Check
-	if (config.system_status == STATE_UPDATE_REQ) {
-		printf("[BL] Update Request Detected. Swapping...\r\n");
-		// Perform Verification & Copy/Swap (Slot 2 -> Slot 1)
-		BL_Swap_NoBuffer();
-
-		// Mark as TESTING so next boot we watch for crashes
-		config.system_status = STATE_TESTING;
-		config.boot_failure_count = 0;
-		BL_WriteConfig(&config);
-		printf("[BL] Swap Done. Now time to test New App...\r\n");
-		//NVIC_SystemReset(); // Reboot into new app
-	}
-	else if (config.system_status == STATE_TESTING) {
-		printf("[BL] Verifying New Update (Attempt %lu)...\r\n", config.boot_failure_count);
-		// Assume we found a footer at the end of the slot
-		if (Firmware_Is_Valid(APP_ACTIVE_START_ADDR,SLOT_SIZE)) {
-			config.system_status = STATE_NORMAL;
-			config.boot_failure_count = 0;
-			BL_WriteConfig(&config);
-			printf("[BL] Jumping to Application...\r\n");
-			Bootloader_JumpToApp();
-
-		} else {
-			// Still testing. Increment crash counter.
-			printf("[BL] CRASH LIMIT REACHED! Rolling Back...\r\n");
+	switch(config.system_status){
+		case STATE_UPDATE_REQ:
+			printf("[BL] State: UPDATE REQUESTED.\r\n");
+			// This function handles Decryption -> Verification -> Installation -> Reset
+			// It DOES NOT return if successful.
 			BL_Swap_NoBuffer();
+
+			// If we are here, Swap Failed/Aborted without Reset.
+			// Revert state to avoid infinite loop.
+			printf("[BL] Update Failed. Reverting state.\r\n");
 			config.system_status = STATE_NORMAL;
 			BL_WriteConfig(&config);
-			NVIC_SystemReset();
-		}
-	}
+			break;
+
+		case STATE_TESTING:
+			printf("[BL] State: TESTING/VERIFYING.\r\n");
+
+		case STATE_NORMAL:
+		default:
+		  printf("[BL] State: NORMAL. Checking Active Application...\r\n");
+
+		  // 4. Integrity & Authenticity Check
+		  // Verifies SHA-256 + ECDSA of the code sitting in Sector 5
+		  if (Firmware_Is_Valid(APP_ACTIVE_START_ADDR, SLOT_SIZE)) {
+			  printf("[BL] Signature Valid. Integrity Verified.\r\n");
+			  printf("[BL] Jumping to Application at 0x%X...\r\n", APP_ACTIVE_START_ADDR);
+
+			  // Lock critical settings before jump
+			  // Usually, Bootloader disables its specific MPU settings before jump.
+			  Bootloader_JumpToApp();
+		  }
+		  else {
+			  printf("[ERROR] Active Application Verification FAILED!\r\n");
+			  printf("[ERROR] System Halted. Please flash a valid update.\r\n");
+
+			  // Optional: If you had a backup in S6, you could auto-rollback here.
+			  // For now, blink LED to indicate failure.
+			  while(1) {
+				  HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
+				  HAL_Delay(200);
+			  }
+		  }
+		  break;
+	  }
 
   /* USER CODE END 2 */
 

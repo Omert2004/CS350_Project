@@ -29,7 +29,8 @@ Core/Src/BL_Functions.o: ../Core/Src/BL_Functions.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
  C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h \
- ../Core/Inc/keys.h ../Core/Inc/mem_layout.h ../Core/Inc/tiny_printf.h
+ ../Core/Inc/keys.h ../Core/Inc/mem_layout.h ../Core/Inc/tiny_printf.h \
+ ../Core/Inc/Cryptology_Control.h
 ../Core/Inc/BL_Functions.h:
 ../Core/Inc/mem_layout.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
@@ -64,3 +65,4 @@ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project
 ../Core/Inc/keys.h:
 ../Core/Inc/mem_layout.h:
 ../Core/Inc/tiny_printf.h:
+../Core/Inc/Cryptology_Control.h:

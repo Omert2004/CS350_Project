@@ -12,6 +12,8 @@
 #include "tiny_printf.h"
 #include "stm32f7xx_hal.h"
 
+#include "Cryptology_Control.h"
+
 extern const uint8_t AES_SECRET_KEY[];
 
 /**
@@ -106,9 +108,8 @@ uint8_t BL_WriteConfig(BootConfig_t *cfg) {
     return 1;
 }
 
-// --- Helper: Copy One Sector to Another (No RAM Buffer) ---
-static uint8_t BL_Direct_Copy(uint32_t src_addr, uint32_t dest_addr) {
-
+// Used to move code from Scratch (S7) to Active (S5)
+static uint8_t BL_Raw_Copy(uint32_t src_addr, uint32_t dest_addr){
     // [SAFETY] Disable interrupts to prevent Vector Table fetches during Erase
     __disable_irq();
 
@@ -151,21 +152,20 @@ static uint8_t BL_Direct_Copy(uint32_t src_addr, uint32_t dest_addr) {
     return 1; // Success
 }
 
-static uint8_t BL_Encrypted_Copy(uint32_t src_addr, uint32_t dest_addr) {
+// Used to backup Old App (S5 -> S6)
+static uint8_t BL_Decrypt_Copy(uint32_t src_addr, uint32_t dest_addr) {
     struct tc_aes_key_sched_struct s;
-    uint8_t buffer_enc[16]; // Read buffer (Ciphertext)
-    uint8_t buffer_dec[16]; // Write buffer (Plaintext)
-
-    // 1. Initialize AES with your secret key
-    if (tc_aes128_set_decrypt_key(&s, AES_SECRET_KEY) == 0) {
-        return 0; // Key init failed
-    }
-
-    // 2. Erase Destination Sector
+    uint8_t buffer_enc[16];
+    uint8_t buffer_dec[16];
     FLASH_EraseInitTypeDef erase;
     uint32_t error;
-    // ... (Your existing erase logic here) ...
-    // Define sector based on dest_addr (same as your old code)
+
+    if (tc_aes128_set_decrypt_key(&s, AES_SECRET_KEY) == 0) return 0;
+
+    __disable_irq();
+    HAL_FLASH_Unlock();
+
+    // Erase Dest
     if (dest_addr == APP_ACTIVE_START_ADDR) erase.Sector = FLASH_SECTOR_5;
     else if (dest_addr == APP_DOWNLOAD_START_ADDR) erase.Sector = FLASH_SECTOR_6;
     else erase.Sector = FLASH_SECTOR_7;
@@ -174,64 +174,125 @@ static uint8_t BL_Encrypted_Copy(uint32_t src_addr, uint32_t dest_addr) {
     erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
     erase.NbSectors = 1;
 
-    HAL_FLASH_Unlock();
     if (HAL_FLASHEx_Erase(&erase, &error) != HAL_OK) {
-        HAL_FLASH_Lock();
-        return 0;
+        HAL_FLASH_Lock(); __enable_irq(); return 0;
     }
 
-    // 3. Copy Loop (Process 16 bytes at a time)
+    // Decrypt Loop
     for (uint32_t offset = 0; offset < SLOT_SIZE; offset += 16) {
-
-        // A. Read 16 bytes from Source (Flash) to RAM
         memcpy(buffer_enc, (void*)(src_addr + offset), 16);
 
-        // B. Decrypt (AES-128 ECB for simplicity, or CBC if you track IV)
-        // If simply encrypting blocks:
         if (tc_aes_decrypt(buffer_dec, buffer_enc, &s) == 0) {
-             HAL_FLASH_Lock(); return 0; // Decrypt failed
+             HAL_FLASH_Lock(); __enable_irq(); return 0;
         }
 
-        // C. Write 16 decrypted bytes to Destination (Flash)
-        // Flash programming is usually done word-by-word (4 bytes)
         for (int i = 0; i < 4; i++) {
             uint32_t data_word;
             memcpy(&data_word, &buffer_dec[i*4], 4);
-
             if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, dest_addr + offset + (i*4), data_word) != HAL_OK) {
-                HAL_FLASH_Lock();
-                return 0; // Write Error
+                HAL_FLASH_Lock(); __enable_irq(); return 0;
             }
         }
     }
-
-    HAL_FLASH_Lock();
-    return 1; // Success
+    HAL_FLASH_Lock(); __enable_irq(); return 1;
 }
 
+// --- HELPER 3: Encrypt Copy (Plaintext -> Encrypted) ---
+// Used to backup Old App (S5 -> S6)
+static uint8_t BL_Encrypt_Copy(uint32_t src_addr, uint32_t dest_addr) {
+    struct tc_aes_key_sched_struct s;
+    uint8_t buffer_plain[16];
+    uint8_t buffer_enc[16];
+    FLASH_EraseInitTypeDef erase;
+    uint32_t error;
+
+    // Notice: set_encrypt_key here
+    if (tc_aes128_set_encrypt_key(&s, AES_SECRET_KEY) == 0) return 0;
+
+    __disable_irq();
+    HAL_FLASH_Unlock();
+
+    // Erase Dest (Usually S6)
+    erase.Sector = FLASH_SECTOR_6;
+    erase.TypeErase = FLASH_TYPEERASE_SECTORS;
+    erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+    erase.NbSectors = 1;
+
+    if (HAL_FLASHEx_Erase(&erase, &error) != HAL_OK) {
+        HAL_FLASH_Lock(); __enable_irq(); return 0;
+    }
+
+    // Encrypt Loop
+    for (uint32_t offset = 0; offset < SLOT_SIZE; offset += 16) {
+        memcpy(buffer_plain, (void*)(src_addr + offset), 16);
+
+        // Encrypt Plaintext -> Ciphertext
+        if (tc_aes_encrypt(buffer_enc, buffer_plain, &s) == 0) {
+             HAL_FLASH_Lock(); __enable_irq(); return 0;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            uint32_t data_word;
+            memcpy(&data_word, &buffer_enc[i*4], 4);
+            if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, dest_addr + offset + (i*4), data_word) != HAL_OK) {
+                HAL_FLASH_Lock(); __enable_irq(); return 0;
+            }
+        }
+    }
+    HAL_FLASH_Lock(); __enable_irq(); return 1;
+}
 // --- Main Swap Function ---
 void BL_Swap_NoBuffer(void) {
-    HAL_FLASH_Unlock();
+
+	BootConfig_t cfg;
+	BL_ReadConfig(&cfg);
+
+	HAL_FLASH_Unlock();
     printf("Starting Direct Swap (Zero-RAM Mode)...\r\n");
 
     // 1. Copy New App (S6) -> Scratchpad (S7)
-    if (!BL_Encrypted_Copy(APP_DOWNLOAD_START_ADDR, SCRATCH_ADDR)) {
-        printf("Fail: Copy S6->S7\r\n");
-        HAL_FLASH_Lock(); return;
-    }
+    printf("[1/3] Decrypting S6 -> S7...\r\n");
+	if (!BL_Decrypt_Copy(APP_DOWNLOAD_START_ADDR, SCRATCH_ADDR)) {
+		printf("Error: Decryption Failed.\r\n");
+		return;
+	}
+
+	// Note: ensure Firmware_Is_Valid checks the signature against the Plaintext hash
+	if (Firmware_Is_Valid(SCRATCH_ADDR, SLOT_SIZE) != 1) {
+		printf("CRITICAL ERROR: Signature Verification Failed!\r\n");
+		printf("The decrypted image is corrupt or unsigned.\r\n");
+
+		// Security Measure: Wipe S7 to prevent running bad code
+		FLASH_EraseInitTypeDef erase;
+		uint32_t error;
+		erase.TypeErase = FLASH_TYPEERASE_SECTORS;
+		erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+		erase.Sector = FLASH_SECTOR_7;
+		erase.NbSectors = 1;
+
+		HAL_FLASH_Unlock();
+		HAL_FLASHEx_Erase(&erase, &error);
+		HAL_FLASH_Lock();
+
+		// Reset state so we don't try again
+		cfg.system_status = STATE_NORMAL;
+		BL_WriteConfig(&cfg);
+		return;
+	}
+	printf("Verification Successful. Firmware is trusted.\r\n");
 
     // 2. Copy Old App (S5) -> Backup (S6)
-    if (!BL_Encrypted_Copy(APP_ACTIVE_START_ADDR, APP_DOWNLOAD_START_ADDR)) {
-        printf("Fail: Copy S5->S6\r\n");
-        HAL_FLASH_Lock(); return;
-    }
-
-    // 3. Copy New App (S7) -> Active (S5)
-    if (!BL_Encrypted_Copy(SCRATCH_ADDR, APP_ACTIVE_START_ADDR)) {
-        printf("Fail: Copy S7->S5\r\n");
-        // CRITICAL: S5 is corrupted. Recovery needed on reboot.
-        HAL_FLASH_Lock(); return;
-    }
+	printf("[2/3] Encrypting & Backing up S5 -> S6...\r\n");
+	if (!BL_Encrypt_Copy(APP_ACTIVE_START_ADDR, APP_DOWNLOAD_START_ADDR)) {
+		printf("Error: Backup Encryption Failed.\r\n");
+		return;
+	}
+	// 3. Install S7 (New Active) -> S5 (Active)
+	printf("[3/3] Installing S7 -> S5...\r\n");
+	if (!BL_Raw_Copy(SCRATCH_ADDR, APP_ACTIVE_START_ADDR)) {
+		printf("Error: Installation Failed.\r\n");
+		return;
+	}
 
     HAL_FLASH_Lock();
     printf("Swap Complete.\r\n");

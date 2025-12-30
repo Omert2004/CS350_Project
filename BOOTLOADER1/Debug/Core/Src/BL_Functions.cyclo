@@ -1,5 +1,6 @@
-../Core/Src/BL_Functions.c:30:9:BL_ReadConfig	2
-../Core/Src/BL_Functions.c:64:9:BL_WriteConfig	4
-../Core/Src/BL_Functions.c:110:16:BL_Direct_Copy	6
-../Core/Src/BL_Functions.c:154:16:BL_Encrypted_Copy	9
-../Core/Src/BL_Functions.c:213:6:BL_Swap_NoBuffer	4
+../Core/Src/BL_Functions.c:32:9:BL_ReadConfig	2
+../Core/Src/BL_Functions.c:66:9:BL_WriteConfig	4
+../Core/Src/BL_Functions.c:112:16:BL_Raw_Copy	6
+../Core/Src/BL_Functions.c:156:16:BL_Decrypt_Copy	9
+../Core/Src/BL_Functions.c:202:16:BL_Encrypt_Copy	7
+../Core/Src/BL_Functions.c:245:6:BL_Swap_NoBuffer	5
