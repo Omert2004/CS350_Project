@@ -6,7 +6,7 @@
  */
 
 #include <stdint.h>
-
+#include "keys.h"
 #include "sha256.h"
 #include "ecc_dsa.h"
 

@@ -7,7 +7,7 @@
 
 #include "BL_Functions.h"
 #include "aes.h"
-#include "keys.c"
+#include "keys.h"
 #include "mem_layout.h"
 #include "tiny_printf.h"
 #include "stm32f7xx_hal.h"

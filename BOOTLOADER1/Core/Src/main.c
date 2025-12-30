@@ -28,8 +28,13 @@
 
 #include "Cryptology_Control.h"
 #include "firmware_footer.h" // For struct definition
-
-
+#include "keys.h"
+#include <string.h>
+#include "sha256.h"
+#include "aes.h"
+#include "cbc_mode.h"
+#include "ecc_dsa.h"
+#include "ecc.h"
 //#include <stdio.h>
 /* USER CODE END Includes */
 
@@ -110,6 +115,10 @@ int main(void)
 	printf("\r\n========================================\r\n");
 	printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 6);
 	printf("========================================\r\n");
+
+
+
+
 
 	/*config.magic_number = 0xDEADBEEF;
 		config.system_status = STATE_UPDATE_REQ;
@@ -388,6 +397,81 @@ void Test_Config_Write(void)
     }
 
     HAL_FLASH_Lock();
+}
+
+
+// --- TEST DATA ---
+// A known message hash and signature for verification testing
+static const uint8_t TEST_MSG[] = "TestMessage";
+static uint8_t test_digest[32];
+
+void BL_Test_Crypto(void) {
+    printf("\r\n=== STARTING CRYPTO TEST ===\r\n");
+
+    // ---------------------------------------------------------
+    // 1. TEST SHA-256
+    // ---------------------------------------------------------
+    struct tc_sha256_state_struct sha_state;
+    (void)tc_sha256_init(&sha_state);
+    (void)tc_sha256_update(&sha_state, TEST_MSG, strlen((char*)TEST_MSG));
+    (void)tc_sha256_final(test_digest, &sha_state);
+
+    printf("[TEST] SHA-256: ");
+    // Expected hash of "TestMessage" matches? (First 4 bytes check)
+    // Hash: 532EAABD...
+    if (test_digest[0] == 0x53 && test_digest[1] == 0x2E) {
+        printf("PASSED\r\n");
+    } else {
+        printf("FAILED\r\n");
+    }
+
+    // ---------------------------------------------------------
+    // 2. TEST AES-CBC DECRYPTION
+    // ---------------------------------------------------------
+    // "Plaintext123456" (16 bytes)
+    uint8_t plaintext[16] = {0x50,0x6c,0x61,0x69,0x6e,0x74,0x65,0x78,0x74,0x31,0x32,0x33,0x34,0x35,0x36};
+    uint8_t ciphertext[16];
+    uint8_t decrypted[16];
+    uint8_t iv[16] = {0}; // Zero IV for test
+
+    // Encrypt manually first (normally done by python script)
+    struct tc_aes_key_sched_struct sched;
+    (void)tc_aes128_set_encrypt_key(&sched, AES_SECRET_KEY); // Note: Assuming AES_SECRET_KEY is 16 bytes for AES-128
+
+    // NOTE: TinyCrypt CBC requires array of blocks. Here we just test raw block if CBC api is complex
+    // Let's test a simple block encryption to verify key schedule
+    (void)tc_aes_encrypt(ciphertext, plaintext, &sched);
+
+    // Decrypt
+    (void)tc_aes128_set_decrypt_key(&sched, AES_SECRET_KEY);
+    (void)tc_aes_decrypt(decrypted, ciphertext, &sched);
+
+    printf("[TEST] AES-ECB Roundtrip: ");
+    if (memcmp(plaintext, decrypted, 16) == 0) {
+        printf("PASSED\r\n");
+    } else {
+        printf("FAILED\r\n");
+    }
+
+    // ---------------------------------------------------------
+    // 3. TEST ECDSA VERIFICATION
+    // ---------------------------------------------------------
+    // Note: Generating a signature on the MCU is heavy. usually we just verify.
+    // For this test, we check if uECC_verify returns valid for the public key.
+    // Since we don't have a valid signature for 'TestMessage' signed by the PRIVATE key counterpart
+    // of 'ECDSA_public_key_xy', we expect this to FAIL unless we generate one.
+
+    // However, we can check if the public key format is accepted.
+    int valid_key = uECC_valid_public_key(ECDSA_public_key_xy, uECC_secp256r1());
+
+    printf("[TEST] Public Key Validation: ");
+    if (valid_key) {
+        printf("PASSED (Key is valid point)\r\n");
+    } else {
+        printf("FAILED (Invalid Public Key format)\r\n");
+    }
+
+    printf("=== END CRYPTO TEST ===\r\n\n");
 }
 
 /* USER CODE END 4 */

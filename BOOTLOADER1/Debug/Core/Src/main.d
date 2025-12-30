@@ -30,7 +30,14 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/mem_layout.h ../Core/Inc/tiny_printf.h \
  ../Core/Inc/jump_to_app.h ../Core/Inc/BL_Functions.h \
  ../Core/Inc/mem_layout.h ../Core/Inc/Cryptology_Control.h \
- ../Core/Inc/firmware_footer.h
+ ../Core/Inc/firmware_footer.h ../Core/Inc/keys.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/sha256.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/cbc_mode.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc_dsa.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc.h \
+ C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -67,3 +74,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/mem_layout.h:
 ../Core/Inc/Cryptology_Control.h:
 ../Core/Inc/firmware_footer.h:
+../Core/Inc/keys.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/sha256.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/cbc_mode.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/aes.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc_dsa.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc.h:
+C:/Users/Oguzm/OneDrive\ -\ ozyegin.edu.tr/Desktop/Github_Projects/CS350_Project1/CS350_Project1/BOOTLOADER1/Libs/tinycrypt/Inc/ecc.h:

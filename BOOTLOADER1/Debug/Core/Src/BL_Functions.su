@@ -1,4 +1,3 @@
-../Core/Src/keys.c:39:16:Get_Public_Key_64	4	static
 ../Core/Src/BL_Functions.c:30:9:BL_ReadConfig	24	static
 ../Core/Src/BL_Functions.c:64:9:BL_WriteConfig	56	static,ignoring_inline_asm
 ../Core/Src/BL_Functions.c:110:16:BL_Direct_Copy	56	static,ignoring_inline_asm
