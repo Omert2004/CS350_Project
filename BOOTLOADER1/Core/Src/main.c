@@ -110,70 +110,90 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  	tfp_init(&huart1);
-	printf("\r\n========================================\r\n");
-	printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 6);
-	printf("========================================\r\n");
 
+	tfp_init(&huart1);
+  printf("\r\n========================================\r\n");
+  printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 7); // VERIFY THIS PRINTS 1,7
+  printf("========================================\r\n");
 
+  // 1. Read Config
+  if (BL_ReadConfig(&config)) {
+      printf("[BL] Config Invalid/Empty. Initialized to Defaults.\r\n");
+      BL_WriteConfig(&config);
+  }
 
-	// 1. Read Config (This loads defaults into RAM if Flash is empty)
-	  BL_ReadConfig(&config);
+  // 2. CHECK USER BUTTON (PI11)
+  if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
+      printf("[BL] Button Pressed! Determining Mode...\r\n");
 
-	  // 2. CHECK USER BUTTON (PI11 on F746 Discovery)
-	  // If Button is Pressed (High), Force Update Mode
-	  if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
-	      printf("[BL] Button Pressed! Forcing Update Mode...\r\n");
-	      config.system_status = STATE_UPDATE_REQ;
-	      // We don't save this to Flash to avoid permanent loops,
-	      // just set it in RAM for this session.
-	  }
-	/*config.magic_number = 0xDEADBEEF;
-	config.system_status = STATE_UPDATE_REQ;
-	config.boot_failure_count = 0;
+      // CHECK: Is there a signed update waiting in S6?
+      if (Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE) == 1) {
+          printf(" -> Valid Footer Found. Requesting UPDATE.\r\n");
+          config.system_status = STATE_UPDATE_REQ;
+      }
+      else {
+          printf(" -> No Footer found (Backup). Requesting ROLLBACK.\r\n");
+          config.system_status = STATE_ROLLBACK;
+      }
+  }
 
-	// COMMIT: Save to Flash before we Reset
-	BL_WriteConfig(&config);*/
-
-	switch(config.system_status){
+  // 3. State Machine
+  switch(config.system_status){
       case STATE_UPDATE_REQ:
           printf("[BL] State: UPDATE REQUESTED.\r\n");
           BL_Swap_NoBuffer();
 
-          // If Swap returns, it failed. Revert to Normal to avoid loop.
           printf("[BL] Update Failed. Reverting state.\r\n");
           config.system_status = STATE_NORMAL;
           BL_WriteConfig(&config);
-          // Fall through to try booting whatever is in S5
+          // Fall through to try booting S5
+
+      case STATE_ROLLBACK:
+          // Call new Rollback Function
+          BL_Rollback();
+
+          printf("[BL] Rollback Failed. Reverting state.\r\n");
+          config.system_status = STATE_NORMAL;
+          BL_WriteConfig(&config);
+          // Fall through
 
       case STATE_NORMAL:
       default:
-    	  printf("[BL] Checking S5...\r\n");
+          printf("[BL] State: NORMAL. Checking Active Application (S5)...\r\n");
 
-			// Read the Initial Stack Pointer (First word of Vector Table)
-			uint32_t msp = *(uint32_t*)APP_ACTIVE_START_ADDR;
+          // Check if S5 contains valid code (Reset Vector check)
+          uint32_t *app_reset_vector = (uint32_t*)(APP_ACTIVE_START_ADDR + 4);
+          uint32_t app_entry_point = *app_reset_vector;
 
-			// Read Reset Vector (Second word)
-			uint32_t reset_vector = *(uint32_t*)(APP_ACTIVE_START_ADDR + 4);
+          if (app_entry_point > APP_ACTIVE_START_ADDR && app_entry_point < (APP_ACTIVE_START_ADDR + SLOT_SIZE))
+          {
+              printf("[BL] Valid App found at 0x%X. Jumping...\r\n", (unsigned int)APP_ACTIVE_START_ADDR);
+              Bootloader_JumpToApp();
+          }
+          else
+          {
+              printf("[BL] S5 Empty or Invalid! Checking S6 for Auto-Provisioning...\r\n");
 
-			// Check if MSP is in RAM (approx 0x20000000 to 0x20050000)
-			// AND Reset Vector is in Flash S5 (0x0804xxxx)
-			if ((msp & 0x2FF00000) == 0x20000000 &&
-				(reset_vector >= APP_ACTIVE_START_ADDR && reset_vector < 0x08080000))
-			{
-				printf("[BL] Valid App found! Jumping...\r\n");
-				Bootloader_JumpToApp();
-			}
-			else
-			{
-				printf("[ERROR] S5 Invalid.\r\n");
-				printf("  MSP: 0x%08X (Expected ~0x2000xxxx)\r\n", (unsigned int)msp);
-				printf("  PC:  0x%08X (Expected ~0x0804xxxx)\r\n", (unsigned int)reset_vector);
-				// ... Error loop ...
-			}
-break;
+              // Auto-Provision: If S5 empty, check if we uploaded file to S6
+              if (Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE) == 1)
+              {
+                  printf("[BL] Valid Image found in S6! Triggering Update...\r\n");
+                  config.system_status = STATE_UPDATE_REQ;
+                  BL_WriteConfig(&config);
+                  HAL_NVIC_SystemReset();
+              }
+              else
+              {
+                  printf("[ERROR] No valid app in S5, and no update in S6.\r\n");
+                  printf("[ERROR] System Halted.\r\n");
+                  while(1) {
+                      HAL_GPIO_TogglePin(GPIOI, GPIO_PIN_1);
+                      HAL_Delay(100);
+                  }
+              }
+          }
+          break;
   }
-
   /* USER CODE END 2 */
 
   /* Infinite loop */

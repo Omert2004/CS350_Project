@@ -55,7 +55,7 @@ typedef enum {
     STATE_NORMAL      = 1,      // Normal operation
     STATE_UPDATE_REQ  = 2,      // App requested an update
     STATE_TESTING     = 3,      // New update is being tested (Rollback active)
-    STATE_ROLLED_BACK = 4       // Update failed, reverted to old version
+    STATE_ROLLBACK = 4       // Update failed, reverted to old version
 } BL_Status_t;
 
 // --- Config Structure  ---
