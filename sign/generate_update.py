@@ -7,7 +7,7 @@ import lz4.block  # Changed from lz4.frame to lz4.block
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
-import serial
+
 import time
 
 
@@ -21,6 +21,7 @@ RAW_CHUNK_IN_SIZE = 512
 ENC_CHUNK_OUT_SIZE = 1024
 
 def main():
+
     if len(sys.argv) != 4:
         print("Usage: python generate_update.py <input_bin> <output_enc> <private_key.pem>")
         sys.exit(1)
@@ -106,32 +107,10 @@ def main():
         f.write(final_payload)
     
     print(f"Done! Encrypted Update Size: {len(final_payload)} bytes")
-    uart_upload_option = input("Do you want to upload via UART? (y/n): ").strip().lower()
-    if uart_upload_option == 'y':
-        port = input("Enter UART port (e.g., COM3 or /dev/ttyUSB0): ").strip()
-        baud = int(input("Enter baud rate (e.g., 115200): ").strip())
-        uart_upload(port, baud, output_path)
-        
 
 
-# Optional UART upload
-def uart_upload(port, baud, filename):
-    print(f"[UART] Opening {port} @ {baud}")
-    ser = serial.Serial(port, baud, timeout=1)
-    time.sleep(2)  # STM32 reset / USB settle
 
-    size = os.path.getsize(filename)
-    print(f"[UART] Sending {filename} ({size} bytes)")
 
-    with open(filename, "rb") as f:
-        data = f.read()
-
-    ser.write(size.to_bytes(4, "little"))  # önce boyut
-    time.sleep(0.05)
-    ser.write(data)
-
-    print("[UART] Upload finished")
-    ser.close() 
 
 if __name__ == "__main__":
     main()

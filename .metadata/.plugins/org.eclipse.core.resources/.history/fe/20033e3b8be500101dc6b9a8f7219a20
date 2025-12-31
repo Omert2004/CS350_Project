@@ -1,0 +1,25 @@
+/*
+ * BL_Functions.h
+ *
+ *  Created on: 30 Ara 2025
+ *      Author: marda
+ */
+
+#ifndef APPLICATION_USER_CORE_BL_FUNCTIONS_H_
+#define APPLICATION_USER_CORE_BL_FUNCTIONS_H_
+
+#include "mem_layout.h"
+#include "stm32f4xx_hal.h"
+#include <string.h> // For memcpy
+
+// Pointer to the config sector in Flash
+#define CONFIG_FLASH_PTR ((BootConfig_t *)CONFIG_SECTOR_ADDR)
+
+extern
+
+uint8_t BL_ReadConfig(BootConfig_t *cfg);
+uint8_t BL_WriteFromPython(void);
+
+void BL_Swap_NoBuffer(void);
+
+#endif /* APPLICATION_USER_CORE_BL_FUNCTIONS_H_ */

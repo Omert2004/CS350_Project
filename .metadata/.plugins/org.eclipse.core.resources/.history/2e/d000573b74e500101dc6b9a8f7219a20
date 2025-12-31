@@ -1,0 +1,197 @@
+/*
+ * jump_to_app.c
+ *
+ *  Created on: 22 Ara 2025
+ *      Author: Oguzm
+ */
+
+
+#include "main.h"
+#include "jump_to_app.h"
+#include "mem_layout.h"
+#include "tiny_printf.h"
+#include <stdint.h>
+#include <string.h>
+#include "BL_Functions.h"
+
+extern UART_HandleTypeDef huart1;
+
+#define MAGIC_STR "BOOT"
+bl_header_t hdr;
+uint8_t buf[BL_CHUNK_SIZE];
+uint8_t eof[3];
+
+static void Bootloader_JumpToApp(void);
+/*
+ *  iki uygulama için düzenlencek, addr alcak (kullanıcıya göre)
+ *  ona göre jump etcek, rollback için ramda diğer addres tutulacak
+ *  eğer diğer app e (app1 -> app2) olursa app1 de app 2 nin adddresini tutmalı
+ *  rtc back-up regler kullanılcak, app1 -> bootloader -> app2
+ *  bootloader regleri okumalı (app2 app1 in, app1 app2 nin, flash base addrlerini
+ *  yazcak sonra software reset yapcak (bölece bootloadera gitcek) => NVIC_SystemReset();
+ *  hatta bunu extide (user key) yapsın
+ *
+ *  HAL_PWR_EnableBkUpAccess();
+ *  RTC->BKP0R = BOOT_REQ_APP2;
+ *  HAL_PWR_DisableBkUpAccess();
+ *  NVIC_SystemReset();
+ *
+ */
+/*********************************STATIC FUNCTIONS*********************************
+ * */
+
+/*
+static void BL_Erase_App(void)
+{
+    FLASH_EraseInitTypeDef erase = {0};
+    uint32_t err;
+
+    erase.TypeErase = FLASH_TYPEERASE_SECTORS;
+    erase.Sector = FLASH_SECTOR_2;   // App1
+    erase.NbSectors = 2;
+    erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+
+    HAL_FLASH_Unlock();
+    HAL_FLASHEx_Erase(&erase, &err);
+    HAL_FLASH_Lock();
+}
+
+static void BL_FlashWrite(uint32_t addr, uint8_t *data, uint32_t len)
+{
+    HAL_FLASH_Unlock();
+
+    for (uint32_t i = 0; i < len; i += 4)
+    {
+        uint32_t word = 0xFFFFFFFF;
+        memcpy(&word, data + i, 4);
+        HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr + i, word);
+    }
+
+    HAL_FLASH_Lock();
+}
+*/
+
+
+
+void Bootloader_Run(void)
+{
+
+
+    tfp_printf("BL READY\n");
+
+    // ---- MAGIC ----
+    uint8_t idx = 0;
+    uint8_t c;
+    //tfp_printf("Waiting for app\n");
+    //HAL_UART_Transmit(&huart1, (uint8_t*)"TEST\r\n", 6, HAL_MAX_DELAY);
+
+    while (1)
+    {
+        HAL_UART_Receive(&huart1, &c, 1, HAL_MAX_DELAY);
+
+        if (c == MAGIC_STR[idx])
+        {
+            idx++;
+            if (idx == 4)
+            {
+                tfp_printf("MAGIC OK\r\n");
+                break;   // MAGIC found
+            }
+        }
+        else
+        {
+            idx = (c == MAGIC_STR[0]) ? 1 : 0;
+        }
+    }
+
+
+
+
+    // ---- HEADER ----
+    /*
+    HAL_UART_Receive(&huart1, (uint8_t*)&hdr, sizeof(hdr), HAL_MAX_DELAY);
+
+    if (hdr.size == 0 || hdr.size > (48 * 1024))
+    {
+        tfp_printf("ERR SIZE\n");
+        return;
+    }
+    */
+
+    //tfp_printf("ERASE\n");
+    //BL_Erase_App();
+    //tfp_printf("ERASE COMPLETED\n");  // cant go here
+
+    // ---- DATA ----
+    Bootloader_JumpToApp();
+
+
+    // ---- EOF ----
+    /*
+    HAL_UART_Receive(&huart1, eof, 3, UART_TIMEOUT);
+    if (memcmp(eof, "EOF", 3) != 0)
+    {
+        BL_Send("ERR EOF\n");
+        return;
+    }
+	*/
+    // ---- CRC ----
+    /*
+    uint32_t crc = BL_CalcCRC(APP1_START_ADDR, hdr.size);
+    if (crc != hdr.crc)
+    {
+        BL_Send("ERR CRC\n");
+        return;
+    }
+    */
+
+}
+
+static void Bootloader_JumpToApp(void) {
+    uint32_t app_addr = APP_ACTIVE_START_ADDR;
+    uint32_t app_stack_addr = *(volatile uint32_t*)app_addr;
+    uint32_t app_reset_handler = *(volatile uint32_t*)(app_addr + 4);
+    //uint32_t remaining = hdr.size;
+    //BootConfig_t config;
+    //uint8_t c;
+    //volatile uint32_t ctrl = __get_CONTROL();
+
+    if ((app_stack_addr & 0x20000000) != 0x20000000) {
+        return;
+    }
+
+
+    // 1. DISABLE SYSTICK
+    SysTick->CTRL = 0;
+    SysTick->LOAD = 0;
+    SysTick->VAL  = 0;
+
+    __set_MSP(app_stack_addr);
+    BL_WriteFromPython();
+
+    // 3. DE-INIT PERIPHERALS
+    // This will not crash now because we removed the printf in main
+    __disable_irq();
+
+
+    // 4. DISABLE INTERRUPTS
+    HAL_DeInit();
+
+
+    // 5. CLEAR PENDING INTERRUPTS
+    for (int i = 0; i < 8; i++) {
+        NVIC->ICER[i] = 0xFFFFFFFF;
+        NVIC->ICPR[i] = 0xFFFFFFFF;
+    }
+
+    // 6. RELOCATE VECTOR TABLE
+    SCB->VTOR = app_addr;
+
+
+    // 7. JUMP
+
+    void (*pJump)(void) = (void (*)(void))app_reset_handler;
+    pJump();
+}
+
+

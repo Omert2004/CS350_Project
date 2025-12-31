@@ -9,6 +9,8 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\marda\Desktop\Bootloader_F4\STM32CubeIDE"/>
+			<item value="C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\F4_Application_2"/>
 			<item value="C:\Users\marda\Desktop\F4_Application"/>
 			<item value="C:\Users\marda\Desktop\CS350\Secure-boot\CS350_Project\BOOTLOADER_NEW"/>
 			<item value="C:\Users\marda\Desktop\Bootloader_F4"/>
