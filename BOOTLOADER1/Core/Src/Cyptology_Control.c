@@ -1,9 +1,10 @@
-/*
- * Cyptology_Control.c
- *
- * Created on: 30 Ara 2025
- * Author: Oguzm
+/**
+ * @file    Cryptology_Control.c
+ * @brief   Firmware Verification and Footer Management.
+ * @details Implements the logic to locate the firmware footer in Flash,
+ * hash the payload (SHA-256), and verify the ECDSA signature.
  */
+
 #include "Cryptology_Control.h"
 #include "sha256.h"
 #include "ecc_dsa.h"
@@ -14,7 +15,13 @@
 
 extern const uint8_t ECDSA_public_key_xy[];
 
-/* Scans the slot backwards to find the footer magic number */
+/**
+ * @brief  Scans the Flash slot backwards to locate the Firmware Footer.
+ * @details Looks for the FOOTER_MAGIC marker starting from the end of the slot.
+ * @param  slot_start Start address of the Flash sector/slot.
+ * @param  slot_size  Size of the slot in bytes.
+ * @retval Address of the fw_footer_t structure, or 0 if not found.
+ */
 uint32_t Find_Footer_Address(uint32_t slot_start, uint32_t slot_size)
 {
     uint32_t slot_end = slot_start + slot_size;
@@ -22,51 +29,55 @@ uint32_t Find_Footer_Address(uint32_t slot_start, uint32_t slot_size)
     // Scan backwards from end of slot, 4 bytes at a time
     for (uint32_t addr = slot_end - 4; addr >= slot_start; addr -= 4)
     {
-        // Check for Magic Number
         if (*(uint32_t*)addr == FOOTER_MAGIC)
         {
-            // Found Magic! The footer ends here.
-            // Struct: [Ver][Size][Sig][Magic]
-            // We need to back up by (sizeof(fw_footer_t) - 4) to find the start
             uint32_t footer_start = addr - (sizeof(fw_footer_t) - 4);
-
-            // Safety check
             if (footer_start < slot_start) continue;
-
-            // Optional: Verify consistency (e.g. Size + FooterAddr match)
-            // But for now, returning the address is sufficient
             return footer_start;
         }
     }
     return 0; // Not found
 }
 
-/* Updated Validation Function */
-int Firmware_Is_Valid(uint32_t start_addr, uint32_t slot_size)
+/**
+ * @brief  Validates the integrity and authenticity of a firmware image.
+ * @details Steps:
+ * 1. Locate Footer.
+ * 2. Calculate SHA-256 hash of the payload.
+ * 3. Verify ECDSA signature using the stored Public Key.
+ * @param  start_addr Start address of the image in Flash.
+ * @param  slot_size  Maximum size of the slot.
+ * @retval BL_OK on success, or specific error code (e.g., BL_ERR_SIG_FAIL) on failure.
+ */
+FW_Status_t Firmware_Is_Valid(uint32_t start_addr, uint32_t slot_size)
 {
-    // 1. Find the footer dynamically
+    // 1. Find the footer
     uint32_t footer_addr = Find_Footer_Address(start_addr, slot_size);
 
     if (footer_addr == 0) {
-        return 0; // No footer found
+        return BL_ERR_FOOTER_NOT_FOUND;
     }
 
     fw_footer_t *footer = (fw_footer_t *)footer_addr;
+
+    // Sanity check: Ensure payload size isn't larger than the slot
+    if (footer->size > slot_size) {
+        return BL_ERR_IMAGE_SIZE_BAD;
+    }
 
     // 2. Hash the Payload
     struct tc_sha256_state_struct s;
     uint8_t digest[32];
 
-    (void)tc_sha256_init(&s);
+    if (tc_sha256_init(&s) != 1) return BL_ERR_HASH_FAIL;
 
-    // FIXED: Use footer->size (from firmware_footer.h)
-    // This size represents the encrypted payload size (IV + Data)
+    // Hash the exact size specified in the footer
     tc_sha256_update(&s, (uint8_t*)start_addr, footer->size);
 
-    (void)tc_sha256_final(digest, &s);
+    if (tc_sha256_final(digest, &s) != 1) return BL_ERR_HASH_FAIL;
 
     // 3. Verify Signature
-    int result = uECC_verify(
+    int verify_result = uECC_verify(
         ECDSA_public_key_xy,
         digest,
         32,
@@ -74,26 +85,9 @@ int Firmware_Is_Valid(uint32_t start_addr, uint32_t slot_size)
         uECC_secp256r1()
     );
 
-    return result; // 1 = Valid, 0 = Invalid
-}
-
-// Helper if you need to verify a raw buffer manually
-int Verify_Signature(uint8_t* pData, uint32_t Size, uint8_t* pSignature)
-{
-    uint8_t hash[32];
-    struct tc_sha256_state_struct s;
-
-    tc_sha256_init(&s);
-    tc_sha256_update(&s, pData, Size);
-    tc_sha256_final(hash, &s);
-
-    int result = uECC_verify(
-        ECDSA_public_key_xy,
-        hash,
-        32,
-        pSignature,
-        uECC_secp256r1()
-    );
-
-    return result;
+    if (verify_result == 1) {
+        return BL_OK; // Success!
+    } else {
+        return BL_ERR_SIG_FAIL; // Cryptographic failure
+    }
 }

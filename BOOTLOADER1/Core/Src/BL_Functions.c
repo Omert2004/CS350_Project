@@ -1,6 +1,9 @@
-/*
- * BL_Functions.c
- * Version 1.7 - Fixed Encrypted Backup & Rollback Support
+/**
+ * @file    BL_Functions.c
+ * @brief   Implementation of core Bootloader logic.
+ * @details Handles configuration management, AES encryption/decryption (CBC/ECB),
+ * and the orchestration of Firmware Updates and Rollbacks.
+ * @version 1.7
  */
 
 #include "BL_Functions.h"
@@ -15,20 +18,34 @@
 
 extern const uint8_t AES_SECRET_KEY[];
 
-// --- Config Functions ---
+// ============================================================================
+// CONFIGURATION FUNCTIONS
+// ============================================================================
+
+/**
+ * @brief  Reads the Bootloader Configuration from Flash.
+ * @note   If the Magic Number is invalid, initializes the config with defaults.
+ * @param  cfg Pointer to the BootConfig_t structure to populate.
+ * @retval 0 if config was valid, 1 if defaults were loaded.
+ */
 uint8_t BL_ReadConfig(BootConfig_t *cfg) {
     memcpy(cfg, (void *)CONFIG_SECTOR_ADDR, sizeof(BootConfig_t));
     if (cfg->magic_number != 0xDEADBEEF) {
+        // Set Defaults
         cfg->magic_number = 0xDEADBEEF;
         cfg->system_status = STATE_NORMAL;
-        cfg->boot_failure_count = 0;
-        cfg->active_slot = 1;
         cfg->current_version = 0;
-        return 1; // Config was empty
+        return 1; // Config was empty/invalid
     }
     return 0; // Config valid
 }
 
+/**
+ * @brief  Writes the Bootloader Configuration to Flash.
+ * @note   Erases the Config Sector (Sector 2) before writing.
+ * @param  cfg Pointer to the BootConfig_t structure to write.
+ * @retval 1 on success, 0 on failure.
+ */
 uint8_t BL_WriteConfig(BootConfig_t *cfg) {
     uint32_t SectorError;
     HAL_FLASH_Unlock();
@@ -54,12 +71,24 @@ uint8_t BL_WriteConfig(BootConfig_t *cfg) {
     HAL_FLASH_Lock(); return 1;
 }
 
-// --- Raw Copy (Internal Helper) ---
+// ============================================================================
+// INTERNAL HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * @brief  Raw copy of data between Flash sectors.
+ * @note   Automatically selects and erases the destination sector.
+ * @param  src_addr  Source address in Flash.
+ * @param  dest_addr Destination address in Flash.
+ * @param  size      Number of bytes to copy.
+ * @retval 1 on success, 0 on failure.
+ */
 static uint8_t BL_Raw_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t size){
     HAL_FLASH_Unlock();
     FLASH_EraseInitTypeDef erase;
     uint32_t error;
 
+    // Select Sector based on Address
     if (dest_addr == APP_ACTIVE_START_ADDR) erase.Sector = FLASH_SECTOR_5;
     else if (dest_addr == APP_DOWNLOAD_START_ADDR) erase.Sector = FLASH_SECTOR_6;
     else erase.Sector = FLASH_SECTOR_7;
@@ -87,7 +116,18 @@ static uint8_t BL_Raw_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t size)
     HAL_FLASH_Lock(); return 1;
 }
 
-// --- Decrypt Update (AES-CBC) ---
+// ============================================================================
+// CRYPTOGRAPHIC OPERATIONS
+// ============================================================================
+
+/**
+ * @brief  Decrypts a new update image using AES-CBC.
+ * @details Reads encrypted data from S6, decrypts it, and writes plaintext to S7.
+ * @param  src_slot_addr Start address of the encrypted image.
+ * @param  dest_addr     Destination address (Scratchpad).
+ * @param  payload_size  Total size of IV + Ciphertext.
+ * @retval 1 on success, 0 on failure.
+ */
 static uint8_t BL_Decrypt_Update_Image(uint32_t src_slot_addr, uint32_t dest_addr, uint32_t payload_size) {
     struct tc_aes_key_sched_struct s;
     uint8_t buffer_enc[16], buffer_dec[16], current_iv[16];
@@ -128,7 +168,13 @@ static uint8_t BL_Decrypt_Update_Image(uint32_t src_slot_addr, uint32_t dest_add
     HAL_FLASH_Lock(); return 1;
 }
 
-// --- Backup Function (AES-ECB Encrypt) ---
+/**
+ * @brief  Encrypts the active application using AES-ECB for backup.
+ * @details Reads plaintext from S5, encrypts it, and writes to S6.
+ * @param  src_addr  Source address (Active App).
+ * @param  dest_addr Destination address (Backup Slot).
+ * @retval 1 on success, 0 on failure.
+ */
 static uint8_t BL_Encrypt_Backup(uint32_t src_addr, uint32_t dest_addr) {
     struct tc_aes_key_sched_struct s;
     uint8_t buffer_plain[16];
@@ -179,7 +225,13 @@ static uint8_t BL_Encrypt_Backup(uint32_t src_addr, uint32_t dest_addr) {
     return 1;
 }
 
-// --- Restore Function (AES-ECB Decrypt) ---
+/**
+ * @brief  Decrypts a backup image using AES-ECB for rollback.
+ * @details Reads encrypted backup from S6, decrypts it, and writes to S7.
+ * @param  src_addr  Source address (Backup Slot).
+ * @param  dest_addr Destination address (Scratchpad).
+ * @retval 1 on success, 0 on failure.
+ */
 static uint8_t BL_Decrypt_Backup_Image(uint32_t src_addr, uint32_t dest_addr) {
     struct tc_aes_key_sched_struct s;
     uint8_t buffer_enc[16];
@@ -219,7 +271,19 @@ static uint8_t BL_Decrypt_Backup_Image(uint32_t src_addr, uint32_t dest_addr) {
     HAL_FLASH_Lock(); __enable_irq(); return 1;
 }
 
-// --- Main Update Function ---
+// ============================================================================
+// STATE MACHINE FUNCTIONS
+// ============================================================================
+
+/**
+ * @brief  Executes the Firmware Update Process.
+ * @details Steps:
+ * 1. Verify Signature of image in Download Slot (S6).
+ * 2. Decrypt Image (S6) -> Scratchpad (S7).
+ * 3. Backup Active App (S5) -> Download Slot (S6) (Encrypted).
+ * 4. Install New App (S7) -> Active Slot (S5).
+ * 5. Reset System.
+ */
 void BL_Swap_NoBuffer(void) {
     BootConfig_t cfg;
     BL_ReadConfig(&cfg);
@@ -236,12 +300,18 @@ void BL_Swap_NoBuffer(void) {
     memcpy(&footer, (void*)footer_addr, sizeof(fw_footer_t));
 
     printf("[BL] Verifying Signature... ");
-    if (Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE) != 1) {
-        printf("FAIL! Invalid Signature.\r\n");
-        cfg.system_status = STATE_NORMAL;
-        BL_WriteConfig(&cfg);
-        return;
-    }
+    FW_Status_t status = Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE);
+
+	if (status != BL_OK) {
+		printf("FAIL! Error Code: %d\r\n", status);
+
+		if (status == BL_ERR_SIG_FAIL) printf("Reason: ECDSA Signature Mismatch.\r\n");
+		if (status == BL_ERR_FOOTER_NOT_FOUND) printf("Reason: Footer Missing.\r\n");
+
+		cfg.system_status = STATE_NORMAL;
+		BL_WriteConfig(&cfg);
+		return;
+	}
     printf("OK!\r\n");
     printf("[BL] Valid Update! Ver: %d, Payload: %d\r\n", (int)footer.version, (int)footer.size);
 
@@ -269,7 +339,14 @@ void BL_Swap_NoBuffer(void) {
     HAL_NVIC_SystemReset();
 }
 
-// --- Main Rollback Function ---
+/**
+ * @brief  Executes the Rollback/Swap Process.
+ * @details Steps:
+ * 1. Decrypt Backup (S6) -> Scratchpad (S7).
+ * 2. Backup Active App (S5) -> Download Slot (S6) (Encrypted).
+ * 3. Install Old App (S7) -> Active Slot (S5).
+ * 4. Reset System.
+ */
 void BL_Rollback(void) {
     BootConfig_t cfg;
     BL_ReadConfig(&cfg);

@@ -30,6 +30,8 @@
 #include "firmware_footer.h" // For struct definition
 #include "keys.h"
 #include <string.h>
+
+//Left them for test Functions
 #include "sha256.h"
 #include "aes.h"
 #include "cbc_mode.h"
@@ -59,7 +61,6 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 BootConfig_t config;
-FW_Status_t bl_status;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -111,7 +112,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-	tfp_init(&huart1);
+  tfp_init(&huart1);
   printf("\r\n========================================\r\n");
   printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 7); // VERIFY THIS PRINTS 1,7
   printf("========================================\r\n");
@@ -124,17 +125,20 @@ int main(void)
 
   // 2. CHECK USER BUTTON (PI11)
   if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
-      printf("[BL] Button Pressed! Determining Mode...\r\n");
+	  printf("[BL] Button Pressed! Determining Mode...\r\n");
 
-      // CHECK: Is there a signed update waiting in S6?
-      if (Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE) == 1) {
-          printf(" -> Valid Footer Found. Requesting UPDATE.\r\n");
-          config.system_status = STATE_UPDATE_REQ;
-      }
-      else {
-          printf(" -> No Footer found (Backup). Requesting ROLLBACK.\r\n");
-          config.system_status = STATE_ROLLBACK;
-      }
+	// Use the enum check
+	FW_Status_t status = Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE);
+
+	if (status == BL_OK) {
+		printf(" -> Valid Footer Found. Requesting UPDATE.\r\n");
+		config.system_status = STATE_UPDATE_REQ;
+	}
+	else {
+		// You can even print WHY it failed if you want
+		printf(" -> No Update Found (Error Code: %d). Requesting ROLLBACK.\r\n", status);
+		config.system_status = STATE_ROLLBACK;
+	}
   }
 
   // 3. State Machine

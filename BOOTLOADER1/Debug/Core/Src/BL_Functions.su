@@ -1,8 +1,8 @@
-../Core/Src/BL_Functions.c:19:9:BL_ReadConfig	16	static
-../Core/Src/BL_Functions.c:32:9:BL_WriteConfig	56	static
-../Core/Src/BL_Functions.c:58:16:BL_Raw_Copy	64	static
-../Core/Src/BL_Functions.c:91:16:BL_Decrypt_Update_Image	312	static
-../Core/Src/BL_Functions.c:132:16:BL_Encrypt_Backup	272	static,ignoring_inline_asm
-../Core/Src/BL_Functions.c:183:16:BL_Decrypt_Backup_Image	272	static,ignoring_inline_asm
-../Core/Src/BL_Functions.c:223:6:BL_Swap_NoBuffer	128	static
-../Core/Src/BL_Functions.c:273:6:BL_Rollback	40	static
+../Core/Src/BL_Functions.c:31:9:BL_ReadConfig	16	static
+../Core/Src/BL_Functions.c:49:9:BL_WriteConfig	56	static
+../Core/Src/BL_Functions.c:86:16:BL_Raw_Copy	64	static
+../Core/Src/BL_Functions.c:131:16:BL_Decrypt_Update_Image	312	static
+../Core/Src/BL_Functions.c:178:16:BL_Encrypt_Backup	272	static,ignoring_inline_asm
+../Core/Src/BL_Functions.c:235:16:BL_Decrypt_Backup_Image	272	static,ignoring_inline_asm
+../Core/Src/BL_Functions.c:287:6:BL_Swap_NoBuffer	104	static
+../Core/Src/BL_Functions.c:350:6:BL_Rollback	24	static

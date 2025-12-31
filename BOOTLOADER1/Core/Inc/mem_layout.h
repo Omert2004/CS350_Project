@@ -34,44 +34,4 @@
 #define SLOT_SIZE            0x00040000  // 256 KB
 
 
-
-/*
- * bootloader_interface.h
- *
- *@brief   Public API definition for the Secure Bootloader.
- *
- * @details This header is shared between the Bootloader and the User Application.
- * It defines the structure used to expose internal Bootloader functions
- * (like update requests and verification) to the running Application
- * via a fixed memory address.
- *
- *  Created on: Dec 2, 2025
- *      Author: mertk
- */
-
-
-// --- system_status Definitions ---
-typedef enum {
-    STATE_NORMAL      = 1,      // Normal operation
-    STATE_UPDATE_REQ  = 2,      // App requested an update
-    STATE_TESTING     = 3,      // New update is being tested (Rollback active)
-    STATE_ROLLBACK = 4       // Update failed, reverted to old version
-} BL_Status_t;
-
-// --- Config Structure  ---
-typedef struct {
-/**
-	 * @brief Magic Code (0xDEADBEEF)
-	 * @details Used by the Application to verify that the Bootloader is present
-	 * and the API table is valid before calling any functions.
-*/
-    uint32_t magic_number;      // 0xDEADBEEF
-    uint32_t system_status;     // BL_Status_t
-    uint32_t boot_failure_count;// How many times did it crash?
-    uint32_t active_slot;       // 1 or 2 (Logical swap)
-    uint32_t current_version;   // Version of the running app
-    uint8_t  padding[12];       // Align to 32 bytes
-} __attribute__((aligned(8))) BootConfig_t;
-
-
 #endif /* INC_MEM_LAYOUT_H_ */

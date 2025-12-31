@@ -126,6 +126,7 @@ Discarded input sections
  .group         0x00000000        0xc ./Core/Src/BL_Functions.o
  .group         0x00000000        0xc ./Core/Src/BL_Functions.o
  .group         0x00000000        0xc ./Core/Src/BL_Functions.o
+ .group         0x00000000        0xc ./Core/Src/BL_Functions.o
  .text          0x00000000        0x0 ./Core/Src/BL_Functions.o
  .data          0x00000000        0x0 ./Core/Src/BL_Functions.o
  .bss           0x00000000        0x0 ./Core/Src/BL_Functions.o
@@ -162,8 +163,6 @@ Discarded input sections
  .bss           0x00000000        0x0 ./Core/Src/Cyptology_Control.o
  .rodata.curve_secp256r1
                 0x00000000       0xb0 ./Core/Src/Cyptology_Control.o
- .text.Verify_Signature
-                0x00000000       0x60 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x22 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x8e ./Core/Src/Cyptology_Control.o
@@ -171,8 +170,8 @@ Discarded input sections
  .debug_macro   0x00000000      0x103 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x6a ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000      0x1df ./Core/Src/Cyptology_Control.o
- .debug_macro   0x00000000      0x190 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x16 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000      0x190 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x61 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x2a ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x43 ./Core/Src/Cyptology_Control.o
@@ -189,6 +188,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x10 ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x3c ./Core/Src/Cyptology_Control.o
  .debug_macro   0x00000000       0x20 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00000000       0x52 ./Core/Src/Cyptology_Control.o
  .group         0x00000000        0xc ./Core/Src/jump_to_app.o
  .group         0x00000000        0xc ./Core/Src/jump_to_app.o
  .group         0x00000000        0xc ./Core/Src/jump_to_app.o
@@ -372,13 +372,12 @@ Discarded input sections
  .group         0x00000000        0xc ./Core/Src/main.o
  .group         0x00000000        0xc ./Core/Src/main.o
  .group         0x00000000        0xc ./Core/Src/main.o
+ .group         0x00000000        0xc ./Core/Src/main.o
  .text          0x00000000        0x0 ./Core/Src/main.o
  .data          0x00000000        0x0 ./Core/Src/main.o
  .bss           0x00000000        0x0 ./Core/Src/main.o
  .rodata.curve_secp256r1
                 0x00000000       0xb0 ./Core/Src/main.o
- .bss.bl_status
-                0x00000000        0x1 ./Core/Src/main.o
  .text.Test_MPU_Violation
                 0x00000000       0x38 ./Core/Src/main.o
  .text.Test_Config_Write
@@ -3897,7 +3896,7 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x08000000                g_pfnVectors
                 0x080001c8                        . = ALIGN (0x4)
 
-.text           0x080001c8     0x6ed8
+.text           0x080001c8     0x6f38
                 0x080001c8                        . = ALIGN (0x4)
  *(.text)
  .text          0x080001c8       0x40 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
@@ -3910,597 +3909,597 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x08000530                __aeabi_ldiv0
  *(.text*)
  .text.BL_ReadConfig
-                0x08000534       0x50 ./Core/Src/BL_Functions.o
+                0x08000534       0x44 ./Core/Src/BL_Functions.o
                 0x08000534                BL_ReadConfig
  .text.BL_WriteConfig
-                0x08000584       0xa8 ./Core/Src/BL_Functions.o
-                0x08000584                BL_WriteConfig
+                0x08000578       0xa8 ./Core/Src/BL_Functions.o
+                0x08000578                BL_WriteConfig
  .text.BL_Raw_Copy
-                0x0800062c      0x10c ./Core/Src/BL_Functions.o
+                0x08000620      0x10c ./Core/Src/BL_Functions.o
  .text.BL_Decrypt_Update_Image
-                0x08000738      0x1f0 ./Core/Src/BL_Functions.o
+                0x0800072c      0x1f0 ./Core/Src/BL_Functions.o
  .text.BL_Encrypt_Backup
-                0x08000928      0x180 ./Core/Src/BL_Functions.o
+                0x0800091c      0x180 ./Core/Src/BL_Functions.o
  .text.BL_Decrypt_Backup_Image
-                0x08000aa8      0x128 ./Core/Src/BL_Functions.o
+                0x08000a9c      0x128 ./Core/Src/BL_Functions.o
  .text.BL_Swap_NoBuffer
-                0x08000bd0      0x148 ./Core/Src/BL_Functions.o
-                0x08000bd0                BL_Swap_NoBuffer
+                0x08000bc4      0x17c ./Core/Src/BL_Functions.o
+                0x08000bc4                BL_Swap_NoBuffer
  .text.BL_Rollback
-                0x08000d18       0xb8 ./Core/Src/BL_Functions.o
-                0x08000d18                BL_Rollback
+                0x08000d40       0xb8 ./Core/Src/BL_Functions.o
+                0x08000d40                BL_Rollback
  .text.Find_Footer_Address
-                0x08000dd0       0x58 ./Core/Src/Cyptology_Control.o
-                0x08000dd0                Find_Footer_Address
+                0x08000df8       0x58 ./Core/Src/Cyptology_Control.o
+                0x08000df8                Find_Footer_Address
  .text.Firmware_Is_Valid
-                0x08000e28       0x88 ./Core/Src/Cyptology_Control.o
-                0x08000e28                Firmware_Is_Valid
+                0x08000e50       0xb8 ./Core/Src/Cyptology_Control.o
+                0x08000e50                Firmware_Is_Valid
  .text.Bootloader_JumpToApp
-                0x08000eb0       0xa4 ./Core/Src/jump_to_app.o
-                0x08000eb0                Bootloader_JumpToApp
- .text.main     0x08000f54      0x1ac ./Core/Src/main.o
-                0x08000f54                main
+                0x08000f08       0xa4 ./Core/Src/jump_to_app.o
+                0x08000f08                Bootloader_JumpToApp
+ .text.main     0x08000fac      0x1b4 ./Core/Src/main.o
+                0x08000fac                main
  .text.SystemClock_Config
-                0x08001100       0xd0 ./Core/Src/main.o
-                0x08001100                SystemClock_Config
+                0x08001160       0xd0 ./Core/Src/main.o
+                0x08001160                SystemClock_Config
  .text.MX_USART1_UART_Init
-                0x080011d0       0x60 ./Core/Src/main.o
+                0x08001230       0x60 ./Core/Src/main.o
  .text.MX_GPIO_Init
-                0x08001230       0xb0 ./Core/Src/main.o
+                0x08001290       0xb0 ./Core/Src/main.o
  .text.MPU_Config
-                0x080012e0       0x80 ./Core/Src/main.o
+                0x08001340       0x80 ./Core/Src/main.o
  .text.Error_Handler
-                0x08001360        0xc ./Core/Src/main.o
-                0x08001360                Error_Handler
+                0x080013c0        0xc ./Core/Src/main.o
+                0x080013c0                Error_Handler
  .text.HAL_MspInit
-                0x0800136c       0x48 ./Core/Src/stm32f7xx_hal_msp.o
-                0x0800136c                HAL_MspInit
+                0x080013cc       0x48 ./Core/Src/stm32f7xx_hal_msp.o
+                0x080013cc                HAL_MspInit
  .text.HAL_UART_MspInit
-                0x080013b4      0x104 ./Core/Src/stm32f7xx_hal_msp.o
-                0x080013b4                HAL_UART_MspInit
+                0x08001414      0x104 ./Core/Src/stm32f7xx_hal_msp.o
+                0x08001414                HAL_UART_MspInit
  .text.NMI_Handler
-                0x080014b8        0x8 ./Core/Src/stm32f7xx_it.o
-                0x080014b8                NMI_Handler
+                0x08001518        0x8 ./Core/Src/stm32f7xx_it.o
+                0x08001518                NMI_Handler
  .text.HardFault_Handler
-                0x080014c0        0x8 ./Core/Src/stm32f7xx_it.o
-                0x080014c0                HardFault_Handler
+                0x08001520        0x8 ./Core/Src/stm32f7xx_it.o
+                0x08001520                HardFault_Handler
  .text.MemManage_Handler
-                0x080014c8        0x8 ./Core/Src/stm32f7xx_it.o
-                0x080014c8                MemManage_Handler
+                0x08001528        0x8 ./Core/Src/stm32f7xx_it.o
+                0x08001528                MemManage_Handler
  .text.BusFault_Handler
-                0x080014d0        0x8 ./Core/Src/stm32f7xx_it.o
-                0x080014d0                BusFault_Handler
+                0x08001530        0x8 ./Core/Src/stm32f7xx_it.o
+                0x08001530                BusFault_Handler
  .text.UsageFault_Handler
-                0x080014d8        0x8 ./Core/Src/stm32f7xx_it.o
-                0x080014d8                UsageFault_Handler
+                0x08001538        0x8 ./Core/Src/stm32f7xx_it.o
+                0x08001538                UsageFault_Handler
  .text.SVC_Handler
-                0x080014e0        0xe ./Core/Src/stm32f7xx_it.o
-                0x080014e0                SVC_Handler
+                0x08001540        0xe ./Core/Src/stm32f7xx_it.o
+                0x08001540                SVC_Handler
  .text.DebugMon_Handler
-                0x080014ee        0xe ./Core/Src/stm32f7xx_it.o
-                0x080014ee                DebugMon_Handler
+                0x0800154e        0xe ./Core/Src/stm32f7xx_it.o
+                0x0800154e                DebugMon_Handler
  .text.PendSV_Handler
-                0x080014fc        0xe ./Core/Src/stm32f7xx_it.o
-                0x080014fc                PendSV_Handler
+                0x0800155c        0xe ./Core/Src/stm32f7xx_it.o
+                0x0800155c                PendSV_Handler
  .text.SysTick_Handler
-                0x0800150a        0xc ./Core/Src/stm32f7xx_it.o
-                0x0800150a                SysTick_Handler
- *fill*         0x08001516        0x2 
+                0x0800156a        0xc ./Core/Src/stm32f7xx_it.o
+                0x0800156a                SysTick_Handler
+ *fill*         0x08001576        0x2 
  .text.SystemInit
-                0x08001518       0x24 ./Core/Src/system_stm32f7xx.o
-                0x08001518                SystemInit
+                0x08001578       0x24 ./Core/Src/system_stm32f7xx.o
+                0x08001578                SystemInit
  .text.tfp_init
-                0x0800153c       0x20 ./Core/Src/tiny_printf.o
-                0x0800153c                tfp_init
+                0x0800159c       0x20 ./Core/Src/tiny_printf.o
+                0x0800159c                tfp_init
  .text._tfp_putc
-                0x0800155c       0x2c ./Core/Src/tiny_printf.o
+                0x080015bc       0x2c ./Core/Src/tiny_printf.o
  .text._tfp_puts
-                0x08001588       0x2a ./Core/Src/tiny_printf.o
- *fill*         0x080015b2        0x2 
+                0x080015e8       0x2a ./Core/Src/tiny_printf.o
+ *fill*         0x08001612        0x2 
  .text._tfp_print_unsigned
-                0x080015b4       0x88 ./Core/Src/tiny_printf.o
+                0x08001614       0x88 ./Core/Src/tiny_printf.o
  .text._tfp_print_signed
-                0x0800163c       0x2c ./Core/Src/tiny_printf.o
+                0x0800169c       0x2c ./Core/Src/tiny_printf.o
  .text.tfp_printf
-                0x08001668      0x174 ./Core/Src/tiny_printf.o
-                0x08001668                tfp_printf
+                0x080016c8      0x174 ./Core/Src/tiny_printf.o
+                0x080016c8                tfp_printf
  .text.Reset_Handler
-                0x080017dc       0x50 ./Core/Startup/startup_stm32f746nghx.o
-                0x080017dc                Reset_Handler
+                0x0800183c       0x50 ./Core/Startup/startup_stm32f746nghx.o
+                0x0800183c                Reset_Handler
  .text.Default_Handler
-                0x0800182c        0x2 ./Core/Startup/startup_stm32f746nghx.o
-                0x0800182c                RTC_Alarm_IRQHandler
-                0x0800182c                EXTI2_IRQHandler
-                0x0800182c                TIM8_CC_IRQHandler
-                0x0800182c                UART8_IRQHandler
-                0x0800182c                SPI4_IRQHandler
-                0x0800182c                TIM1_CC_IRQHandler
-                0x0800182c                DMA2_Stream5_IRQHandler
-                0x0800182c                DMA1_Stream5_IRQHandler
-                0x0800182c                PVD_IRQHandler
-                0x0800182c                TAMP_STAMP_IRQHandler
-                0x0800182c                CAN2_RX1_IRQHandler
-                0x0800182c                EXTI3_IRQHandler
-                0x0800182c                TIM8_TRG_COM_TIM14_IRQHandler
-                0x0800182c                TIM1_UP_TIM10_IRQHandler
-                0x0800182c                TIM8_UP_TIM13_IRQHandler
-                0x0800182c                I2C3_ER_IRQHandler
-                0x0800182c                EXTI0_IRQHandler
-                0x0800182c                I2C2_EV_IRQHandler
-                0x0800182c                DMA1_Stream2_IRQHandler
-                0x0800182c                CAN1_RX0_IRQHandler
-                0x0800182c                FPU_IRQHandler
-                0x0800182c                OTG_HS_WKUP_IRQHandler
-                0x0800182c                LTDC_ER_IRQHandler
-                0x0800182c                CAN2_SCE_IRQHandler
-                0x0800182c                DMA2_Stream2_IRQHandler
-                0x0800182c                SPI1_IRQHandler
-                0x0800182c                TIM6_DAC_IRQHandler
-                0x0800182c                TIM1_BRK_TIM9_IRQHandler
-                0x0800182c                DCMI_IRQHandler
-                0x0800182c                CAN2_RX0_IRQHandler
-                0x0800182c                DMA2_Stream3_IRQHandler
-                0x0800182c                SAI2_IRQHandler
-                0x0800182c                USART6_IRQHandler
-                0x0800182c                USART3_IRQHandler
-                0x0800182c                CAN1_RX1_IRQHandler
-                0x0800182c                UART5_IRQHandler
-                0x0800182c                DMA2_Stream0_IRQHandler
-                0x0800182c                TIM4_IRQHandler
-                0x0800182c                QUADSPI_IRQHandler
-                0x0800182c                I2C1_EV_IRQHandler
-                0x0800182c                DMA1_Stream6_IRQHandler
-                0x0800182c                DMA1_Stream1_IRQHandler
-                0x0800182c                UART4_IRQHandler
-                0x0800182c                TIM3_IRQHandler
-                0x0800182c                RCC_IRQHandler
-                0x0800182c                TIM8_BRK_TIM12_IRQHandler
-                0x0800182c                Default_Handler
-                0x0800182c                CEC_IRQHandler
-                0x0800182c                EXTI15_10_IRQHandler
-                0x0800182c                ADC_IRQHandler
-                0x0800182c                DMA1_Stream7_IRQHandler
-                0x0800182c                SPI5_IRQHandler
-                0x0800182c                TIM7_IRQHandler
-                0x0800182c                SDMMC1_IRQHandler
-                0x0800182c                CAN2_TX_IRQHandler
-                0x0800182c                TIM5_IRQHandler
-                0x0800182c                DMA2_Stream7_IRQHandler
-                0x0800182c                I2C3_EV_IRQHandler
-                0x0800182c                EXTI9_5_IRQHandler
-                0x0800182c                RTC_WKUP_IRQHandler
-                0x0800182c                LTDC_IRQHandler
-                0x0800182c                ETH_WKUP_IRQHandler
-                0x0800182c                SPDIF_RX_IRQHandler
-                0x0800182c                SPI2_IRQHandler
-                0x0800182c                OTG_HS_EP1_IN_IRQHandler
-                0x0800182c                DMA1_Stream0_IRQHandler
-                0x0800182c                CAN1_TX_IRQHandler
-                0x0800182c                EXTI4_IRQHandler
-                0x0800182c                RNG_IRQHandler
-                0x0800182c                ETH_IRQHandler
-                0x0800182c                OTG_HS_EP1_OUT_IRQHandler
-                0x0800182c                WWDG_IRQHandler
-                0x0800182c                SPI6_IRQHandler
-                0x0800182c                I2C4_EV_IRQHandler
-                0x0800182c                TIM2_IRQHandler
-                0x0800182c                OTG_FS_WKUP_IRQHandler
-                0x0800182c                TIM1_TRG_COM_TIM11_IRQHandler
-                0x0800182c                OTG_HS_IRQHandler
-                0x0800182c                DMA2D_IRQHandler
-                0x0800182c                EXTI1_IRQHandler
-                0x0800182c                UART7_IRQHandler
-                0x0800182c                USART2_IRQHandler
-                0x0800182c                I2C2_ER_IRQHandler
-                0x0800182c                DMA2_Stream1_IRQHandler
-                0x0800182c                CAN1_SCE_IRQHandler
-                0x0800182c                FLASH_IRQHandler
-                0x0800182c                DMA2_Stream4_IRQHandler
-                0x0800182c                USART1_IRQHandler
-                0x0800182c                OTG_FS_IRQHandler
-                0x0800182c                SPI3_IRQHandler
-                0x0800182c                DMA1_Stream4_IRQHandler
-                0x0800182c                I2C1_ER_IRQHandler
-                0x0800182c                FMC_IRQHandler
-                0x0800182c                LPTIM1_IRQHandler
-                0x0800182c                I2C4_ER_IRQHandler
-                0x0800182c                DMA2_Stream6_IRQHandler
-                0x0800182c                SAI1_IRQHandler
-                0x0800182c                DMA1_Stream3_IRQHandler
+                0x0800188c        0x2 ./Core/Startup/startup_stm32f746nghx.o
+                0x0800188c                RTC_Alarm_IRQHandler
+                0x0800188c                EXTI2_IRQHandler
+                0x0800188c                TIM8_CC_IRQHandler
+                0x0800188c                UART8_IRQHandler
+                0x0800188c                SPI4_IRQHandler
+                0x0800188c                TIM1_CC_IRQHandler
+                0x0800188c                DMA2_Stream5_IRQHandler
+                0x0800188c                DMA1_Stream5_IRQHandler
+                0x0800188c                PVD_IRQHandler
+                0x0800188c                TAMP_STAMP_IRQHandler
+                0x0800188c                CAN2_RX1_IRQHandler
+                0x0800188c                EXTI3_IRQHandler
+                0x0800188c                TIM8_TRG_COM_TIM14_IRQHandler
+                0x0800188c                TIM1_UP_TIM10_IRQHandler
+                0x0800188c                TIM8_UP_TIM13_IRQHandler
+                0x0800188c                I2C3_ER_IRQHandler
+                0x0800188c                EXTI0_IRQHandler
+                0x0800188c                I2C2_EV_IRQHandler
+                0x0800188c                DMA1_Stream2_IRQHandler
+                0x0800188c                CAN1_RX0_IRQHandler
+                0x0800188c                FPU_IRQHandler
+                0x0800188c                OTG_HS_WKUP_IRQHandler
+                0x0800188c                LTDC_ER_IRQHandler
+                0x0800188c                CAN2_SCE_IRQHandler
+                0x0800188c                DMA2_Stream2_IRQHandler
+                0x0800188c                SPI1_IRQHandler
+                0x0800188c                TIM6_DAC_IRQHandler
+                0x0800188c                TIM1_BRK_TIM9_IRQHandler
+                0x0800188c                DCMI_IRQHandler
+                0x0800188c                CAN2_RX0_IRQHandler
+                0x0800188c                DMA2_Stream3_IRQHandler
+                0x0800188c                SAI2_IRQHandler
+                0x0800188c                USART6_IRQHandler
+                0x0800188c                USART3_IRQHandler
+                0x0800188c                CAN1_RX1_IRQHandler
+                0x0800188c                UART5_IRQHandler
+                0x0800188c                DMA2_Stream0_IRQHandler
+                0x0800188c                TIM4_IRQHandler
+                0x0800188c                QUADSPI_IRQHandler
+                0x0800188c                I2C1_EV_IRQHandler
+                0x0800188c                DMA1_Stream6_IRQHandler
+                0x0800188c                DMA1_Stream1_IRQHandler
+                0x0800188c                UART4_IRQHandler
+                0x0800188c                TIM3_IRQHandler
+                0x0800188c                RCC_IRQHandler
+                0x0800188c                TIM8_BRK_TIM12_IRQHandler
+                0x0800188c                Default_Handler
+                0x0800188c                CEC_IRQHandler
+                0x0800188c                EXTI15_10_IRQHandler
+                0x0800188c                ADC_IRQHandler
+                0x0800188c                DMA1_Stream7_IRQHandler
+                0x0800188c                SPI5_IRQHandler
+                0x0800188c                TIM7_IRQHandler
+                0x0800188c                SDMMC1_IRQHandler
+                0x0800188c                CAN2_TX_IRQHandler
+                0x0800188c                TIM5_IRQHandler
+                0x0800188c                DMA2_Stream7_IRQHandler
+                0x0800188c                I2C3_EV_IRQHandler
+                0x0800188c                EXTI9_5_IRQHandler
+                0x0800188c                RTC_WKUP_IRQHandler
+                0x0800188c                LTDC_IRQHandler
+                0x0800188c                ETH_WKUP_IRQHandler
+                0x0800188c                SPDIF_RX_IRQHandler
+                0x0800188c                SPI2_IRQHandler
+                0x0800188c                OTG_HS_EP1_IN_IRQHandler
+                0x0800188c                DMA1_Stream0_IRQHandler
+                0x0800188c                CAN1_TX_IRQHandler
+                0x0800188c                EXTI4_IRQHandler
+                0x0800188c                RNG_IRQHandler
+                0x0800188c                ETH_IRQHandler
+                0x0800188c                OTG_HS_EP1_OUT_IRQHandler
+                0x0800188c                WWDG_IRQHandler
+                0x0800188c                SPI6_IRQHandler
+                0x0800188c                I2C4_EV_IRQHandler
+                0x0800188c                TIM2_IRQHandler
+                0x0800188c                OTG_FS_WKUP_IRQHandler
+                0x0800188c                TIM1_TRG_COM_TIM11_IRQHandler
+                0x0800188c                OTG_HS_IRQHandler
+                0x0800188c                DMA2D_IRQHandler
+                0x0800188c                EXTI1_IRQHandler
+                0x0800188c                UART7_IRQHandler
+                0x0800188c                USART2_IRQHandler
+                0x0800188c                I2C2_ER_IRQHandler
+                0x0800188c                DMA2_Stream1_IRQHandler
+                0x0800188c                CAN1_SCE_IRQHandler
+                0x0800188c                FLASH_IRQHandler
+                0x0800188c                DMA2_Stream4_IRQHandler
+                0x0800188c                USART1_IRQHandler
+                0x0800188c                OTG_FS_IRQHandler
+                0x0800188c                SPI3_IRQHandler
+                0x0800188c                DMA1_Stream4_IRQHandler
+                0x0800188c                I2C1_ER_IRQHandler
+                0x0800188c                FMC_IRQHandler
+                0x0800188c                LPTIM1_IRQHandler
+                0x0800188c                I2C4_ER_IRQHandler
+                0x0800188c                DMA2_Stream6_IRQHandler
+                0x0800188c                SAI1_IRQHandler
+                0x0800188c                DMA1_Stream3_IRQHandler
  .text.HAL_Init
-                0x0800182e       0x1a ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x0800182e                HAL_Init
+                0x0800188e       0x1a ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x0800188e                HAL_Init
  .text.HAL_DeInit
-                0x08001848       0x58 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x08001848                HAL_DeInit
+                0x080018a8       0x58 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x080018a8                HAL_DeInit
  .text.HAL_MspDeInit
-                0x080018a0        0xe ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x080018a0                HAL_MspDeInit
- *fill*         0x080018ae        0x2 
+                0x08001900        0xe ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x08001900                HAL_MspDeInit
+ *fill*         0x0800190e        0x2 
  .text.HAL_InitTick
-                0x080018b0       0x60 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x080018b0                HAL_InitTick
+                0x08001910       0x60 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x08001910                HAL_InitTick
  .text.HAL_IncTick
-                0x08001910       0x28 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x08001910                HAL_IncTick
+                0x08001970       0x28 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x08001970                HAL_IncTick
  .text.HAL_GetTick
-                0x08001938       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x08001938                HAL_GetTick
+                0x08001998       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x08001998                HAL_GetTick
  .text.HAL_Delay
-                0x08001950       0x48 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x08001950                HAL_Delay
+                0x080019b0       0x48 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x080019b0                HAL_Delay
  .text.__NVIC_SetPriorityGrouping
-                0x08001998       0x48 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x080019f8       0x48 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .text.__NVIC_GetPriorityGrouping
-                0x080019e0       0x1c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001a40       0x1c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .text.__NVIC_SetPriority
-                0x080019fc       0x54 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001a5c       0x54 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .text.NVIC_EncodePriority
-                0x08001a50       0x66 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- *fill*         0x08001ab6        0x2 
+                0x08001ab0       0x66 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ *fill*         0x08001b16        0x2 
  .text.__NVIC_SystemReset
-                0x08001ab8       0x2c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001b18       0x2c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .text.SysTick_Config
-                0x08001ae4       0x44 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001b44       0x44 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .text.HAL_NVIC_SetPriorityGrouping
-                0x08001b28       0x16 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001b28                HAL_NVIC_SetPriorityGrouping
+                0x08001b88       0x16 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001b88                HAL_NVIC_SetPriorityGrouping
  .text.HAL_NVIC_SetPriority
-                0x08001b3e       0x38 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001b3e                HAL_NVIC_SetPriority
+                0x08001b9e       0x38 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001b9e                HAL_NVIC_SetPriority
  .text.HAL_NVIC_SystemReset
-                0x08001b76        0x8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001b76                HAL_NVIC_SystemReset
+                0x08001bd6        0x8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001bd6                HAL_NVIC_SystemReset
  .text.HAL_SYSTICK_Config
-                0x08001b7e       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001b7e                HAL_SYSTICK_Config
- *fill*         0x08001b96        0x2 
+                0x08001bde       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001bde                HAL_SYSTICK_Config
+ *fill*         0x08001bf6        0x2 
  .text.HAL_MPU_Disable
-                0x08001b98       0x30 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001b98                HAL_MPU_Disable
+                0x08001bf8       0x30 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001bf8                HAL_MPU_Disable
  .text.HAL_MPU_Enable
-                0x08001bc8       0x40 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001bc8                HAL_MPU_Enable
+                0x08001c28       0x40 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001c28                HAL_MPU_Enable
  .text.HAL_MPU_ConfigRegion
-                0x08001c08       0x80 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
-                0x08001c08                HAL_MPU_ConfigRegion
+                0x08001c68       0x80 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x08001c68                HAL_MPU_ConfigRegion
  .text.HAL_FLASH_Program
-                0x08001c88       0xb4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
-                0x08001c88                HAL_FLASH_Program
+                0x08001ce8       0xb4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001ce8                HAL_FLASH_Program
  .text.HAL_FLASH_Unlock
-                0x08001d3c       0x44 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
-                0x08001d3c                HAL_FLASH_Unlock
+                0x08001d9c       0x44 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001d9c                HAL_FLASH_Unlock
  .text.HAL_FLASH_Lock
-                0x08001d80       0x20 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
-                0x08001d80                HAL_FLASH_Lock
+                0x08001de0       0x20 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001de0                HAL_FLASH_Lock
  .text.HAL_FLASH_GetError
-                0x08001da0       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
-                0x08001da0                HAL_FLASH_GetError
+                0x08001e00       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001e00                HAL_FLASH_GetError
  .text.FLASH_WaitForLastOperation
-                0x08001db8       0x80 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
-                0x08001db8                FLASH_WaitForLastOperation
+                0x08001e18       0x80 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001e18                FLASH_WaitForLastOperation
  .text.FLASH_Program_DoubleWord
-                0x08001e38       0x6c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001e98       0x6c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .text.FLASH_Program_Word
-                0x08001ea4       0x4c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001f04       0x4c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .text.FLASH_Program_HalfWord
-                0x08001ef0       0x4c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001f50       0x4c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .text.FLASH_Program_Byte
-                0x08001f3c       0x48 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001f9c       0x48 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .text.FLASH_SetErrorCode
-                0x08001f84       0x94 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x08001fe4       0x94 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .text.HAL_FLASHEx_Erase
-                0x08002018       0xd4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
-                0x08002018                HAL_FLASHEx_Erase
+                0x08002078       0xd4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+                0x08002078                HAL_FLASHEx_Erase
  .text.FLASH_MassErase
-                0x080020ec       0x4c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+                0x0800214c       0x4c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
  .text.FLASH_Erase_Sector
-                0x08002138       0x98 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
-                0x08002138                FLASH_Erase_Sector
+                0x08002198       0x98 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+                0x08002198                FLASH_Erase_Sector
  .text.HAL_GPIO_Init
-                0x080021d0      0x358 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
-                0x080021d0                HAL_GPIO_Init
+                0x08002230      0x358 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+                0x08002230                HAL_GPIO_Init
  .text.HAL_GPIO_ReadPin
-                0x08002528       0x30 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
-                0x08002528                HAL_GPIO_ReadPin
+                0x08002588       0x30 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+                0x08002588                HAL_GPIO_ReadPin
  .text.HAL_GPIO_WritePin
-                0x08002558       0x32 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
-                0x08002558                HAL_GPIO_WritePin
+                0x080025b8       0x32 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+                0x080025b8                HAL_GPIO_WritePin
  .text.HAL_GPIO_TogglePin
-                0x0800258a       0x34 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
-                0x0800258a                HAL_GPIO_TogglePin
- *fill*         0x080025be        0x2 
+                0x080025ea       0x34 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+                0x080025ea                HAL_GPIO_TogglePin
+ *fill*         0x0800261e        0x2 
  .text.HAL_RCC_OscConfig
-                0x080025c0      0x548 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
-                0x080025c0                HAL_RCC_OscConfig
+                0x08002620      0x548 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x08002620                HAL_RCC_OscConfig
  .text.HAL_RCC_ClockConfig
-                0x08002b08      0x1d8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
-                0x08002b08                HAL_RCC_ClockConfig
+                0x08002b68      0x1d8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x08002b68                HAL_RCC_ClockConfig
  .text.HAL_RCC_GetSysClockFreq
-                0x08002ce0      0x18c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
-                0x08002ce0                HAL_RCC_GetSysClockFreq
+                0x08002d40      0x18c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x08002d40                HAL_RCC_GetSysClockFreq
  .text.HAL_RCC_GetHCLKFreq
-                0x08002e6c       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
-                0x08002e6c                HAL_RCC_GetHCLKFreq
+                0x08002ecc       0x18 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x08002ecc                HAL_RCC_GetHCLKFreq
  .text.HAL_RCC_GetPCLK1Freq
-                0x08002e84       0x28 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
-                0x08002e84                HAL_RCC_GetPCLK1Freq
+                0x08002ee4       0x28 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x08002ee4                HAL_RCC_GetPCLK1Freq
  .text.HAL_RCC_GetPCLK2Freq
-                0x08002eac       0x28 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
-                0x08002eac                HAL_RCC_GetPCLK2Freq
+                0x08002f0c       0x28 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x08002f0c                HAL_RCC_GetPCLK2Freq
  .text.HAL_RCCEx_PeriphCLKConfig
-                0x08002ed4      0x7e0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
-                0x08002ed4                HAL_RCCEx_PeriphCLKConfig
+                0x08002f34      0x7e0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+                0x08002f34                HAL_RCCEx_PeriphCLKConfig
  .text.HAL_UART_Init
-                0x080036b4       0x9c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
-                0x080036b4                HAL_UART_Init
+                0x08003714       0x9c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x08003714                HAL_UART_Init
  .text.HAL_UART_Transmit
-                0x08003750      0x112 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
-                0x08003750                HAL_UART_Transmit
- *fill*         0x08003862        0x2 
+                0x080037b0      0x112 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x080037b0                HAL_UART_Transmit
+ *fill*         0x080038c2        0x2 
  .text.UART_SetConfig
-                0x08003864      0x4c8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
-                0x08003864                UART_SetConfig
+                0x080038c4      0x4c8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x080038c4                UART_SetConfig
  .text.UART_AdvFeatureConfig
-                0x08003d2c      0x144 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
-                0x08003d2c                UART_AdvFeatureConfig
+                0x08003d8c      0x144 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x08003d8c                UART_AdvFeatureConfig
  .text.UART_CheckIdleState
-                0x08003e70       0xae ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
-                0x08003e70                UART_CheckIdleState
+                0x08003ed0       0xae ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x08003ed0                UART_CheckIdleState
  .text.UART_WaitOnFlagUntilTimeout
-                0x08003f1e       0xda ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
-                0x08003f1e                UART_WaitOnFlagUntilTimeout
+                0x08003f7e       0xda ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x08003f7e                UART_WaitOnFlagUntilTimeout
  .text.UART_EndRxTransfer
-                0x08003ff8       0xc8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x08004058       0xc8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
  .text.tc_aes128_set_decrypt_key
-                0x080040c0       0x1c ./Libs/tinycrypt/Src/aes_decrypt.o
-                0x080040c0                tc_aes128_set_decrypt_key
+                0x08004120       0x1c ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x08004120                tc_aes128_set_decrypt_key
  .text.mult_row_column
-                0x080040dc      0x41a ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x0800413c      0x41a ./Libs/tinycrypt/Src/aes_decrypt.o
  .text.inv_mix_columns
-                0x080044f6       0x64 ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x08004556       0x64 ./Libs/tinycrypt/Src/aes_decrypt.o
  .text.add_round_key
-                0x0800455a      0x1a2 ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x080045ba      0x1a2 ./Libs/tinycrypt/Src/aes_decrypt.o
  .text.inv_sub_bytes
-                0x080046fc       0x44 ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x0800475c       0x44 ./Libs/tinycrypt/Src/aes_decrypt.o
  .text.inv_shift_rows
-                0x08004740       0x7e ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x080047a0       0x7e ./Libs/tinycrypt/Src/aes_decrypt.o
  .text.tc_aes_decrypt
-                0x080047be       0xd6 ./Libs/tinycrypt/Src/aes_decrypt.o
-                0x080047be                tc_aes_decrypt
- .text.rotword  0x08004894       0x1a ./Libs/tinycrypt/Src/aes_encrypt.o
- *fill*         0x080048ae        0x2 
+                0x0800481e       0xd6 ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x0800481e                tc_aes_decrypt
+ .text.rotword  0x080048f4       0x1a ./Libs/tinycrypt/Src/aes_encrypt.o
+ *fill*         0x0800490e        0x2 
  .text.tc_aes128_set_encrypt_key
-                0x080048b0      0x138 ./Libs/tinycrypt/Src/aes_encrypt.o
-                0x080048b0                tc_aes128_set_encrypt_key
+                0x08004910      0x138 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08004910                tc_aes128_set_encrypt_key
  .text.add_round_key
-                0x080049e8      0x1a2 ./Libs/tinycrypt/Src/aes_encrypt.o
- *fill*         0x08004b8a        0x2 
+                0x08004a48      0x1a2 ./Libs/tinycrypt/Src/aes_encrypt.o
+ *fill*         0x08004bea        0x2 
  .text.sub_bytes
-                0x08004b8c       0x44 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08004bec       0x44 ./Libs/tinycrypt/Src/aes_encrypt.o
  .text.mult_row_column
-                0x08004bd0      0x122 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08004c30      0x122 ./Libs/tinycrypt/Src/aes_encrypt.o
  .text.mix_columns
-                0x08004cf2       0x64 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08004d52       0x64 ./Libs/tinycrypt/Src/aes_encrypt.o
  .text.shift_rows
-                0x08004d56       0x7e ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08004db6       0x7e ./Libs/tinycrypt/Src/aes_encrypt.o
  .text.tc_aes_encrypt
-                0x08004dd4       0xdc ./Libs/tinycrypt/Src/aes_encrypt.o
-                0x08004dd4                tc_aes_encrypt
+                0x08004e34       0xdc ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08004e34                tc_aes_encrypt
  .text.uECC_vli_clear
-                0x08004eb0       0x42 ./Libs/tinycrypt/Src/ecc.o
-                0x08004eb0                uECC_vli_clear
+                0x08004f10       0x42 ./Libs/tinycrypt/Src/ecc.o
+                0x08004f10                uECC_vli_clear
  .text.uECC_vli_isZero
-                0x08004ef2       0x54 ./Libs/tinycrypt/Src/ecc.o
-                0x08004ef2                uECC_vli_isZero
+                0x08004f52       0x54 ./Libs/tinycrypt/Src/ecc.o
+                0x08004f52                uECC_vli_isZero
  .text.uECC_vli_testBit
-                0x08004f46       0x36 ./Libs/tinycrypt/Src/ecc.o
-                0x08004f46                uECC_vli_testBit
+                0x08004fa6       0x36 ./Libs/tinycrypt/Src/ecc.o
+                0x08004fa6                uECC_vli_testBit
  .text.vli_numDigits
-                0x08004f7c       0x4a ./Libs/tinycrypt/Src/ecc.o
+                0x08004fdc       0x4a ./Libs/tinycrypt/Src/ecc.o
  .text.uECC_vli_numBits
-                0x08004fc6       0x74 ./Libs/tinycrypt/Src/ecc.o
-                0x08004fc6                uECC_vli_numBits
+                0x08005026       0x74 ./Libs/tinycrypt/Src/ecc.o
+                0x08005026                uECC_vli_numBits
  .text.uECC_vli_set
-                0x0800503a       0x4e ./Libs/tinycrypt/Src/ecc.o
-                0x0800503a                uECC_vli_set
+                0x0800509a       0x4e ./Libs/tinycrypt/Src/ecc.o
+                0x0800509a                uECC_vli_set
  .text.uECC_vli_cmp_unsafe
-                0x08005088       0x78 ./Libs/tinycrypt/Src/ecc.o
-                0x08005088                uECC_vli_cmp_unsafe
+                0x080050e8       0x78 ./Libs/tinycrypt/Src/ecc.o
+                0x080050e8                uECC_vli_cmp_unsafe
  .text.uECC_vli_equal
-                0x08005100       0x64 ./Libs/tinycrypt/Src/ecc.o
-                0x08005100                uECC_vli_equal
+                0x08005160       0x64 ./Libs/tinycrypt/Src/ecc.o
+                0x08005160                uECC_vli_equal
  .text.cond_set
-                0x08005164       0x36 ./Libs/tinycrypt/Src/ecc.o
-                0x08005164                cond_set
+                0x080051c4       0x36 ./Libs/tinycrypt/Src/ecc.o
+                0x080051c4                cond_set
  .text.uECC_vli_sub
-                0x0800519a       0xa2 ./Libs/tinycrypt/Src/ecc.o
-                0x0800519a                uECC_vli_sub
+                0x080051fa       0xa2 ./Libs/tinycrypt/Src/ecc.o
+                0x080051fa                uECC_vli_sub
  .text.uECC_vli_add
-                0x0800523c       0xa2 ./Libs/tinycrypt/Src/ecc.o
+                0x0800529c       0xa2 ./Libs/tinycrypt/Src/ecc.o
  .text.uECC_vli_rshift1
-                0x080052de       0x54 ./Libs/tinycrypt/Src/ecc.o
- .text.muladd   0x08005332       0xd4 ./Libs/tinycrypt/Src/ecc.o
+                0x0800533e       0x54 ./Libs/tinycrypt/Src/ecc.o
+ .text.muladd   0x08005392       0xd4 ./Libs/tinycrypt/Src/ecc.o
  .text.uECC_vli_mult
-                0x08005406      0x140 ./Libs/tinycrypt/Src/ecc.o
+                0x08005466      0x140 ./Libs/tinycrypt/Src/ecc.o
  .text.uECC_vli_modAdd
-                0x08005546       0x4e ./Libs/tinycrypt/Src/ecc.o
-                0x08005546                uECC_vli_modAdd
+                0x080055a6       0x4e ./Libs/tinycrypt/Src/ecc.o
+                0x080055a6                uECC_vli_modAdd
  .text.uECC_vli_modSub
-                0x08005594       0x3a ./Libs/tinycrypt/Src/ecc.o
-                0x08005594                uECC_vli_modSub
+                0x080055f4       0x3a ./Libs/tinycrypt/Src/ecc.o
+                0x080055f4                uECC_vli_modSub
  .text.uECC_vli_mmod
-                0x080055ce      0x278 ./Libs/tinycrypt/Src/ecc.o
-                0x080055ce                uECC_vli_mmod
+                0x0800562e      0x278 ./Libs/tinycrypt/Src/ecc.o
+                0x0800562e                uECC_vli_mmod
  .text.uECC_vli_modMult
-                0x08005846       0x36 ./Libs/tinycrypt/Src/ecc.o
-                0x08005846                uECC_vli_modMult
+                0x080058a6       0x36 ./Libs/tinycrypt/Src/ecc.o
+                0x080058a6                uECC_vli_modMult
  .text.uECC_vli_modMult_fast
-                0x0800587c       0x38 ./Libs/tinycrypt/Src/ecc.o
-                0x0800587c                uECC_vli_modMult_fast
+                0x080058dc       0x38 ./Libs/tinycrypt/Src/ecc.o
+                0x080058dc                uECC_vli_modMult_fast
  .text.uECC_vli_modSquare_fast
-                0x080058b4       0x20 ./Libs/tinycrypt/Src/ecc.o
+                0x08005914       0x20 ./Libs/tinycrypt/Src/ecc.o
  .text.vli_modInv_update
-                0x080058d4       0x70 ./Libs/tinycrypt/Src/ecc.o
+                0x08005934       0x70 ./Libs/tinycrypt/Src/ecc.o
  .text.uECC_vli_modInv
-                0x08005944      0x1f2 ./Libs/tinycrypt/Src/ecc.o
-                0x08005944                uECC_vli_modInv
+                0x080059a4      0x1f2 ./Libs/tinycrypt/Src/ecc.o
+                0x080059a4                uECC_vli_modInv
  .text.double_jacobian_default
-                0x08005b36      0x1fe ./Libs/tinycrypt/Src/ecc.o
-                0x08005b36                double_jacobian_default
+                0x08005b96      0x1fe ./Libs/tinycrypt/Src/ecc.o
+                0x08005b96                double_jacobian_default
  .text.x_side_default
-                0x08005d34       0x76 ./Libs/tinycrypt/Src/ecc.o
-                0x08005d34                x_side_default
- *fill*         0x08005daa        0x2 
+                0x08005d94       0x76 ./Libs/tinycrypt/Src/ecc.o
+                0x08005d94                x_side_default
+ *fill*         0x08005e0a        0x2 
  .text.uECC_secp256r1
-                0x08005dac       0x14 ./Libs/tinycrypt/Src/ecc.o
-                0x08005dac                uECC_secp256r1
+                0x08005e0c       0x14 ./Libs/tinycrypt/Src/ecc.o
+                0x08005e0c                uECC_secp256r1
  .text.vli_mmod_fast_secp256r1
-                0x08005dc0      0x29c ./Libs/tinycrypt/Src/ecc.o
-                0x08005dc0                vli_mmod_fast_secp256r1
- .text.apply_z  0x0800605c       0x50 ./Libs/tinycrypt/Src/ecc.o
-                0x0800605c                apply_z
+                0x08005e20      0x29c ./Libs/tinycrypt/Src/ecc.o
+                0x08005e20                vli_mmod_fast_secp256r1
+ .text.apply_z  0x080060bc       0x50 ./Libs/tinycrypt/Src/ecc.o
+                0x080060bc                apply_z
  .text.XYcZ_add
-                0x080060ac      0x126 ./Libs/tinycrypt/Src/ecc.o
-                0x080060ac                XYcZ_add
+                0x0800610c      0x126 ./Libs/tinycrypt/Src/ecc.o
+                0x0800610c                XYcZ_add
  .text.uECC_vli_bytesToNative
-                0x080061d2       0x80 ./Libs/tinycrypt/Src/ecc.o
-                0x080061d2                uECC_vli_bytesToNative
+                0x08006232       0x80 ./Libs/tinycrypt/Src/ecc.o
+                0x08006232                uECC_vli_bytesToNative
  .text.bits2int
-                0x08006252       0xe2 ./Libs/tinycrypt/Src/ecc_dsa.o
- .text.smax     0x08006334       0x2c ./Libs/tinycrypt/Src/ecc_dsa.o
+                0x080062b2       0xe2 ./Libs/tinycrypt/Src/ecc_dsa.o
+ .text.smax     0x08006394       0x2c ./Libs/tinycrypt/Src/ecc_dsa.o
  .text.uECC_verify
-                0x08006360      0x5a2 ./Libs/tinycrypt/Src/ecc_dsa.o
-                0x08006360                uECC_verify
- *fill*         0x08006902        0x2 
+                0x080063c0      0x5a2 ./Libs/tinycrypt/Src/ecc_dsa.o
+                0x080063c0                uECC_verify
+ *fill*         0x08006962        0x2 
  .text.tc_sha256_init
-                0x08006904       0x78 ./Libs/tinycrypt/Src/sha256.o
-                0x08006904                tc_sha256_init
+                0x08006964       0x78 ./Libs/tinycrypt/Src/sha256.o
+                0x08006964                tc_sha256_init
  .text.tc_sha256_update
-                0x0800697c       0x86 ./Libs/tinycrypt/Src/sha256.o
-                0x0800697c                tc_sha256_update
+                0x080069dc       0x86 ./Libs/tinycrypt/Src/sha256.o
+                0x080069dc                tc_sha256_update
  .text.tc_sha256_final
-                0x08006a02      0x1ea ./Libs/tinycrypt/Src/sha256.o
-                0x08006a02                tc_sha256_final
- .text.ROTR     0x08006bec       0x1e ./Libs/tinycrypt/Src/sha256.o
+                0x08006a62      0x1ea ./Libs/tinycrypt/Src/sha256.o
+                0x08006a62                tc_sha256_final
+ .text.ROTR     0x08006c4c       0x1e ./Libs/tinycrypt/Src/sha256.o
  .text.BigEndian
-                0x08006c0a       0x66 ./Libs/tinycrypt/Src/sha256.o
+                0x08006c6a       0x66 ./Libs/tinycrypt/Src/sha256.o
  .text.compress
-                0x08006c70      0x314 ./Libs/tinycrypt/Src/sha256.o
- .text._copy    0x08006f84       0x2e ./Libs/tinycrypt/Src/utils.o
-                0x08006f84                _copy
- .text._set     0x08006fb2       0x22 ./Libs/tinycrypt/Src/utils.o
-                0x08006fb2                _set
+                0x08006cd0      0x314 ./Libs/tinycrypt/Src/sha256.o
+ .text._copy    0x08006fe4       0x2e ./Libs/tinycrypt/Src/utils.o
+                0x08006fe4                _copy
+ .text._set     0x08007012       0x22 ./Libs/tinycrypt/Src/utils.o
+                0x08007012                _set
  .text._double_byte
-                0x08006fd4       0x3e ./Libs/tinycrypt/Src/utils.o
-                0x08006fd4                _double_byte
- .text.memset   0x08007012       0x10 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
-                0x08007012                memset
- *fill*         0x08007022        0x2 
+                0x08007034       0x3e ./Libs/tinycrypt/Src/utils.o
+                0x08007034                _double_byte
+ .text.memset   0x08007072       0x10 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+                0x08007072                memset
+ *fill*         0x08007082        0x2 
  .text.__libc_init_array
-                0x08007024       0x48 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
-                0x08007024                __libc_init_array
- .text.memcpy   0x0800706c       0x1c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
-                0x0800706c                memcpy
+                0x08007084       0x48 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+                0x08007084                __libc_init_array
+ .text.memcpy   0x080070cc       0x1c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
+                0x080070cc                memcpy
  *(.glue_7)
- .glue_7        0x08007088        0x0 linker stubs
+ .glue_7        0x080070e8        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08007088        0x0 linker stubs
+ .glue_7t       0x080070e8        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08007088        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .eh_frame      0x080070e8        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x08007088        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x08007088                _init
- .init          0x0800708c        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x080070e8        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x080070e8                _init
+ .init          0x080070ec        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x08007094        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crti.o
-                0x08007094                _fini
- .fini          0x08007098        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtn.o
-                0x080070a0                        . = ALIGN (0x4)
-                0x080070a0                        _etext = .
+ .fini          0x080070f4        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crti.o
+                0x080070f4                _fini
+ .fini          0x080070f8        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtn.o
+                0x08007100                        . = ALIGN (0x4)
+                0x08007100                        _etext = .
 
-.vfp11_veneer   0x080070a0        0x0
- .vfp11_veneer  0x080070a0        0x0 linker stubs
+.vfp11_veneer   0x08007100        0x0
+ .vfp11_veneer  0x08007100        0x0 linker stubs
 
-.v4_bx          0x080070a0        0x0
- .v4_bx         0x080070a0        0x0 linker stubs
+.v4_bx          0x08007100        0x0
+ .v4_bx         0x08007100        0x0 linker stubs
 
-.iplt           0x080070a0        0x0
- .iplt          0x080070a0        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x08007100        0x0
+ .iplt          0x08007100        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x080070a0      0xd74
-                0x080070a0                        . = ALIGN (0x4)
+.rodata         0x08007100      0xdb8
+                0x08007100                        . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x080070a0      0x3ed ./Core/Src/BL_Functions.o
- *fill*         0x0800748d        0x3 
- .rodata        0x08007490      0x528 ./Core/Src/main.o
- .rodata        0x080079b8       0x17 ./Core/Src/tiny_printf.o
- *fill*         0x080079cf        0x1 
- .rodata        0x080079d0       0x2c ./Libs/tinycrypt/Src/aes_encrypt.o
+ .rodata        0x08007100      0x429 ./Core/Src/BL_Functions.o
+ *fill*         0x08007529        0x3 
+ .rodata        0x0800752c      0x530 ./Core/Src/main.o
+ .rodata        0x08007a5c       0x17 ./Core/Src/tiny_printf.o
+ *fill*         0x08007a73        0x1 
+ .rodata        0x08007a74       0x2c ./Libs/tinycrypt/Src/aes_encrypt.o
  *(.rodata*)
  .rodata.AES_SECRET_KEY
-                0x080079fc       0x10 ./Core/Src/keys.o
-                0x080079fc                AES_SECRET_KEY
+                0x08007aa0       0x10 ./Core/Src/keys.o
+                0x08007aa0                AES_SECRET_KEY
  .rodata.ECDSA_public_key_xy
-                0x08007a0c       0x40 ./Core/Src/keys.o
-                0x08007a0c                ECDSA_public_key_xy
+                0x08007ab0       0x40 ./Core/Src/keys.o
+                0x08007ab0                ECDSA_public_key_xy
  .rodata.AHBPrescTable
-                0x08007a4c       0x10 ./Core/Src/system_stm32f7xx.o
-                0x08007a4c                AHBPrescTable
+                0x08007af0       0x10 ./Core/Src/system_stm32f7xx.o
+                0x08007af0                AHBPrescTable
  .rodata.APBPrescTable
-                0x08007a5c        0x8 ./Core/Src/system_stm32f7xx.o
-                0x08007a5c                APBPrescTable
+                0x08007b00        0x8 ./Core/Src/system_stm32f7xx.o
+                0x08007b00                APBPrescTable
  .rodata.inv_sbox
-                0x08007a64      0x100 ./Libs/tinycrypt/Src/aes_decrypt.o
- .rodata.sbox   0x08007b64      0x100 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x08007b08      0x100 ./Libs/tinycrypt/Src/aes_decrypt.o
+ .rodata.sbox   0x08007c08      0x100 ./Libs/tinycrypt/Src/aes_encrypt.o
  .rodata.curve_secp256r1
-                0x08007c64       0xb0 ./Libs/tinycrypt/Src/ecc.o
- .rodata.k256   0x08007d14      0x100 ./Libs/tinycrypt/Src/sha256.o
-                0x08007e14                        . = ALIGN (0x4)
+                0x08007d08       0xb0 ./Libs/tinycrypt/Src/ecc.o
+ .rodata.k256   0x08007db8      0x100 ./Libs/tinycrypt/Src/sha256.o
+                0x08007eb8                        . = ALIGN (0x4)
 
-.ARM.extab      0x08007e14        0x0
-                0x08007e14                        . = ALIGN (0x4)
+.ARM.extab      0x08007eb8        0x0
+                0x08007eb8                        . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08007e14                        . = ALIGN (0x4)
+                0x08007eb8                        . = ALIGN (0x4)
 
-.ARM            0x08007e14        0x8
-                0x08007e14                        . = ALIGN (0x4)
-                0x08007e14                        __exidx_start = .
+.ARM            0x08007eb8        0x8
+                0x08007eb8                        . = ALIGN (0x4)
+                0x08007eb8                        __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x08007e14        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
-                0x08007e1c                        __exidx_end = .
-                0x08007e1c                        . = ALIGN (0x4)
+ .ARM.exidx     0x08007eb8        0x8 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x08007ec0                        __exidx_end = .
+                0x08007ec0                        . = ALIGN (0x4)
 
-.preinit_array  0x08007e1c        0x0
-                0x08007e1c                        . = ALIGN (0x4)
-                0x08007e1c                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x08007ec0        0x0
+                0x08007ec0                        . = ALIGN (0x4)
+                0x08007ec0                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x08007e1c                        PROVIDE (__preinit_array_end = .)
-                0x08007e1c                        . = ALIGN (0x4)
+                0x08007ec0                        PROVIDE (__preinit_array_end = .)
+                0x08007ec0                        . = ALIGN (0x4)
 
-.init_array     0x08007e1c        0x4
-                0x08007e1c                        . = ALIGN (0x4)
-                0x08007e1c                        PROVIDE (__init_array_start = .)
+.init_array     0x08007ec0        0x4
+                0x08007ec0                        . = ALIGN (0x4)
+                0x08007ec0                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x08007e1c        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x08007e20                        PROVIDE (__init_array_end = .)
-                0x08007e20                        . = ALIGN (0x4)
+ .init_array    0x08007ec0        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x08007ec4                        PROVIDE (__init_array_end = .)
+                0x08007ec4                        . = ALIGN (0x4)
 
-.fini_array     0x08007e20        0x4
-                0x08007e20                        . = ALIGN (0x4)
+.fini_array     0x08007ec4        0x4
+                0x08007ec4                        . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x08007e20        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x08007ec4        0x4 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x08007e24                        . = ALIGN (0x4)
-                0x08007e24                        _sidata = LOADADDR (.data)
+                0x08007ec8                        . = ALIGN (0x4)
+                0x08007ec8                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x08007e24        0x0
- .rel.iplt      0x08007e24        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x08007ec8        0x0
+ .rel.iplt      0x08007ec8        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.data           0x20000000        0xc load address 0x08007e24
+.data           0x20000000        0xc load address 0x08007ec8
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -4520,43 +4519,41 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  *fill*         0x20000009        0x3 
                 0x2000000c                        _edata = .
 
-.igot.plt       0x2000000c        0x0 load address 0x08007e30
+.igot.plt       0x2000000c        0x0 load address 0x08007ed4
  .igot.plt      0x2000000c        0x0 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 0x2000000c                        . = ALIGN (0x4)
 
-.bss            0x20000010       0xec load address 0x08007e30
-                0x20000010                        _sbss = .
-                0x20000010                        __bss_start__ = _sbss
+.bss            0x2000000c       0xd4 load address 0x08007ed4
+                0x2000000c                        _sbss = .
+                0x2000000c                        __bss_start__ = _sbss
  *(.bss)
- .bss           0x20000010       0x1c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .bss           0x2000000c       0x1c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.bss*)
- .bss.huart1    0x2000002c       0x88 ./Core/Src/main.o
-                0x2000002c                huart1
- *fill*         0x200000b4        0x4 
- .bss.config    0x200000b8       0x20 ./Core/Src/main.o
-                0x200000b8                config
+ .bss.huart1    0x20000028       0x88 ./Core/Src/main.o
+                0x20000028                huart1
+ .bss.config    0x200000b0        0xc ./Core/Src/main.o
+                0x200000b0                config
  .bss.g_uart_handle
-                0x200000d8        0x4 ./Core/Src/tiny_printf.o
- .bss.uwTick    0x200000dc        0x4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
-                0x200000dc                uwTick
- .bss.pFlash    0x200000e0       0x1c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
-                0x200000e0                pFlash
+                0x200000bc        0x4 ./Core/Src/tiny_printf.o
+ .bss.uwTick    0x200000c0        0x4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x200000c0                uwTick
+ .bss.pFlash    0x200000c4       0x1c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x200000c4                pFlash
  *(COMMON)
-                0x200000fc                        . = ALIGN (0x4)
-                0x200000fc                        _ebss = .
-                0x200000fc                        __bss_end__ = _ebss
+                0x200000e0                        . = ALIGN (0x4)
+                0x200000e0                        _ebss = .
+                0x200000e0                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x200000fc      0x604 load address 0x08007e30
-                0x20000100                        . = ALIGN (0x8)
- *fill*         0x200000fc        0x4 
+                0x200000e0      0x600 load address 0x08007ed4
+                0x200000e0                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x20000100                        PROVIDE (_end = .)
-                0x20000300                        . = (. + _Min_Heap_Size)
- *fill*         0x20000100      0x200 
-                0x20000700                        . = (. + _Min_Stack_Size)
- *fill*         0x20000300      0x400 
-                0x20000700                        . = ALIGN (0x8)
+                0x200000e0                        PROVIDE (_end = .)
+                0x200002e0                        . = (. + _Min_Heap_Size)
+ *fill*         0x200000e0      0x200 
+                0x200006e0                        . = (. + _Min_Stack_Size)
+ *fill*         0x200002e0      0x400 
+                0x200006e0                        . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -4638,330 +4635,331 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a
 LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a
 
-.debug_info     0x00000000     0xeb9f
- .debug_info    0x00000000      0x916 ./Core/Src/BL_Functions.o
- .debug_info    0x00000916      0x588 ./Core/Src/Cyptology_Control.o
- .debug_info    0x00000e9e      0x645 ./Core/Src/jump_to_app.o
- .debug_info    0x000014e3      0x2cc ./Core/Src/keys.o
- .debug_info    0x000017af     0x15c6 ./Core/Src/main.o
- .debug_info    0x00002d75      0xc7d ./Core/Src/stm32f7xx_hal_msp.o
- .debug_info    0x000039f2      0x112 ./Core/Src/stm32f7xx_it.o
- .debug_info    0x00003b04      0x6ed ./Core/Src/system_stm32f7xx.o
- .debug_info    0x000041f1      0x880 ./Core/Src/tiny_printf.o
- .debug_info    0x00004a71       0x30 ./Core/Startup/startup_stm32f746nghx.o
- .debug_info    0x00004aa1      0x9d8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_info    0x00005479      0xf7e ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_info    0x000063f7      0x5a7 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_info    0x0000699e      0x6e3 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_info    0x00007081      0x6e7 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_info    0x00007768      0x8f0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_info    0x00008058      0x6bd ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_info    0x00008715     0x3a11 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
- .debug_info    0x0000c126      0x30a ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_info    0x0000c430      0x349 ./Libs/tinycrypt/Src/aes_encrypt.o
- .debug_info    0x0000c779     0x14da ./Libs/tinycrypt/Src/ecc.o
- .debug_info    0x0000dc53      0x975 ./Libs/tinycrypt/Src/ecc_dsa.o
- .debug_info    0x0000e5c8      0x3a8 ./Libs/tinycrypt/Src/sha256.o
- .debug_info    0x0000e970      0x22f ./Libs/tinycrypt/Src/utils.o
+.debug_info     0x00000000     0xeb64
+ .debug_info    0x00000000      0x930 ./Core/Src/BL_Functions.o
+ .debug_info    0x00000930      0x567 ./Core/Src/Cyptology_Control.o
+ .debug_info    0x00000e97      0x645 ./Core/Src/jump_to_app.o
+ .debug_info    0x000014dc      0x2cc ./Core/Src/keys.o
+ .debug_info    0x000017a8     0x1592 ./Core/Src/main.o
+ .debug_info    0x00002d3a      0xc7d ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_info    0x000039b7      0x112 ./Core/Src/stm32f7xx_it.o
+ .debug_info    0x00003ac9      0x6ed ./Core/Src/system_stm32f7xx.o
+ .debug_info    0x000041b6      0x880 ./Core/Src/tiny_printf.o
+ .debug_info    0x00004a36       0x30 ./Core/Startup/startup_stm32f746nghx.o
+ .debug_info    0x00004a66      0x9d8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_info    0x0000543e      0xf7e ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_info    0x000063bc      0x5a7 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_info    0x00006963      0x6e3 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_info    0x00007046      0x6e7 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_info    0x0000772d      0x8f0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_info    0x0000801d      0x6bd ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_info    0x000086da     0x3a11 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_info    0x0000c0eb      0x30a ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_info    0x0000c3f5      0x349 ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_info    0x0000c73e     0x14da ./Libs/tinycrypt/Src/ecc.o
+ .debug_info    0x0000dc18      0x975 ./Libs/tinycrypt/Src/ecc_dsa.o
+ .debug_info    0x0000e58d      0x3a8 ./Libs/tinycrypt/Src/sha256.o
+ .debug_info    0x0000e935      0x22f ./Libs/tinycrypt/Src/utils.o
 
-.debug_abbrev   0x00000000     0x2c98
- .debug_abbrev  0x00000000      0x26f ./Core/Src/BL_Functions.o
- .debug_abbrev  0x0000026f      0x182 ./Core/Src/Cyptology_Control.o
- .debug_abbrev  0x000003f1      0x1d9 ./Core/Src/jump_to_app.o
- .debug_abbrev  0x000005ca      0x10d ./Core/Src/keys.o
- .debug_abbrev  0x000006d7      0x335 ./Core/Src/main.o
- .debug_abbrev  0x00000a0c      0x1d6 ./Core/Src/stm32f7xx_hal_msp.o
- .debug_abbrev  0x00000be2       0x73 ./Core/Src/stm32f7xx_it.o
- .debug_abbrev  0x00000c55      0x13b ./Core/Src/system_stm32f7xx.o
- .debug_abbrev  0x00000d90      0x1f2 ./Core/Src/tiny_printf.o
- .debug_abbrev  0x00000f82       0x24 ./Core/Startup/startup_stm32f746nghx.o
- .debug_abbrev  0x00000fa6      0x213 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_abbrev  0x000011b9      0x31e ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_abbrev  0x000014d7      0x27e ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_abbrev  0x00001755      0x24c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_abbrev  0x000019a1      0x1d4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_abbrev  0x00001b75      0x288 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_abbrev  0x00001dfd      0x1c9 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_abbrev  0x00001fc6      0x2e6 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
- .debug_abbrev  0x000022ac      0x15e ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_abbrev  0x0000240a      0x15f ./Libs/tinycrypt/Src/aes_encrypt.o
- .debug_abbrev  0x00002569      0x2c8 ./Libs/tinycrypt/Src/ecc.o
- .debug_abbrev  0x00002831      0x1d3 ./Libs/tinycrypt/Src/ecc_dsa.o
- .debug_abbrev  0x00002a04      0x176 ./Libs/tinycrypt/Src/sha256.o
- .debug_abbrev  0x00002b7a      0x11e ./Libs/tinycrypt/Src/utils.o
+.debug_abbrev   0x00000000     0x2c75
+ .debug_abbrev  0x00000000      0x258 ./Core/Src/BL_Functions.o
+ .debug_abbrev  0x00000258      0x19a ./Core/Src/Cyptology_Control.o
+ .debug_abbrev  0x000003f2      0x1d9 ./Core/Src/jump_to_app.o
+ .debug_abbrev  0x000005cb      0x10d ./Core/Src/keys.o
+ .debug_abbrev  0x000006d8      0x311 ./Core/Src/main.o
+ .debug_abbrev  0x000009e9      0x1d6 ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_abbrev  0x00000bbf       0x73 ./Core/Src/stm32f7xx_it.o
+ .debug_abbrev  0x00000c32      0x13b ./Core/Src/system_stm32f7xx.o
+ .debug_abbrev  0x00000d6d      0x1f2 ./Core/Src/tiny_printf.o
+ .debug_abbrev  0x00000f5f       0x24 ./Core/Startup/startup_stm32f746nghx.o
+ .debug_abbrev  0x00000f83      0x213 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_abbrev  0x00001196      0x31e ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_abbrev  0x000014b4      0x27e ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_abbrev  0x00001732      0x24c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_abbrev  0x0000197e      0x1d4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_abbrev  0x00001b52      0x288 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_abbrev  0x00001dda      0x1c9 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_abbrev  0x00001fa3      0x2e6 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_abbrev  0x00002289      0x15e ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_abbrev  0x000023e7      0x15f ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_abbrev  0x00002546      0x2c8 ./Libs/tinycrypt/Src/ecc.o
+ .debug_abbrev  0x0000280e      0x1d3 ./Libs/tinycrypt/Src/ecc_dsa.o
+ .debug_abbrev  0x000029e1      0x176 ./Libs/tinycrypt/Src/sha256.o
+ .debug_abbrev  0x00002b57      0x11e ./Libs/tinycrypt/Src/utils.o
 
-.debug_aranges  0x00000000      0xbf8
+.debug_aranges  0x00000000      0xbf0
  .debug_aranges
                 0x00000000       0x58 ./Core/Src/BL_Functions.o
  .debug_aranges
-                0x00000058       0x30 ./Core/Src/Cyptology_Control.o
+                0x00000058       0x28 ./Core/Src/Cyptology_Control.o
  .debug_aranges
-                0x00000088       0x20 ./Core/Src/jump_to_app.o
+                0x00000080       0x20 ./Core/Src/jump_to_app.o
  .debug_aranges
-                0x000000a8       0x20 ./Core/Src/keys.o
+                0x000000a0       0x20 ./Core/Src/keys.o
  .debug_aranges
-                0x000000c8       0x60 ./Core/Src/main.o
+                0x000000c0       0x60 ./Core/Src/main.o
  .debug_aranges
-                0x00000128       0x30 ./Core/Src/stm32f7xx_hal_msp.o
+                0x00000120       0x30 ./Core/Src/stm32f7xx_hal_msp.o
  .debug_aranges
-                0x00000158       0x60 ./Core/Src/stm32f7xx_it.o
+                0x00000150       0x60 ./Core/Src/stm32f7xx_it.o
  .debug_aranges
-                0x000001b8       0x28 ./Core/Src/system_stm32f7xx.o
+                0x000001b0       0x28 ./Core/Src/system_stm32f7xx.o
  .debug_aranges
-                0x000001e0       0x48 ./Core/Src/tiny_printf.o
+                0x000001d8       0x48 ./Core/Src/tiny_printf.o
  .debug_aranges
-                0x00000228       0x28 ./Core/Startup/startup_stm32f746nghx.o
+                0x00000220       0x28 ./Core/Startup/startup_stm32f746nghx.o
  .debug_aranges
-                0x00000250      0x100 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x00000248      0x100 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
  .debug_aranges
-                0x00000350      0x128 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x00000348      0x128 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .debug_aranges
-                0x00000478       0xa0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x00000470       0xa0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .debug_aranges
-                0x00000518       0xa0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+                0x00000510       0xa0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
  .debug_aranges
-                0x000005b8       0x58 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+                0x000005b0       0x58 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
  .debug_aranges
-                0x00000610       0x88 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x00000608       0x88 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
  .debug_aranges
-                0x00000698       0x50 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+                0x00000690       0x50 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
  .debug_aranges
-                0x000006e8      0x228 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x000006e0      0x228 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
  .debug_aranges
-                0x00000910       0x50 ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x00000908       0x50 ./Libs/tinycrypt/Src/aes_decrypt.o
  .debug_aranges
-                0x00000960       0x58 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x00000958       0x58 ./Libs/tinycrypt/Src/aes_encrypt.o
  .debug_aranges
-                0x000009b8      0x180 ./Libs/tinycrypt/Src/ecc.o
+                0x000009b0      0x180 ./Libs/tinycrypt/Src/ecc.o
  .debug_aranges
-                0x00000b38       0x40 ./Libs/tinycrypt/Src/ecc_dsa.o
+                0x00000b30       0x40 ./Libs/tinycrypt/Src/ecc_dsa.o
  .debug_aranges
-                0x00000b78       0x48 ./Libs/tinycrypt/Src/sha256.o
+                0x00000b70       0x48 ./Libs/tinycrypt/Src/sha256.o
  .debug_aranges
-                0x00000bc0       0x38 ./Libs/tinycrypt/Src/utils.o
+                0x00000bb8       0x38 ./Libs/tinycrypt/Src/utils.o
 
 .debug_rnglists
-                0x00000000      0x90d
+                0x00000000      0x907
  .debug_rnglists
                 0x00000000       0x44 ./Core/Src/BL_Functions.o
  .debug_rnglists
-                0x00000044       0x20 ./Core/Src/Cyptology_Control.o
+                0x00000044       0x1a ./Core/Src/Cyptology_Control.o
  .debug_rnglists
-                0x00000064       0x14 ./Core/Src/jump_to_app.o
+                0x0000005e       0x14 ./Core/Src/jump_to_app.o
  .debug_rnglists
-                0x00000078       0x13 ./Core/Src/keys.o
+                0x00000072       0x13 ./Core/Src/keys.o
  .debug_rnglists
-                0x0000008b       0x49 ./Core/Src/main.o
+                0x00000085       0x49 ./Core/Src/main.o
  .debug_rnglists
-                0x000000d4       0x20 ./Core/Src/stm32f7xx_hal_msp.o
+                0x000000ce       0x20 ./Core/Src/stm32f7xx_hal_msp.o
  .debug_rnglists
-                0x000000f4       0x43 ./Core/Src/stm32f7xx_it.o
+                0x000000ee       0x43 ./Core/Src/stm32f7xx_it.o
  .debug_rnglists
-                0x00000137       0x1a ./Core/Src/system_stm32f7xx.o
+                0x00000131       0x1a ./Core/Src/system_stm32f7xx.o
  .debug_rnglists
-                0x00000151       0x33 ./Core/Src/tiny_printf.o
+                0x0000014b       0x33 ./Core/Src/tiny_printf.o
  .debug_rnglists
-                0x00000184       0x19 ./Core/Startup/startup_stm32f746nghx.o
+                0x0000017e       0x19 ./Core/Startup/startup_stm32f746nghx.o
  .debug_rnglists
-                0x0000019d       0xbb ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+                0x00000197       0xbb ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
  .debug_rnglists
-                0x00000258       0xda ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+                0x00000252       0xda ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
  .debug_rnglists
-                0x00000332       0x78 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+                0x0000032c       0x78 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
  .debug_rnglists
-                0x000003aa       0x77 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+                0x000003a4       0x77 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
  .debug_rnglists
-                0x00000421       0x3f ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+                0x0000041b       0x3f ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
  .debug_rnglists
-                0x00000460       0x67 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+                0x0000045a       0x67 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
  .debug_rnglists
-                0x000004c7       0x3c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+                0x000004c1       0x3c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
  .debug_rnglists
-                0x00000503      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+                0x000004fd      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
  .debug_rnglists
-                0x000006dd       0x3a ./Libs/tinycrypt/Src/aes_decrypt.o
+                0x000006d7       0x3a ./Libs/tinycrypt/Src/aes_decrypt.o
  .debug_rnglists
-                0x00000717       0x41 ./Libs/tinycrypt/Src/aes_encrypt.o
+                0x00000711       0x41 ./Libs/tinycrypt/Src/aes_encrypt.o
  .debug_rnglists
-                0x00000758      0x12d ./Libs/tinycrypt/Src/ecc.o
+                0x00000752      0x12d ./Libs/tinycrypt/Src/ecc.o
  .debug_rnglists
-                0x00000885       0x2f ./Libs/tinycrypt/Src/ecc_dsa.o
+                0x0000087f       0x2f ./Libs/tinycrypt/Src/ecc_dsa.o
  .debug_rnglists
-                0x000008b4       0x34 ./Libs/tinycrypt/Src/sha256.o
+                0x000008ae       0x34 ./Libs/tinycrypt/Src/sha256.o
  .debug_rnglists
-                0x000008e8       0x25 ./Libs/tinycrypt/Src/utils.o
+                0x000008e2       0x25 ./Libs/tinycrypt/Src/utils.o
 
-.debug_macro    0x00000000    0x2604d
- .debug_macro   0x00000000      0x2fe ./Core/Src/BL_Functions.o
- .debug_macro   0x000002fe      0xad8 ./Core/Src/BL_Functions.o
- .debug_macro   0x00000dd6       0x22 ./Core/Src/BL_Functions.o
- .debug_macro   0x00000df8       0x8e ./Core/Src/BL_Functions.o
- .debug_macro   0x00000e86       0x51 ./Core/Src/BL_Functions.o
- .debug_macro   0x00000ed7      0x103 ./Core/Src/BL_Functions.o
- .debug_macro   0x00000fda       0x6a ./Core/Src/BL_Functions.o
- .debug_macro   0x00001044      0x1df ./Core/Src/BL_Functions.o
- .debug_macro   0x00001223       0x4c ./Core/Src/BL_Functions.o
- .debug_macro   0x0000126f      0x28d ./Core/Src/BL_Functions.o
- .debug_macro   0x000014fc       0x2e ./Core/Src/BL_Functions.o
- .debug_macro   0x0000152a       0x3b ./Core/Src/BL_Functions.o
- .debug_macro   0x00001565       0x1c ./Core/Src/BL_Functions.o
- .debug_macro   0x00001581       0x22 ./Core/Src/BL_Functions.o
- .debug_macro   0x000015a3       0xd9 ./Core/Src/BL_Functions.o
- .debug_macro   0x0000167c     0x12cd ./Core/Src/BL_Functions.o
- .debug_macro   0x00002949      0x11f ./Core/Src/BL_Functions.o
- .debug_macro   0x00002a68       0x19 ./Core/Src/BL_Functions.o
- .debug_macro   0x00002a81    0x19222 ./Core/Src/BL_Functions.o
- .debug_macro   0x0001bca3       0x6d ./Core/Src/BL_Functions.o
- .debug_macro   0x0001bd10     0x375e ./Core/Src/BL_Functions.o
- .debug_macro   0x0001f46e      0x190 ./Core/Src/BL_Functions.o
- .debug_macro   0x0001f5fe       0x63 ./Core/Src/BL_Functions.o
- .debug_macro   0x0001f661     0x18ad ./Core/Src/BL_Functions.o
- .debug_macro   0x00020f0e      0x6c4 ./Core/Src/BL_Functions.o
- .debug_macro   0x000215d2      0x185 ./Core/Src/BL_Functions.o
- .debug_macro   0x00021757      0x115 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002186c      0x1fd ./Core/Src/BL_Functions.o
- .debug_macro   0x00021a69       0xa5 ./Core/Src/BL_Functions.o
- .debug_macro   0x00021b0e      0x24f ./Core/Src/BL_Functions.o
- .debug_macro   0x00021d5d       0x41 ./Core/Src/BL_Functions.o
- .debug_macro   0x00021d9e       0x58 ./Core/Src/BL_Functions.o
- .debug_macro   0x00021df6      0x236 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002202c      0x14e ./Core/Src/BL_Functions.o
- .debug_macro   0x0002217a      0x25a ./Core/Src/BL_Functions.o
- .debug_macro   0x000223d4       0x12 ./Core/Src/BL_Functions.o
- .debug_macro   0x000223e6      0x22c ./Core/Src/BL_Functions.o
- .debug_macro   0x00022612       0x61 ./Core/Src/BL_Functions.o
- .debug_macro   0x00022673       0xa5 ./Core/Src/BL_Functions.o
- .debug_macro   0x00022718      0x12e ./Core/Src/BL_Functions.o
- .debug_macro   0x00022846      0x108 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002294e       0x35 ./Core/Src/BL_Functions.o
- .debug_macro   0x00022983      0x56d ./Core/Src/BL_Functions.o
- .debug_macro   0x00022ef0       0x44 ./Core/Src/BL_Functions.o
- .debug_macro   0x00022f34      0x14d ./Core/Src/BL_Functions.o
- .debug_macro   0x00023081       0x61 ./Core/Src/BL_Functions.o
- .debug_macro   0x000230e2       0x2a ./Core/Src/BL_Functions.o
- .debug_macro   0x0002310c       0x43 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002314f       0x34 ./Core/Src/BL_Functions.o
- .debug_macro   0x00023183      0x370 ./Core/Src/BL_Functions.o
- .debug_macro   0x000234f3       0x16 ./Core/Src/BL_Functions.o
- .debug_macro   0x00023509       0x4a ./Core/Src/BL_Functions.o
- .debug_macro   0x00023553       0x34 ./Core/Src/BL_Functions.o
- .debug_macro   0x00023587       0x10 ./Core/Src/BL_Functions.o
- .debug_macro   0x00023597       0x58 ./Core/Src/BL_Functions.o
- .debug_macro   0x000235ef       0x8e ./Core/Src/BL_Functions.o
- .debug_macro   0x0002367d       0x1c ./Core/Src/BL_Functions.o
- .debug_macro   0x00023699      0x185 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002381e       0x10 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002382e       0x3c ./Core/Src/BL_Functions.o
- .debug_macro   0x0002386a       0x20 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002388a       0x28 ./Core/Src/BL_Functions.o
- .debug_macro   0x000238b2       0x58 ./Core/Src/BL_Functions.o
- .debug_macro   0x0002390a       0x16 ./Core/Src/BL_Functions.o
- .debug_macro   0x00023920      0x182 ./Core/Src/Cyptology_Control.o
- .debug_macro   0x00023aa2       0x16 ./Core/Src/Cyptology_Control.o
- .debug_macro   0x00023ab8       0x56 ./Core/Src/Cyptology_Control.o
- .debug_macro   0x00023b0e       0x52 ./Core/Src/Cyptology_Control.o
- .debug_macro   0x00023b60      0x1eb ./Core/Src/jump_to_app.o
- .debug_macro   0x00023d4b       0x98 ./Core/Src/keys.o
- .debug_macro   0x00023de3      0x344 ./Core/Src/main.o
- .debug_macro   0x00024127      0x1d8 ./Core/Src/stm32f7xx_hal_msp.o
- .debug_macro   0x000242ff      0x1e2 ./Core/Src/stm32f7xx_it.o
- .debug_macro   0x000244e1      0x1ce ./Core/Src/system_stm32f7xx.o
- .debug_macro   0x000246af      0x1e7 ./Core/Src/tiny_printf.o
- .debug_macro   0x00024896      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_macro   0x00024a88      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_macro   0x00024c56      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_macro   0x00024e30      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_macro   0x0002500a      0x1d4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_macro   0x000251de      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_macro   0x000253d0      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_macro   0x0002559e      0x1eb ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
- .debug_macro   0x00025789      0x189 ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_macro   0x00025912       0x22 ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_macro   0x00025934       0x22 ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_macro   0x00025956       0x1c ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_macro   0x00025972      0x17d ./Libs/tinycrypt/Src/aes_encrypt.o
- .debug_macro   0x00025aef       0x16 ./Libs/tinycrypt/Src/aes_encrypt.o
- .debug_macro   0x00025b05      0x155 ./Libs/tinycrypt/Src/ecc.o
- .debug_macro   0x00025c5a       0x50 ./Libs/tinycrypt/Src/ecc.o
- .debug_macro   0x00025caa       0x10 ./Libs/tinycrypt/Src/ecc.o
- .debug_macro   0x00025cba       0x98 ./Libs/tinycrypt/Src/ecc_dsa.o
- .debug_macro   0x00025d52      0x199 ./Libs/tinycrypt/Src/sha256.o
- .debug_macro   0x00025eeb      0x162 ./Libs/tinycrypt/Src/utils.o
+.debug_macro    0x00000000    0x2606d
+ .debug_macro   0x00000000      0x301 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00000301      0xad8 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00000dd9       0x22 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00000dfb       0x8e ./Core/Src/BL_Functions.o
+ .debug_macro   0x00000e89       0x51 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00000eda      0x103 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00000fdd       0x6a ./Core/Src/BL_Functions.o
+ .debug_macro   0x00001047      0x1df ./Core/Src/BL_Functions.o
+ .debug_macro   0x00001226       0x2e ./Core/Src/BL_Functions.o
+ .debug_macro   0x00001254      0x28d ./Core/Src/BL_Functions.o
+ .debug_macro   0x000014e1       0x2e ./Core/Src/BL_Functions.o
+ .debug_macro   0x0000150f       0x3b ./Core/Src/BL_Functions.o
+ .debug_macro   0x0000154a       0x1c ./Core/Src/BL_Functions.o
+ .debug_macro   0x00001566       0x22 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00001588       0xd9 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00001661     0x12cd ./Core/Src/BL_Functions.o
+ .debug_macro   0x0000292e      0x11f ./Core/Src/BL_Functions.o
+ .debug_macro   0x00002a4d       0x19 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00002a66    0x19222 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0001bc88       0x6d ./Core/Src/BL_Functions.o
+ .debug_macro   0x0001bcf5     0x375e ./Core/Src/BL_Functions.o
+ .debug_macro   0x0001f453      0x190 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0001f5e3       0x63 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0001f646     0x18ad ./Core/Src/BL_Functions.o
+ .debug_macro   0x00020ef3      0x6c4 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000215b7      0x185 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002173c      0x115 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00021851      0x1fd ./Core/Src/BL_Functions.o
+ .debug_macro   0x00021a4e       0xa5 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00021af3      0x24f ./Core/Src/BL_Functions.o
+ .debug_macro   0x00021d42       0x41 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00021d83       0x58 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00021ddb      0x236 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00022011      0x14e ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002215f      0x25a ./Core/Src/BL_Functions.o
+ .debug_macro   0x000223b9       0x12 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000223cb      0x22c ./Core/Src/BL_Functions.o
+ .debug_macro   0x000225f7       0x61 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00022658       0xa5 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000226fd      0x12e ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002282b      0x108 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00022933       0x35 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00022968      0x56d ./Core/Src/BL_Functions.o
+ .debug_macro   0x00022ed5       0x44 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00022f19      0x14d ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023066       0x61 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000230c7       0x2a ./Core/Src/BL_Functions.o
+ .debug_macro   0x000230f1       0x43 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023134       0x34 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023168      0x370 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000234d8       0x16 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000234ee       0x4a ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023538       0x34 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002356c       0x10 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002357c       0x58 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000235d4       0x8e ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023662       0x1c ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002367e      0x185 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023803       0x10 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023813       0x3c ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002384f       0x20 ./Core/Src/BL_Functions.o
+ .debug_macro   0x0002386f       0x28 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023897       0x52 ./Core/Src/BL_Functions.o
+ .debug_macro   0x000238e9       0x58 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023941       0x16 ./Core/Src/BL_Functions.o
+ .debug_macro   0x00023957      0x186 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00023add       0x16 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00023af3       0x56 ./Core/Src/Cyptology_Control.o
+ .debug_macro   0x00023b49      0x1eb ./Core/Src/jump_to_app.o
+ .debug_macro   0x00023d34       0x98 ./Core/Src/keys.o
+ .debug_macro   0x00023dcc      0x347 ./Core/Src/main.o
+ .debug_macro   0x00024113       0x34 ./Core/Src/main.o
+ .debug_macro   0x00024147      0x1d8 ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_macro   0x0002431f      0x1e2 ./Core/Src/stm32f7xx_it.o
+ .debug_macro   0x00024501      0x1ce ./Core/Src/system_stm32f7xx.o
+ .debug_macro   0x000246cf      0x1e7 ./Core/Src/tiny_printf.o
+ .debug_macro   0x000248b6      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_macro   0x00024aa8      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_macro   0x00024c76      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_macro   0x00024e50      0x1da ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_macro   0x0002502a      0x1d4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_macro   0x000251fe      0x1f2 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_macro   0x000253f0      0x1ce ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_macro   0x000255be      0x1eb ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_macro   0x000257a9      0x189 ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_macro   0x00025932       0x22 ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_macro   0x00025954       0x22 ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_macro   0x00025976       0x1c ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_macro   0x00025992      0x17d ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_macro   0x00025b0f       0x16 ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_macro   0x00025b25      0x155 ./Libs/tinycrypt/Src/ecc.o
+ .debug_macro   0x00025c7a       0x50 ./Libs/tinycrypt/Src/ecc.o
+ .debug_macro   0x00025cca       0x10 ./Libs/tinycrypt/Src/ecc.o
+ .debug_macro   0x00025cda       0x98 ./Libs/tinycrypt/Src/ecc_dsa.o
+ .debug_macro   0x00025d72      0x199 ./Libs/tinycrypt/Src/sha256.o
+ .debug_macro   0x00025f0b      0x162 ./Libs/tinycrypt/Src/utils.o
 
-.debug_line     0x00000000    0x11620
- .debug_line    0x00000000      0xee0 ./Core/Src/BL_Functions.o
- .debug_line    0x00000ee0      0x716 ./Core/Src/Cyptology_Control.o
- .debug_line    0x000015f6      0x7df ./Core/Src/jump_to_app.o
- .debug_line    0x00001dd5      0x4d3 ./Core/Src/keys.o
- .debug_line    0x000022a8      0xc7f ./Core/Src/main.o
- .debug_line    0x00002f27      0x7bd ./Core/Src/stm32f7xx_hal_msp.o
- .debug_line    0x000036e4      0x7f7 ./Core/Src/stm32f7xx_it.o
- .debug_line    0x00003edb      0x7bc ./Core/Src/system_stm32f7xx.o
- .debug_line    0x00004697      0x8a6 ./Core/Src/tiny_printf.o
- .debug_line    0x00004f3d       0x7a ./Core/Startup/startup_stm32f746nghx.o
- .debug_line    0x00004fb7      0xa6f ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_line    0x00005a26      0xcef ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_line    0x00006715      0xb46 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_line    0x0000725b      0xb6d ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_line    0x00007dc8      0xbc9 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_line    0x00008991      0xf62 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_line    0x000098f3      0xea0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_line    0x0000a793     0x2caa ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
- .debug_line    0x0000d43d      0xb63 ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_line    0x0000dfa0      0xa3a ./Libs/tinycrypt/Src/aes_encrypt.o
- .debug_line    0x0000e9da     0x1353 ./Libs/tinycrypt/Src/ecc.o
- .debug_line    0x0000fd2d      0x844 ./Libs/tinycrypt/Src/ecc_dsa.o
- .debug_line    0x00010571      0xa0d ./Libs/tinycrypt/Src/sha256.o
- .debug_line    0x00010f7e      0x6a2 ./Libs/tinycrypt/Src/utils.o
+.debug_line     0x00000000    0x1166b
+ .debug_line    0x00000000      0xf13 ./Core/Src/BL_Functions.o
+ .debug_line    0x00000f13      0x71c ./Core/Src/Cyptology_Control.o
+ .debug_line    0x0000162f      0x7df ./Core/Src/jump_to_app.o
+ .debug_line    0x00001e0e      0x4d3 ./Core/Src/keys.o
+ .debug_line    0x000022e1      0xc91 ./Core/Src/main.o
+ .debug_line    0x00002f72      0x7bd ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_line    0x0000372f      0x7f7 ./Core/Src/stm32f7xx_it.o
+ .debug_line    0x00003f26      0x7bc ./Core/Src/system_stm32f7xx.o
+ .debug_line    0x000046e2      0x8a6 ./Core/Src/tiny_printf.o
+ .debug_line    0x00004f88       0x7a ./Core/Startup/startup_stm32f746nghx.o
+ .debug_line    0x00005002      0xa6f ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_line    0x00005a71      0xcef ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_line    0x00006760      0xb46 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_line    0x000072a6      0xb6d ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_line    0x00007e13      0xbc9 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_line    0x000089dc      0xf62 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_line    0x0000993e      0xea0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_line    0x0000a7de     0x2caa ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_line    0x0000d488      0xb63 ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_line    0x0000dfeb      0xa3a ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_line    0x0000ea25     0x1353 ./Libs/tinycrypt/Src/ecc.o
+ .debug_line    0x0000fd78      0x844 ./Libs/tinycrypt/Src/ecc_dsa.o
+ .debug_line    0x000105bc      0xa0d ./Libs/tinycrypt/Src/sha256.o
+ .debug_line    0x00010fc9      0x6a2 ./Libs/tinycrypt/Src/utils.o
 
-.debug_str      0x00000000    0xe6eb0
- .debug_str     0x00000000    0xe6eb0 ./Core/Src/BL_Functions.o
-                              0xe385f (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/Cyptology_Control.o
-                               0x7a26 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/jump_to_app.o
+.debug_str      0x00000000    0xe6e7d
+ .debug_str     0x00000000    0xe6e7d ./Core/Src/BL_Functions.o
+                              0xe38ee (size before relaxing)
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/Cyptology_Control.o
+                               0x7a9d (size before relaxing)
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/jump_to_app.o
                               0xe027d (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/keys.o
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/keys.o
                                0x44b2 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/main.o
-                              0xe45b1 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/main.o
+                              0xe459a (size before relaxing)
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/stm32f7xx_hal_msp.o
                               0xe07d6 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/stm32f7xx_it.o
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/stm32f7xx_it.o
                               0xdff1c (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/system_stm32f7xx.o
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/system_stm32f7xx.o
                               0xe012c (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Src/tiny_printf.o
+ .debug_str     0x000e6e7d        0x0 ./Core/Src/tiny_printf.o
                               0xe0567 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Core/Startup/startup_stm32f746nghx.o
+ .debug_str     0x000e6e7d        0x0 ./Core/Startup/startup_stm32f746nghx.o
                                  0xb5 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
                               0xe0a95 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
                               0xe0ab2 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
                               0xe024f (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
                               0xe02ec (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
                               0xe01ea (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
                               0xe048e (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
                               0xe03c6 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_str     0x000e6e7d        0x0 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
                               0xe0ddb (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_str     0x000e6e7d        0x0 ./Libs/tinycrypt/Src/aes_decrypt.o
                                0x7629 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_str     0x000e6e7d        0x0 ./Libs/tinycrypt/Src/aes_encrypt.o
                                0x75b4 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Libs/tinycrypt/Src/ecc.o
+ .debug_str     0x000e6e7d        0x0 ./Libs/tinycrypt/Src/ecc.o
                                0x7ac7 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Libs/tinycrypt/Src/ecc_dsa.o
+ .debug_str     0x000e6e7d        0x0 ./Libs/tinycrypt/Src/ecc_dsa.o
                                0x43cc (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Libs/tinycrypt/Src/sha256.o
+ .debug_str     0x000e6e7d        0x0 ./Libs/tinycrypt/Src/sha256.o
                                0x7689 (size before relaxing)
- .debug_str     0x000e6eb0        0x0 ./Libs/tinycrypt/Src/utils.o
+ .debug_str     0x000e6e7d        0x0 ./Libs/tinycrypt/Src/utils.o
                                0x7475 (size before relaxing)
 
 .comment        0x00000000       0x43
@@ -5012,35 +5010,35 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .comment       0x00000043        0x0 ./Libs/tinycrypt/Src/utils.o
                                  0x44 (size before relaxing)
 
-.debug_frame    0x00000000     0x2ecc
- .debug_frame   0x00000000      0x154 ./Core/Src/BL_Functions.o
- .debug_frame   0x00000154       0x88 ./Core/Src/Cyptology_Control.o
- .debug_frame   0x000001dc       0x34 ./Core/Src/jump_to_app.o
- .debug_frame   0x00000210       0x30 ./Core/Src/keys.o
- .debug_frame   0x00000240      0x144 ./Core/Src/main.o
- .debug_frame   0x00000384       0x84 ./Core/Src/stm32f7xx_hal_msp.o
- .debug_frame   0x00000408      0x104 ./Core/Src/stm32f7xx_it.o
- .debug_frame   0x0000050c       0x58 ./Core/Src/system_stm32f7xx.o
- .debug_frame   0x00000564      0x108 ./Core/Src/tiny_printf.o
- .debug_frame   0x0000066c      0x3b4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
- .debug_frame   0x00000a20      0x4e8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
- .debug_frame   0x00000f08      0x274 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
- .debug_frame   0x0000117c      0x284 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
- .debug_frame   0x00001400      0x14c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
- .debug_frame   0x0000154c      0x1f8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
- .debug_frame   0x00001744      0x118 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
- .debug_frame   0x0000185c      0x9e8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
- .debug_frame   0x00002244      0x11c ./Libs/tinycrypt/Src/aes_decrypt.o
- .debug_frame   0x00002360      0x144 ./Libs/tinycrypt/Src/aes_encrypt.o
- .debug_frame   0x000024a4      0x6d0 ./Libs/tinycrypt/Src/ecc.o
- .debug_frame   0x00002b74       0xdc ./Libs/tinycrypt/Src/ecc_dsa.o
- .debug_frame   0x00002c50      0x100 ./Libs/tinycrypt/Src/sha256.o
- .debug_frame   0x00002d50       0xa8 ./Libs/tinycrypt/Src/utils.o
- .debug_frame   0x00002df8       0x20 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
- .debug_frame   0x00002e18       0x2c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
- .debug_frame   0x00002e44       0x28 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
- .debug_frame   0x00002e6c       0x2c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x00002e98       0x34 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+.debug_frame    0x00000000     0x2ea4
+ .debug_frame   0x00000000      0x150 ./Core/Src/BL_Functions.o
+ .debug_frame   0x00000150       0x64 ./Core/Src/Cyptology_Control.o
+ .debug_frame   0x000001b4       0x34 ./Core/Src/jump_to_app.o
+ .debug_frame   0x000001e8       0x30 ./Core/Src/keys.o
+ .debug_frame   0x00000218      0x144 ./Core/Src/main.o
+ .debug_frame   0x0000035c       0x84 ./Core/Src/stm32f7xx_hal_msp.o
+ .debug_frame   0x000003e0      0x104 ./Core/Src/stm32f7xx_it.o
+ .debug_frame   0x000004e4       0x58 ./Core/Src/system_stm32f7xx.o
+ .debug_frame   0x0000053c      0x108 ./Core/Src/tiny_printf.o
+ .debug_frame   0x00000644      0x3b4 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.o
+ .debug_frame   0x000009f8      0x4e8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.o
+ .debug_frame   0x00000ee0      0x274 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.o
+ .debug_frame   0x00001154      0x284 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.o
+ .debug_frame   0x000013d8      0x14c ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.o
+ .debug_frame   0x00001524      0x1f8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.o
+ .debug_frame   0x0000171c      0x118 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.o
+ .debug_frame   0x00001834      0x9e8 ./Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.o
+ .debug_frame   0x0000221c      0x11c ./Libs/tinycrypt/Src/aes_decrypt.o
+ .debug_frame   0x00002338      0x144 ./Libs/tinycrypt/Src/aes_encrypt.o
+ .debug_frame   0x0000247c      0x6d0 ./Libs/tinycrypt/Src/ecc.o
+ .debug_frame   0x00002b4c       0xdc ./Libs/tinycrypt/Src/ecc_dsa.o
+ .debug_frame   0x00002c28      0x100 ./Libs/tinycrypt/Src/sha256.o
+ .debug_frame   0x00002d28       0xa8 ./Libs/tinycrypt/Src/utils.o
+ .debug_frame   0x00002dd0       0x20 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memset.o)
+ .debug_frame   0x00002df0       0x2c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-init.o)
+ .debug_frame   0x00002e1c       0x28 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-memcpy-stub.o)
+ .debug_frame   0x00002e44       0x2c C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x00002e70       0x34 C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
 
 .debug_line_str
                 0x00000000       0x99

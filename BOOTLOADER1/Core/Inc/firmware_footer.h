@@ -28,14 +28,14 @@ typedef enum {
     BL_ERR_SIG_FAIL,
 } FW_Status_t;
 
-
-
+/* 2. Footer Structure (The missing part causing errors) */
 typedef struct {
-    uint32_t version;
-    uint32_t size;       // Size of the binary (excluding footer)
-    uint8_t signature[64]; // ECDSA-P256 signature (r + s)
-    uint32_t magic;      // Magic number to verify footer presence
+    uint32_t version;      // Firmware Version
+    uint32_t size;         // Payload Size (IV + Encrypted Data)
+    uint8_t  signature[64];// ECDSA Signature (r + s)
+    uint32_t magic;        // Magic Number (FOOTER_MAGIC)
 } fw_footer_t;
+
 
 #endif
 #endif /* INC_FIRMWARE_FOOTER_H_ */
