@@ -358,9 +358,10 @@ void BL_Swap_NoBuffer(void) {
  * 3. Install Old App (S7) -> Active Slot (S5).
  * 4. Reset System.
  */
-void BL_Rollback(void) {
+uint8_t BL_Rollback(void) {
     BootConfig_t cfg;
     BL_ReadConfig(&cfg);
+    uint8_t error_code=BL_OK;
 
     printf("\r\n[BL] Starting Rollback/Toggle...\r\n");
 
@@ -369,19 +370,43 @@ void BL_Rollback(void) {
     printf("[1/3] Decrypting Backup (S6 -> S7)...\r\n");
     if (!BL_Decrypt_Backup_Image(APP_DOWNLOAD_START_ADDR, SCRATCH_ADDR)) {
         printf("Error: Rollback Decryption Failed.\r\n");
-        return;
+        HAL_FLASH_Lock();
+        return 1;
     }
+
+    uint32_t *pDecryptedData = (uint32_t *)SCRATCH_ADDR; // Start of S7 (0x080C0000)
+	uint32_t stackPointer = pDecryptedData[0];
+	uint32_t resetVector  = pDecryptedData[1];
+
+	// Check 1: Stack Pointer usually points to RAM (0x20xxxxxx)
+	// Check 2: Reset Vector must be within Flash range (approx 0x08040000 to 0x08080000)
+
+	// Simple check: Is the Reset Vector pointing to Flash?
+	if ((resetVector & 0xFF000000) != 0x08000000)
+	{
+		printf("[ERROR] The Backup in S6 is Empty or Invalid!\r\n");
+		printf("[ERROR] Reset Vector: 0x%08X. Aborting Swap to protect Active App.\r\n", (unsigned int)resetVector);
+
+		// Return to NORMAL state without erasing S5
+		BootConfig_t cfg;
+		BL_ReadConfig(&cfg);
+		cfg.system_status = STATE_NORMAL;
+		BL_WriteConfig(&cfg);
+		return 2;
+	}
 
     printf("[2/3] Backing up Current App (S5 -> S6)...\r\n");
     if (!BL_Encrypt_Backup(APP_ACTIVE_START_ADDR, APP_DOWNLOAD_START_ADDR)) {
         printf("Error: Backup Failed.\r\n");
-        return;
+        HAL_FLASH_Lock();
+        return 3;
     }
 
     printf("[3/3] Restoring Old App (S7 -> S5)...\r\n");
     if (!BL_Raw_Copy(SCRATCH_ADDR, APP_ACTIVE_START_ADDR, SLOT_SIZE)) {
         printf("Error: Installation Failed.\r\n");
-        return;
+        HAL_FLASH_Lock();
+        return 4;
     }
 
     printf("[BL] Rollback Successful! Resetting...\r\n");

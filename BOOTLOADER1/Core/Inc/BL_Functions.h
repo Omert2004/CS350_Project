@@ -17,7 +17,7 @@ uint8_t BL_ReadConfig(BootConfig_t *cfg);
 uint8_t BL_WriteConfig(BootConfig_t *cfg);
 
 void BL_Swap_NoBuffer(void);
-void BL_Rollback(void);
+uint8_t BL_Rollback(void);
 
 #endif /* INC_BL_FUNCTIONS_H_ */
 

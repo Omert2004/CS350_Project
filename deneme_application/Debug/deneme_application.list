@@ -472,7 +472,7 @@ __STATIC_FORCEINLINE void __enable_irq(void)
  80405f0:	f000 f876 	bl	80406e0 <MX_USART1_UART_Init>
   /* USER CODE BEGIN 2 */
   //uint32_t current_sp = __get_MSP();
-    printf("Application3'den selam\r\n");
+    printf("Application1'den selam\r\n");
  80405f4:	4804      	ldr	r0, [pc, #16]	@ (8040608 <main+0x2c>)
  80405f6:	f003 f80f 	bl	8043618 <puts>
     //printf("Current Stack Pointer (MSP): 0x%08lX\r\n", current_sp);

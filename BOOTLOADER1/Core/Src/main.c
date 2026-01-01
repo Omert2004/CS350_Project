@@ -134,9 +134,18 @@ int main(void)
 		config.system_status = STATE_UPDATE_REQ;
 	}
 	else {
-		//If status is not OK. Then go to Active App.
-		printf(" -> No Update Found (Error Code: %d). Requesting ROLLBACK.\r\n", status);
-		config.system_status = STATE_NORMAL;
+		// No New Update found.
+		// We assume the user wants to SWAP (Rollback) to the other app.
+		// Optional: Check if S6 is empty (0xFFFFFFFF) to prevent swapping with nothing.
+		uint32_t *s6_ptr = (uint32_t*)APP_DOWNLOAD_START_ADDR;
+		if (*s6_ptr == 0xFFFFFFFF) {
+		   printf(" -> Download Slot is Empty. Cannot Swap.\r\n");
+		   config.system_status = STATE_NORMAL;
+		}
+		else {
+		   printf(" -> Download Slot has data (Backup). Requesting SWAP/ROLLBACK.\r\n");
+		   config.system_status = STATE_ROLLBACK; // <--- This performs the swap
+}
 	}
   }
 
@@ -153,12 +162,15 @@ int main(void)
 
       case STATE_ROLLBACK:
           // Call new Rollback Function
-          BL_Rollback();
 
-          printf("[BL] Rollback Failed. Reverting state.\r\n");
+    	  if(BL_Rollback() != BL_OK){
+
+          printf("[BL] Rollback Failed. Reverting state to NORMAL.\r\n");
           config.system_status = STATE_NORMAL;
           BL_WriteConfig(&config);
-          break;
+          HAL_NVIC_SystemReset();
+    	  }
+
 
       case STATE_NORMAL:
       default:
