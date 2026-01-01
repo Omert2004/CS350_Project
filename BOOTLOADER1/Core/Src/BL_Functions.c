@@ -305,6 +305,17 @@ void BL_Swap_NoBuffer(void) {
 	if (status != BL_OK) {
 		printf("FAIL! Error Code: %d\r\n", status);
 
+		//Erase the Download Slot since the Firmware is not valid.
+		FLASH_EraseInitTypeDef erase = {0};
+		uint32_t error;
+		HAL_FLASH_Unlock();
+		erase.Sector = FLASH_SECTOR_6;
+		erase.TypeErase = FLASH_TYPEERASE_SECTORS;
+		erase.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+		erase.NbSectors = 1;
+		HAL_FLASHEx_Erase(&erase, &error);
+		HAL_FLASH_Lock();
+
 		if (status == BL_ERR_SIG_FAIL) printf("Reason: ECDSA Signature Mismatch.\r\n");
 		if (status == BL_ERR_FOOTER_NOT_FOUND) printf("Reason: Footer Missing.\r\n");
 

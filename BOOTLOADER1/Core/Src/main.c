@@ -114,20 +114,19 @@ int main(void)
 
   tfp_init(&huart1);
   printf("\r\n========================================\r\n");
-  printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 7); // VERIFY THIS PRINTS 1,7
+  printf("Starting Bootloader Version-(%d,%d)\r\n", 1, 7);
   printf("========================================\r\n");
 
-  // 1. Read Config
   if (BL_ReadConfig(&config)) {
       printf("[BL] Config Invalid/Empty. Initialized to Defaults.\r\n");
       BL_WriteConfig(&config);
   }
 
-  // 2. CHECK USER BUTTON (PI11)
+  //Check User Button
   if (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_11) == GPIO_PIN_SET) {
 	  printf("[BL] Button Pressed! Determining Mode...\r\n");
 
-	// Use the enum check
+	//Check Firmware in Download Slot
 	FW_Status_t status = Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE);
 
 	if (status == BL_OK) {
@@ -135,9 +134,9 @@ int main(void)
 		config.system_status = STATE_UPDATE_REQ;
 	}
 	else {
-		// You can even print WHY it failed if you want
+		//If status is not OK. Then go to Active App.
 		printf(" -> No Update Found (Error Code: %d). Requesting ROLLBACK.\r\n", status);
-		config.system_status = STATE_ROLLBACK;
+		config.system_status = STATE_NORMAL;
 	}
   }
 
@@ -147,10 +146,10 @@ int main(void)
           printf("[BL] State: UPDATE REQUESTED.\r\n");
           BL_Swap_NoBuffer();
 
-          printf("[BL] Update Failed. Reverting state.\r\n");
+          printf("[BL] Update Process Finished/Failed. Clearing state.\r\n");
           config.system_status = STATE_NORMAL;
           BL_WriteConfig(&config);
-          // Fall through to try booting S5
+          break;
 
       case STATE_ROLLBACK:
           // Call new Rollback Function
@@ -159,7 +158,7 @@ int main(void)
           printf("[BL] Rollback Failed. Reverting state.\r\n");
           config.system_status = STATE_NORMAL;
           BL_WriteConfig(&config);
-          // Fall through
+          break;
 
       case STATE_NORMAL:
       default:
@@ -179,7 +178,7 @@ int main(void)
               printf("[BL] S5 Empty or Invalid! Checking S6 for Auto-Provisioning...\r\n");
 
               // Auto-Provision: If S5 empty, check if we uploaded file to S6
-              if (Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE) == 1)
+              if (Firmware_Is_Valid(APP_DOWNLOAD_START_ADDR, SLOT_SIZE) == BL_OK)
               {
                   printf("[BL] Valid Image found in S6! Triggering Update...\r\n");
                   config.system_status = STATE_UPDATE_REQ;
