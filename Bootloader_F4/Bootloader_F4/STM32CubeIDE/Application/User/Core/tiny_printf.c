@@ -1,0 +1,79 @@
+/*
+ * tiny_printf.c
+ *
+ *  Created on: 22 Ara 2025
+ *      Author: Oguzm
+ */
+
+
+#include "tiny_printf.h"
+#include "stm32f4xx_hal.h" // Change this if using a different series
+
+static UART_HandleTypeDef *g_uart_handle;
+
+void tfp_init(void* handle) {
+    g_uart_handle = (UART_HandleTypeDef*)handle;
+}
+
+static void _tfp_putc(char c) {
+    if (g_uart_handle) {
+        HAL_UART_Transmit(g_uart_handle, (uint8_t*)&c, 1, 100);
+    }
+}
+
+static void _tfp_puts(char *s) {
+    while (*s) _tfp_putc(*s++);
+}
+
+static void _tfp_print_unsigned(uint32_t i, int base) {
+    const char hex[] = "0123456789ABCDEF";
+    char buf[32];
+    int pos = 0;
+    if (i == 0) {
+        _tfp_putc('0');
+        return;
+    }
+    while (i > 0) {
+        buf[pos++] = hex[i % base];
+        i /= base;
+    }
+    while (pos > 0) _tfp_putc(buf[--pos]);
+}
+
+static void _tfp_print_signed(int32_t i) {
+    if (i < 0) {
+        _tfp_putc('-');
+        i = -i;
+    }
+    _tfp_print_unsigned((uint32_t)i, 10);
+}
+
+void tfp_printf(const char *fmt, ...) {
+    va_list va;
+    va_start(va, fmt);
+    char ch;
+
+    while ((ch = *fmt++) != 0) {
+        if (ch != '%') {
+            _tfp_putc(ch);
+            continue;
+        }
+        ch = *fmt++;
+        switch (ch) {
+            case 0: goto end;
+            case 'c': _tfp_putc((char)va_arg(va, int)); break;
+            case 's': _tfp_puts(va_arg(va, char*)); break;
+            case 'd': _tfp_print_signed(va_arg(va, int)); break;
+            case 'u': _tfp_print_unsigned(va_arg(va, uint32_t), 10); break;
+            case 'x':
+            case 'X': _tfp_print_unsigned(va_arg(va, uint32_t), 16); break;
+            case 'p':
+                _tfp_puts("0x");
+                _tfp_print_unsigned((uintptr_t)va_arg(va, void*), 16);
+                break;
+            default: _tfp_putc(ch); break;
+        }
+    }
+end:
+    va_end(va);
+}

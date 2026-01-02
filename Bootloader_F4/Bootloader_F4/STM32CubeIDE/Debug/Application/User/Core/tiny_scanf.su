@@ -1,0 +1,5 @@
+../Application/User/Core/tiny_scanf.c:15:6:tiny_getc	16	static
+../Application/User/Core/tiny_scanf.c:23:6:tiny_gets	24	static
+../Application/User/Core/tiny_scanf.c:44:6:tiny_getu	24	static
+../Application/User/Core/tiny_scanf.c:65:6:tiny_getd	32	static
+../Application/User/Core/tiny_scanf.c:95:6:tiny_getx	24	static

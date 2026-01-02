@@ -1,0 +1,9 @@
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:258:11:USBD_FS_DeviceDescriptor	1
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:271:11:USBD_FS_LangIDStrDescriptor	1
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:284:11:USBD_FS_ProductStrDescriptor	2
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:303:11:USBD_FS_ManufacturerStrDescriptor	1
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:316:11:USBD_FS_SerialStrDescriptor	1
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:336:11:USBD_FS_ConfigStrDescriptor	2
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:355:11:USBD_FS_InterfaceStrDescriptor	2
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:388:13:Get_SerialNum	2
+C:/Users/marda/Desktop/CS350/Secure-boot/CS350_Project/Bootloader_F4/USB_DEVICE/App/usbd_desc.c:414:13:IntToUnicode	3

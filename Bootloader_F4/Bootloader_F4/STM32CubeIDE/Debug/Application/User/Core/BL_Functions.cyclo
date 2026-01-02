@@ -1,0 +1,11 @@
+../Application/User/Core/BL_Functions.c:45:9:BL_ReadConfig	2
+../Application/User/Core/BL_Functions.c:63:9:BL_WriteConfig	4
+../Application/User/Core/BL_Functions.c:100:16:BL_Raw_Copy	6
+../Application/User/Core/BL_Functions.c:146:16:BL_Decrypt_Update_Image	7
+../Application/User/Core/BL_Functions.c:193:16:BL_Encrypt_Backup	7
+../Application/User/Core/BL_Functions.c:250:16:BL_Decrypt_Backup_Image	7
+../Application/User/Core/BL_Functions.c:309:6:BL_Swap_NoBuffer	8
+../Application/User/Core/BL_Functions.c:383:6:BL_Rollback	5
+../Application/User/Core/BL_Functions.c:439:9:BL_WriteFromPython	9
+../Application/User/Core/BL_Functions.c:538:12:BL_ReadTerminalCommand	7
+../Application/User/Core/BL_Functions.c:569:6:BL_PrintInfo	1

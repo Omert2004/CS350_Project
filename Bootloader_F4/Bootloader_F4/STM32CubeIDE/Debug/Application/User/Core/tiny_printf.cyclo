@@ -1,0 +1,6 @@
+../Application/User/Core/tiny_printf.c:14:6:tfp_init	1
+../Application/User/Core/tiny_printf.c:18:13:_tfp_putc	2
+../Application/User/Core/tiny_printf.c:24:13:_tfp_puts	2
+../Application/User/Core/tiny_printf.c:28:13:_tfp_print_unsigned	4
+../Application/User/Core/tiny_printf.c:43:13:_tfp_print_signed	2
+../Application/User/Core/tiny_printf.c:51:6:tfp_printf	13
