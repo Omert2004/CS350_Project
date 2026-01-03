@@ -203,7 +203,8 @@ CS350_Project/
 ├── Tools/
 │   ├── keygen.py
 │   ├── extract_pubkey.py
-│   └── generate_update.py
+│   ├── generate_update.py
+|   └── UART_Upload.py
 │
 ├── Documentation/
 │   └── CS350_Final_Report.pdf
